@@ -14,12 +14,10 @@ class Role extends Model
     const ROLE_OWNER = 2;
     const ROLE_USER = 3;
 
-    protected $fillable = [
-        'name'
-    ];
+    protected $fillable = ['name'];
 
     public function permissions(): BelongsToMany
     {
-        return $this->belongsToMany(Permission::class, 'permission_role');
+        return $this->belongsToMany(Permission::class);
     }
 }

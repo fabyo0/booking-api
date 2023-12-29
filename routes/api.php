@@ -15,10 +15,23 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('owner/properties',
+        [\App\Http\Controllers\Owner\PropertyController::class, 'index']);
+    Route::get('user/bookings',
+        [\App\Http\Controllers\User\BookingController::class, 'index']);
 });
 
 // Register
 Route::post('auth/register', App\Http\Controllers\Auth\RegisterController::class);
+
+// Login
+Route::post('auth/login',
+    [\App\Http\Controllers\Auth\SessionController::class, 'store']
+);
+
+// Logout
+Route::post('/logout',
+    [\App\Http\Controllers\Auth\SessionController::class, 'destroy']
+)->middleware('auth');
+

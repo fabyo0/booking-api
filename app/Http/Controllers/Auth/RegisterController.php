@@ -22,17 +22,23 @@ class RegisterController extends Controller
             'role_id' => ['required', Rule::in(Role::ROLE_USER, Role::ROLE_OWNER)]
         ]);
 
-        $user = User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'email_verified_at' => now(),
-            'password' => Hash::make($request->input('password')),
-            'role_id' => $request->input('role_id')
-        ]);
+        try {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'email_verified_at' => now(),
+                'password' => Hash::make($request->password),
+                'role_id' => $request->role_id
+            ]);
 
+            return response()->json([
+                'access_token' => $user->createToken('client')->plainTextToken,
+            ]);
 
-        return response()->json([
-            'token' => $user->createToken('token')->plainTextToken
-        ]);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage()
+            ]);
+        }
     }
 }
