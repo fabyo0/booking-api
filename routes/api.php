@@ -34,4 +34,3 @@ Route::post('auth/login',
 Route::post('/logout',
     [\App\Http\Controllers\Auth\SessionController::class, 'destroy']
 )->middleware('auth');
-

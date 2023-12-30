@@ -8,13 +8,11 @@ use Illuminate\Http\Request;
 class PropertyController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->authorize('properties-manage');
-    }
-
     public function index()
     {
+
+        $this->authorize('properties-manage');
+
         return response()->json([
             'success' => true
         ]);

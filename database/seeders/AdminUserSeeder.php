@@ -19,7 +19,7 @@ class AdminUserSeeder extends Seeder
             'email' => 'emre@hotmail.com',
             'password' => Hash::make('yunusemre1.'),
             'email_verified_at' => now(),
-            'role_id' => 2,
+            'role_id' => 1,
         ]);
     }
 }
