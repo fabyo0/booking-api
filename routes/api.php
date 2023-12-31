@@ -16,8 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::middleware('auth:sanctum')->group(function () {
+    // Property
     Route::get('owner/properties',
         [\App\Http\Controllers\Owner\PropertyController::class, 'index']);
+
+    // Bookings
     Route::get('user/bookings',
         [\App\Http\Controllers\User\BookingController::class, 'index']);
 });
