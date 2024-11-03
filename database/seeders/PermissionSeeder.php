@@ -21,18 +21,18 @@ class PermissionSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // Permission
-        Permission::query()->firstOrCreate(['name' => 'properties-manage']);
-        Permission::query()->firstOrCreate(['name' => 'bookings-manage']);
-        Permission::query()->firstOrCreate(['name' => 'manage-users']);
+        Permission::firstOrCreate(['name' => 'properties-manage']);
+        Permission::firstOrCreate(['name' => 'bookings-manage']);
+        Permission::firstOrCreate(['name' => 'manage-users']);
 
         // Roles
-        $ownerRole = Role::query()->firstOrCreate(['name' => RoleEnum::OWNER->value]);
+        $ownerRole = Role::firstOrCreate(['name' => RoleEnum::OWNER->value]);
         $ownerRole->givePermissionTo('properties-manage');
 
-        $userRole = Role::query()->firstOrCreate(['name' => RoleEnum::USER->value]);
+        $userRole = Role::firstOrCreate(['name' => RoleEnum::USER->value]);
         $userRole->givePermissionTo('bookings-manage');
 
-        $adminRole = Role::query()->firstOrCreate(['name' => RoleEnum::ADMINISTRATOR->value]);
+        $adminRole = Role::firstOrCreate(['name' => RoleEnum::ADMINISTRATOR->value]);
         $adminRole->givePermissionTo('manage-users');
 
         $owner = User::factory()->create([
