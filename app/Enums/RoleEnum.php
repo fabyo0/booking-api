@@ -11,9 +11,9 @@ enum RoleEnum: int
     public function label(): string
     {
         return match ($this) {
-            self::ADMINISTRATOR => 'Administrator',
-            self::OWNER => 'Owner',
-            self::USER => 'User',
+            RoleEnum::ADMINISTRATOR => 'Admin',
+            RoleEnum::USER => 'User',
+            RoleEnum::OWNER => 'Owner',
         };
     }
 }

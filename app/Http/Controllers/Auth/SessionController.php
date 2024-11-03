@@ -1,50 +1,54 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
-use Symfony\Component\HttpFoundation\Response;
 
-class SessionController extends Controller
+final class SessionController extends Controller
 {
-    public function store(Request $request)
+    /**
+     * @return JsonResponse
+     */
+    public function store(LoginRequest $request)
     {
-        $request->validate([
-            'email' => 'required|email|string',
-            'password' => 'required',
-        ]);
+        $user = User::where('email', $request->input('email'))->firstOrFail();
 
-        try {
-            $user = User::firstWhere('email', $request->email);
-
-            if (! $user || ! Hash::check($request->password, $user->password)) {
-                throw ValidationException::withMessages([
-                    'email' => 'The provided credentials are incorrect.',
-                ]);
-            }
-
+        // Check User
+        if (!Hash::check($request->input('password'), $user->password)) {
             return response()->json([
-                'access_token' => $user->createToken('client')->plainTextToken,
-            ], Response::HTTP_CREATED);
-
-        } catch (\Exception $exception) {
-            return $exception->getMessage();
+                'message' => 'The provided credentials are incorrect.',
+            ], 422);
         }
+        // Generate token
+        $device = substr($request->userAgent() ?? '', 0, 255);
+
+        return response()->json([
+            'access_token' => $user->createToken($device)->plainTextToken,
+        ]);
     }
 
+
+    /**
+     * @return JsonResponse
+     */
     public function destroy(Request $request)
     {
-        Auth::guard('api')->logout();
+        // Revoke all tokens
+        $request->user()->tokens()->delete();
 
-        $request->session()->invalidate();
+        // Revoke the current user
+        $request->user()->currentAccessToken()->delete();
 
-        $request->session()->regenerateToken();
-
-        return response()->noContent();
+        return response()->json([
+            'message' => 'You have been successfully logged out.',
+        ]);
     }
 }

@@ -1,65 +1,114 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
-use App\Models\Role;
+use App\Enums\RoleEnum as Role;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-class AuthTest extends TestCase
+final class AuthTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * A basic feature test example.
+     * @return void
      */
-    public function test_example(): void
-    {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
-    }
-
     public function test_registration_fails_with_admin_role()
     {
-        $response = $this->postJson('api/auth/register', [
-            'name' => 'doe',
-            'email' => 'doe@hotmail.com',
-            'password' => 'ny]#Tt858D$z',
-            'password_confirmation' => 'ny]#Tt858D$z',
-            'role_id' => Role::ROLE_ADMINISTRATOR,
+        $response = $this->postJson(route('auth.register'), [
+            'name' => 'Valid Name',
+            'email' => 'john@example.com',
+            'password' => 'eV9Rkl31E:%e',
+            'password_confirmation' => 'eV9Rkl31E:%e',
+            'role_id' => Role::ADMINISTRATOR,
         ]);
 
-        $response->assertStatus(422);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
-    public function test_registration_succeeds_with_owner_role()
+    /**
+     * @return void
+     */
+    public function test_registration_success_with_owner_role()
     {
-        $response = $this->postJson('api/auth/register', [
-            'name' => 'doe',
-            'email' => 'doe@hotmail.com',
-            'password' => 'ny]#Tt858D$z',
-            'password_confirmation' => 'ny]#Tt858D$z',
-            'role_id' => Role::ROLE_OWNER,
+        $response = $this->postJson(route('auth.register'), [
+            'name' => 'Valid Name',
+            'email' => 'john@example.com',
+            'password' => 'eV9Rkl31E:%e',
+            'password_confirmation' => 'eV9Rkl31E:%e',
+            'role_id' => Role::OWNER,
         ]);
 
-        $response->assertStatus(200)->assertJsonStructure([
-            'token',
-        ]);
+        $response->assertStatus(Response::HTTP_OK)
+            ->assertJsonStructure([
+                'access_token',
+            ]);
     }
 
-    public function test_registration_succeeds_with_user_role()
+    /**
+     * @return void
+     */
+    public function test_registration_success_with_user_role()
     {
-        $response = $this->postJson('api/auth/register', [
-            'name' => 'doe',
-            'email' => 'doe@hotmail.com',
-            'password' => 'ny]#Tt858D$z',
-            'password_confirmation' => 'ny]#Tt858D$z',
-            'role_id' => Role::ROLE_USER,
+        $response = $this->postJson(route('auth.register'), [
+            'name' => 'Valid Name',
+            'email' => 'john@example.com',
+            'password' => 'eV9Rkl31E:%e',
+            'password_confirmation' => 'eV9Rkl31E:%e',
+            'role_id' => Role::USER,
         ]);
 
-        $response->assertStatus(200)->assertJsonStructure([
-            'token',
-        ]);
+        $response->assertStatus(Response::HTTP_OK)
+            ->assertJsonStructure([
+                'access_token',
+            ]);
     }
+
+    /**
+     * @return void
+     */
+    public function test_should_return_token_with_valid_credentials()
+    {
+        $user = User::factory()->create([
+            'email' => 'test@example.com',
+            'password' => Hash::make('password123'),
+        ]);
+
+        $user->assignRole(roles: $this->getRole( Role::OWNER->value));
+
+        // Acting login
+        $response = $this->postJson(route('auth.login'), [
+            'email' => 'test@example.com',
+            'password' => 'password123',
+        ]);
+        $response->assertJsonStructure(['access_token']);
+    }
+
+    /**
+     * @return void
+     */
+    /*public function test_should_return_error_with_invalid_credentials()
+    {
+       $user =  User::factory()->create([
+            'email' => 'test@example.com',
+            'password' => Hash::make('password123')
+        ]);
+
+       $user->assignRole(RoleEnum::USER->value);
+
+        // Acting login
+        $response = $this->postJson(route('auth.login'), [
+            'email' => 'test@example.com',
+            'password' => 'wrongpassword!',
+        ]);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $response->assertJson([
+            'message' => 'The provided credentials are incorrect.',
+        ]);
+    }*/
 }
