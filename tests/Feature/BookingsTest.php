@@ -5,12 +5,10 @@ namespace Tests\Feature;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class BookingsTest extends TestCase
 {
-
     use RefreshDatabase;
 
     public function test_user_has_access_to_bookings_feature()

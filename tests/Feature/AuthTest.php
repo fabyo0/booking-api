@@ -20,7 +20,6 @@ class AuthTest extends TestCase
         $response->assertStatus(200);
     }
 
-
     public function test_registration_fails_with_admin_role()
     {
         $response = $this->postJson('api/auth/register', [
@@ -28,7 +27,7 @@ class AuthTest extends TestCase
             'email' => 'doe@hotmail.com',
             'password' => 'ny]#Tt858D$z',
             'password_confirmation' => 'ny]#Tt858D$z',
-            'role_id' => Role::ROLE_ADMINISTRATOR
+            'role_id' => Role::ROLE_ADMINISTRATOR,
         ]);
 
         $response->assertStatus(422);
@@ -41,11 +40,11 @@ class AuthTest extends TestCase
             'email' => 'doe@hotmail.com',
             'password' => 'ny]#Tt858D$z',
             'password_confirmation' => 'ny]#Tt858D$z',
-            'role_id' => Role::ROLE_OWNER
+            'role_id' => Role::ROLE_OWNER,
         ]);
 
         $response->assertStatus(200)->assertJsonStructure([
-            'token'
+            'token',
         ]);
     }
 
@@ -56,12 +55,11 @@ class AuthTest extends TestCase
             'email' => 'doe@hotmail.com',
             'password' => 'ny]#Tt858D$z',
             'password_confirmation' => 'ny]#Tt858D$z',
-            'role_id' => Role::ROLE_USER
+            'role_id' => Role::ROLE_USER,
         ]);
 
         $response->assertStatus(200)->assertJsonStructure([
-            'token'
+            'token',
         ]);
     }
-
 }

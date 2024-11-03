@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,26 +13,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::middleware('auth:sanctum')->group(function () {
     // Property
     Route::get('owner/properties',
-        [\App\Http\Controllers\Owner\PropertyController::class, 'index']);
+        [\App\Http\Controllers\Owner\PropertyController::class, 'index'])->name('property.index');
+
+    Route::post('owner/properties',
+        [\App\Http\Controllers\Owner\PropertyController::class, 'store'])->name('property.store');
 
     // Bookings
     Route::get('user/bookings',
-        [\App\Http\Controllers\User\BookingController::class, 'index']);
+        [\App\Http\Controllers\User\BookingController::class, 'index'])->name('booking.index');
 });
 
+Route::middleware('guest')->group(function () {
 // Register
-Route::post('auth/register', App\Http\Controllers\Auth\RegisterController::class);
+    Route::post('auth/register', App\Http\Controllers\Auth\RegisterController::class)
+        ->name('auth.register');
 
 // Login
-Route::post('auth/login',
-    [\App\Http\Controllers\Auth\SessionController::class, 'store']
-);
+    Route::post('auth/login',
+        [\App\Http\Controllers\Auth\SessionController::class, 'store']
+    )->name('auth.login');
+});
 
 // Logout
 Route::post('/logout',
     [\App\Http\Controllers\Auth\SessionController::class, 'destroy']
-)->middleware('auth');
+)->middleware('auth')->name('logout');

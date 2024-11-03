@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,22 +10,21 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
-
 class SessionController extends Controller
 {
     public function store(Request $request)
     {
         $request->validate([
             'email' => 'required|email|string',
-            'password' => 'required'
+            'password' => 'required',
         ]);
 
         try {
             $user = User::firstWhere('email', $request->email);
 
-            if (!$user || !Hash::check($request->password, $user->password)) {
+            if (! $user || ! Hash::check($request->password, $user->password)) {
                 throw ValidationException::withMessages([
-                    'email' => 'The provided credentials are incorrect.'
+                    'email' => 'The provided credentials are incorrect.',
                 ]);
             }
 
@@ -38,7 +36,6 @@ class SessionController extends Controller
             return $exception->getMessage();
         }
     }
-
 
     public function destroy(Request $request)
     {

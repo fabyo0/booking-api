@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
-
 class RegisterController extends Controller
 {
     public function __invoke(Request $request)
@@ -19,7 +18,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Password::defaults()],
-            'role_id' => ['required', Rule::in(Role::ROLE_USER, Role::ROLE_OWNER)]
+            'role_id' => ['required', Rule::in(Role::ROLE_USER, Role::ROLE_OWNER)],
         ]);
 
         try {
@@ -38,7 +37,7 @@ class RegisterController extends Controller
 
         } catch (\Exception $exception) {
             return response()->json([
-                'message' => $exception->getMessage()
+                'message' => $exception->getMessage(),
             ]);
         }
     }
