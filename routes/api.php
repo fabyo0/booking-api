@@ -27,17 +27,22 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware('guest')->group(function () {
-// Register
+    // Register
     Route::post('auth/register', App\Http\Controllers\Auth\RegisterController::class)
         ->name('auth.register');
 
-// Login
+    // Login
     Route::post('auth/login',
         [\App\Http\Controllers\Auth\SessionController::class, 'store']
     )->name('auth.login');
+
+    // Search GeoObject
+    Route::get('search',
+        \App\Http\Controllers\Public\PropertySearchController::class)
+        ->name('property.search');
 });
 
 // Logout
 Route::post('/logout',
     [\App\Http\Controllers\Auth\SessionController::class, 'destroy']
-)->middleware('auth')->name('logout');
+)->middleware('auth:sanctum')->name('logout');

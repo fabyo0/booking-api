@@ -9,7 +9,6 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 final class SessionController extends Controller
@@ -22,7 +21,7 @@ final class SessionController extends Controller
         $user = User::where('email', $request->input('email'))->firstOrFail();
 
         // Check User
-        if (!Hash::check($request->input('password'), $user->password)) {
+        if (! Hash::check($request->input('password'), $user->password)) {
             return response()->json([
                 'message' => 'The provided credentials are incorrect.',
             ], 422);
@@ -34,7 +33,6 @@ final class SessionController extends Controller
             'access_token' => $user->createToken($device)->plainTextToken,
         ]);
     }
-
 
     /**
      * @return JsonResponse

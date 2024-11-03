@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Enums\RoleEnum;
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-class BookingsTest extends TestCase
+final class BookingsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -18,8 +19,7 @@ class BookingsTest extends TestCase
      */
     public function test_booking_user_has_access_to_booking_feature()
     {
-        $user = User::factory()->create();
-        $user->assignRole($this->getRole(RoleEnum::USER->value));
+        $user = User::factory()->create()->assignRole(RoleEnum::USER->label());
 
         $this->actingAs($user)
             ->getJson(route('booking.index'))
@@ -32,7 +32,7 @@ class BookingsTest extends TestCase
     public function test_booking_user_does_not_have_access_to_booking_feature()
     {
         $user = User::factory()->create();
-        $user->assignRole($this->getRole(RoleEnum::OWNER->value));
+        $user->assignRole(roles: RoleEnum::OWNER->label());
 
         $this->actingAs($user)
             ->getJson(route('booking.index'))

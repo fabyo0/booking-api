@@ -4,16 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
  * @property string $name
  * @property string|null $lat
  * @property string|null $long
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\City|null $city
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read City|null $city
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Country newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Country newQuery()
@@ -37,8 +39,8 @@ class Country extends Model
         'long',
     ];
 
-    public function city(): HasOne
+    public function city(): HasMany
     {
-        return $this->hasOne(City::class);
+        return $this->hasMany(City::class);
     }
 }

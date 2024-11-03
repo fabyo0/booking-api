@@ -26,13 +26,13 @@ class PermissionSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'manage-users']);
 
         // Roles
-        $ownerRole = Role::firstOrCreate(['name' => RoleEnum::OWNER->value]);
+        $ownerRole = Role::firstOrCreate(['name' => RoleEnum::OWNER->label()]);
         $ownerRole->givePermissionTo('properties-manage');
 
-        $userRole = Role::firstOrCreate(['name' => RoleEnum::USER->value]);
+        $userRole = Role::firstOrCreate(['name' => RoleEnum::USER->label()]);
         $userRole->givePermissionTo('bookings-manage');
 
-        $adminRole = Role::firstOrCreate(['name' => RoleEnum::ADMINISTRATOR->value]);
+        $adminRole = Role::firstOrCreate(['name' => RoleEnum::ADMINISTRATOR->label()]);
         $adminRole->givePermissionTo('manage-users');
 
         $owner = User::factory()->create([

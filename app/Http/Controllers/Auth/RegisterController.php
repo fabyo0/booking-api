@@ -1,11 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Controllers\Auth;
 
 use App\Enums\RoleEnum;
-use App\Models\Role;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -14,17 +11,16 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
-
-final class RegisterController extends Controller
+class RegisterController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $request->validate(rules: [
+        $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Password::defaults()],
             //TODO: Available role
-            'role_id' => ['required', Rule::in(Role::ROLE_USER, Role::ROLE_OWNER)],
+            'role_id' => ['required', Rule::in(RoleEnum::USER->value, RoleEnum::OWNER->value)],
         ]);
 
         $user = User::create([

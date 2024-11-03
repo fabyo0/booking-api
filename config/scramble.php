@@ -29,7 +29,7 @@ return [
         /*
          * Description rendered on the home page of the API documentation (`/docs/api`).
          */
-        'description' => '',
+        'description' => 'Api Docs',
     ],
 
     /*
@@ -39,12 +39,12 @@ return [
         /*
          * Define the title of the documentation's website. App name is used when this config is `null`.
          */
-        'title' => null,
+        'title' => 'Booking Api Docs',
 
         /*
          * Define the theme of the documentation. Available options are `light` and `dark`.
          */
-        'theme' => 'light',
+            'theme' => 'light',
 
         /*
          * Hide the `Try It` feature. Enabled by default.

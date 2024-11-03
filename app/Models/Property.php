@@ -40,6 +40,8 @@ use Illuminate\Support\Facades\Auth;
  */
 class Property extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'owner_id',
         'name',
@@ -57,7 +59,7 @@ class Property extends Model
 
     public function owner(): BelongsTo
     {
-        return $this->belongsTo(related: User::class, foreignKey: 'owner_id');
+        return $this->belongsTo(related: User::class);
     }
 
     public static function booted(): void
@@ -67,8 +69,8 @@ class Property extends Model
         self::observe(PropertyObserver::class);
 
         // Model booting auto assign owner_id
-        static::creating(function (self $property) {
+      /*  static::creating(function (self $property) {
             $property->owner()->associate(Auth::user());
-        });
+        });*/
     }
 }
