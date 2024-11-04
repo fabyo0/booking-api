@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->group(function () {
     // Property
     Route::get('owner/properties',
-        [\App\Http\Controllers\Owner\PropertyController::class, 'index'])->name('property.index');
+        [\App\Http\Controllers\Owner\PropertyController::class, 'index'])
+        ->name('property.index');
 
     Route::post('owner/properties',
         [\App\Http\Controllers\Owner\PropertyController::class, 'store'])->name('property.store');

@@ -24,6 +24,7 @@ class SearchRequest extends FormRequest
         return [
             'city_id' => ['nullable'],
             'country_id' => ['nullable'],
+            'geoobject' => ['nullable'],
         ];
     }
 }
