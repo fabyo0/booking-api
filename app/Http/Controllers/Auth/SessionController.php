@@ -39,9 +39,6 @@ final class SessionController extends Controller
      */
     public function destroy(Request $request)
     {
-        // Revoke all tokens
-        $request->user()->tokens()->delete();
-
         // Revoke the current user
         $request->user()->currentAccessToken()->delete();
 

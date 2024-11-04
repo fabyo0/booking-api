@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Enums\RoleEnum;
+use App\Models\Apartment;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Geoobject;
@@ -45,13 +46,12 @@ final class PropertiesTest extends TestCase
         $propertyInCity = Property::factory()->create(['owner_id' => $owner->id, 'city_id' => $cities[0]]);
         $propertyInAnotherCity = Property::factory()->create(['owner_id' => $owner->id, 'city_id' => $cities[1]]);
 
-        $response = $this->getJson(route('property.search') . '?city=' . $cities[0]);
+        $response = $this->getJson(route('property.search').'?city='.$cities[0]);
 
-        $response->assertStatus(200);
-        $response->assertJsonCount(1);
-        $response->assertJsonFragment(['id' => $propertyInCity->id]);
+        $response->assertStatus(200)
+            ->assertJsonCount(1)
+            ->assertJsonFragment(['id' => $propertyInCity->id]);
     }
-
 
     public function test_property_search_by_country_returns_corrects_results()
     {
@@ -61,19 +61,19 @@ final class PropertiesTest extends TestCase
 
         $propertyInCity = Property::factory()->create([
             'owner_id' => $owner->id,
-            'city_id' => $countries[0]->city()->value('id')
+            'city_id' => $countries[0]->city()->value('id'),
         ]);
 
         $propertyInAnotherCity = Property::factory()->create([
             'owner_id' => $owner->id,
-            'city_id' => $countries[1]->city()->value('id')
+            'city_id' => $countries[1]->city()->value('id'),
         ]);
 
-        $response = $this->getJson(route('property.search') . '?country=' . $countries[0]->id);
+        $response = $this->getJson(route('property.search').'?country='.$countries[0]->id);
 
-        $response->assertStatus(Response::HTTP_OK);
-        $response->assertJsonCount(1);
-        $response->assertJsonFragment(['id' => $propertyInCity->id]);
+        $response->assertStatus(Response::HTTP_OK)
+            ->assertJsonCount(1)
+            ->assertJsonFragment(['id' => $propertyInCity->id]);
     }
 
     public function test_property_search_by_geoobject_returns_correct_results()
@@ -86,14 +86,47 @@ final class PropertiesTest extends TestCase
             'owner_id' => $owner->id,
             'city_id' => $cityId,
             'lat' => $geoObject->lat,
-            'long' => $geoObject->long
+            'long' => $geoObject->long,
         ]);
 
-        $response = $this->getJson(route('property.search') . '?geoobject=');
+        $response = $this->getJson(route('property.search').'?geoobject=');
 
-        $response->assertStatus(200);
-        $response->assertJsonCount(1);
-        $response->assertJsonFragment(['id' => $propertyNear->id]);
+        $response->assertStatus(200)
+            ->assertJsonCount(1)
+            ->assertJsonFragment(['id' => $propertyNear->id]);
     }
 
+    public function test_property_search_by_capacity_returns_correct_results()
+    {
+        $owner = User::factory()->create()->assignRole(roles: RoleEnum::OWNER->label());
+        $cityId = City::value('id');
+
+        $propertyWithSmallApartment = Property::factory()->create([
+            'owner_id' => $owner->id,
+            'city_id' => $cityId,
+        ]);
+
+        Apartment::factory()->create([
+            'property_id' => $propertyWithSmallApartment,
+            'capacity_adults' => 1,
+            'capacity_children' => 0,
+        ]);
+
+        $propertyWithLargeApartment = Property::factory()->create([
+            'owner_id' => $owner->id,
+            'city_id' => $cityId,
+        ]);
+
+        Apartment::factory()->create([
+            'property_id' => $propertyWithLargeApartment,
+            'capacity_adults' => 3,
+            'capacity_children' => 2,
+        ]);
+
+        $response = $this->getJson(route('property.search').'?city='.$cityId.'&adults=2&children=1');
+
+        $response->assertStatus(Response::HTTP_OK)
+            ->assertJsonCount(1)
+            ->assertJsonFragment(['id' => $propertyWithLargeApartment->id]);
+    }
 }

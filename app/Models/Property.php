@@ -1,11 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Observers\PropertyObserver;
+use Database\Factories\PropertyFactory;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -17,26 +24,27 @@ use Illuminate\Support\Facades\Auth;
  * @property string|null $address_postcode
  * @property string|null $lat
  * @property string|null $long
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\City $city
- * @property-read \App\Models\User $owner
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read City $city
+ * @property-read User $owner
  *
- * @method static \Illuminate\Database\Eloquent\Builder|Property newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Property newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Property query()
- * @method static \Illuminate\Database\Eloquent\Builder|Property whereAddressPostcode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Property whereAddressStreet($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Property whereCityId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Property whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Property whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Property whereLat($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Property whereLong($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Property whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Property whereOwnerId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Property whereUpdatedAt($value)
+ * @method static Builder|Property newModelQuery()
+ * @method static Builder|Property newQuery()
+ * @method static Builder|Property query()
+ * @method static Builder|Property whereAddressPostcode($value)
+ * @method static Builder|Property whereAddressStreet($value)
+ * @method static Builder|Property whereCityId($value)
+ * @method static Builder|Property whereCreatedAt($value)
+ * @method static Builder|Property whereId($value)
+ * @method static Builder|Property whereLat($value)
+ * @method static Builder|Property whereLong($value)
+ * @method static Builder|Property whereName($value)
+ * @method static Builder|Property whereOwnerId($value)
+ * @method static Builder|Property whereUpdatedAt($value)
+ * @method static PropertyFactory factory($count = null, $state = [])
  *
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class Property extends Model
 {
@@ -62,6 +70,11 @@ class Property extends Model
         return $this->belongsTo(related: User::class);
     }
 
+    public function apartments(): HasMany
+    {
+        return $this->hasMany(related: Apartment::class);
+    }
+
     public static function booted(): void
     {
         parent::booted();
@@ -69,8 +82,8 @@ class Property extends Model
         self::observe(PropertyObserver::class);
 
         // Model booting auto assign owner_id
-      /*  static::creating(function (self $property) {
-            $property->owner()->associate(Auth::user());
-        });*/
+        /*  static::creating(function (self $property) {
+              $property->owner()->associate(Auth::user());
+          });*/
     }
 }

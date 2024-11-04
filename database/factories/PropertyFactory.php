@@ -18,13 +18,12 @@ class PropertyFactory extends Factory
      *
      * @return array<string, mixed>
      */
-
     public $model = Property::class;
 
     public function definition(): array
     {
         return [
-            'owner_id' => User::where('role_id', '=',RoleEnum::OWNER)->value('id'),
+            'owner_id' => User::where('role_id', '=', RoleEnum::OWNER)->value('id'),
             'name' => fake()->text(20),
             'city_id' => City::value('id'),
             'address_street' => fake()->streetAddress(),

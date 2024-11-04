@@ -7,7 +7,6 @@ namespace App\Http\Controllers\Owner;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Property\StorePropertyRequest;
 use App\Models\Property;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 
 class PropertyController extends Controller
