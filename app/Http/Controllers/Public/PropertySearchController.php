@@ -16,7 +16,7 @@ final class PropertySearchController extends Controller
      * */
     public function __invoke(SearchRequest $request)
     {
-        return Property::with('city.country')
+        return Property::with('city', 'apartments.apartment_type')
             // Search city
             ->when($request->city, function ($query) use ($request) {
                 $query->where('city_id', $request->city);
@@ -45,7 +45,6 @@ final class PropertySearchController extends Controller
                     $query->where('capacity_adults', '>=', $request->adults)
                         ->where('capacity_children', '>=', $request->children);
                 });
-            })
-            ->get();
+            })->get();
     }
 }

@@ -25,10 +25,17 @@ class Apartment extends Model
         'name',
         'capacity_adults',
         'capacity_children',
+        'apartment_type_id',
+        'size',
     ];
 
     public function property(): BelongsTo
     {
         return $this->belongsTo(related: Property::class, foreignKey: 'property_id');
+    }
+
+    public function apartment_type(): BelongsTo
+    {
+        return $this->belongsTo(related: ApartmentType::class, foreignKey: 'apartment_type_id');
     }
 }
