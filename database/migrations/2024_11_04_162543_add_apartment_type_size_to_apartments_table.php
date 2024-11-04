@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('apartments', function (Blueprint $table) {
+        Schema::table('apartments', function (Blueprint $table): void {
             $table->foreignId('apartment_type_id')
                 ->nullable()
                 ->after('id')
@@ -25,7 +25,7 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('apartments', function (Blueprint $table) {
+        Schema::table('apartments', function (Blueprint $table): void {
             //
         });
     }

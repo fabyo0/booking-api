@@ -8,14 +8,16 @@ use App\Observers\PropertyObserver;
 use Database\Factories\PropertyFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
 
 /**
+ *
+ *
  * @property int $id
  * @property int $owner_id
  * @property string $name
@@ -28,7 +30,6 @@ use Illuminate\Support\Facades\Auth;
  * @property Carbon|null $updated_at
  * @property-read City $city
  * @property-read User $owner
- *
  * @method static Builder|Property newModelQuery()
  * @method static Builder|Property newQuery()
  * @method static Builder|Property query()
@@ -43,7 +44,8 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|Property whereOwnerId($value)
  * @method static Builder|Property whereUpdatedAt($value)
  * @method static PropertyFactory factory($count = null, $state = [])
- *
+ * @property-read Collection<int, Apartment> $apartments
+ * @property-read int|null $apartments_count
  * @mixin Eloquent
  */
 class Property extends Model
@@ -67,7 +69,7 @@ class Property extends Model
 
     public function owner(): BelongsTo
     {
-        return $this->belongsTo(related: User::class);
+        return $this->belongsTo(related: User::class, foreignKey: 'owner_id');
     }
 
     public function apartments(): HasMany
@@ -80,10 +82,5 @@ class Property extends Model
         parent::booted();
 
         self::observe(PropertyObserver::class);
-
-        // Model booting auto assign owner_id
-        /*  static::creating(function (self $property) {
-              $property->owner()->associate(Auth::user());
-          });*/
     }
 }

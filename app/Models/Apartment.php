@@ -13,7 +13,28 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment query()
- *
+ * @property int $id
+ * @property int|null $apartment_type_id
+ * @property int $property_id
+ * @property string $name
+ * @property int $capacity_adults
+ * @property int $capacity_children
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $size
+ * @property int $bathrooms
+ * @property-read \App\Models\ApartmentType|null $apartment_type
+ * @property-read \App\Models\Property $property
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereApartmentTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereBathrooms($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereCapacityAdults($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereCapacityChildren($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment wherePropertyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereSize($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Apartment extends Model
@@ -27,6 +48,7 @@ class Apartment extends Model
         'capacity_children',
         'apartment_type_id',
         'size',
+        'bathrooms'
     ];
 
     public function property(): BelongsTo

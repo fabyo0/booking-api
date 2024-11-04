@@ -18,15 +18,15 @@ final class PropertySearchController extends Controller
     {
         return Property::with('city', 'apartments.apartment_type')
             // Search city
-            ->when($request->city, function ($query) use ($request) {
+            ->when($request->city, function ($query) use ($request): void {
                 $query->where('city_id', $request->city);
             })
             // Search country
-            ->when($request->country, function ($query) use ($request) {
+            ->when($request->country, function ($query) use ($request): void {
                 $query->whereHas('city', fn ($q) => $q->where('country_id', $request->country));
             })
             //TODO: Properties within 10 km
-            ->when($request->geoobject, function ($query) use ($request) {
+            ->when($request->geoobject, function ($query) use ($request): void {
                 $geoobject = Geoobject::find($request->geoobject);
                 if ($geoobject) {
                     $condition = '(
@@ -40,8 +40,8 @@ final class PropertySearchController extends Controller
                     $query->whereRaw($condition);
                 }
                 //TODO: Apartment Filter children & adults
-            })->when($request->adults && $request->children, callback: function ($query) use ($request) {
-                $query->withWhereHas(relation: 'apartments', callback: function ($query) use ($request) {
+            })->when($request->adults && $request->children, callback: function ($query) use ($request): void {
+                $query->withWhereHas(relation: 'apartments', callback: function ($query) use ($request): void {
                     $query->where('capacity_adults', '>=', $request->adults)
                         ->where('capacity_children', '>=', $request->children);
                 });

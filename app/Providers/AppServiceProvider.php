@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::shouldBeStrict();
 
-        Scramble::extendOpenApi(function (OpenApi $openApi) {
+        Scramble::extendOpenApi(function (OpenApi $openApi): void {
             $openApi->secure(
                 SecurityScheme::http('bearer'),
             );

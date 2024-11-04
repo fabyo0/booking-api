@@ -15,7 +15,7 @@ class PermissionSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run()
+    public function run(): void
     {
         //TODO: Separate role, user, and admin seeders
         app()[PermissionRegistrar::class]->forgetCachedPermissions();

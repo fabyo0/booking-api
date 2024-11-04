@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('apartments', function (Blueprint $table) {
+        Schema::create('apartments', function (Blueprint $table): void {
             $table->id();
             $table->foreignIdFor(Property::class)->constrained();
             $table->string('name');

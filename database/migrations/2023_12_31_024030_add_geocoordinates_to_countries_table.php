@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('countries', function (Blueprint $table) {
-            $table->after('name', function () use ($table) {
+        Schema::table('countries', function (Blueprint $table): void {
+            $table->after('name', function () use ($table): void {
                 $table->decimal('lat', 10, 7)->nullable();
                 $table->decimal('long', 10, 7)->nullable();
             });
@@ -24,7 +24,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('countries', function (Blueprint $table) {
+        Schema::table('countries', function (Blueprint $table): void {
             //
         });
     }

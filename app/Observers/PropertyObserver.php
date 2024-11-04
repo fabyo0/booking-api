@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PropertyObserver
 {
-    public function creating(Property $property)
+    public function creating(Property $property): void
     {
         // Check owner
         if (Auth::check()) {
