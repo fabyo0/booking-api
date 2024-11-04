@@ -7,8 +7,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
+ * 
+ *
  * @method static \Database\Factories\ApartmentFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment newQuery()
@@ -35,6 +38,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment wherePropertyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereSize($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Room> $rooms
+ * @property-read int|null $rooms_count
  * @mixin \Eloquent
  */
 class Apartment extends Model
@@ -59,5 +64,10 @@ class Apartment extends Model
     public function apartment_type(): BelongsTo
     {
         return $this->belongsTo(related: ApartmentType::class, foreignKey: 'apartment_type_id');
+    }
+
+    public function rooms(): HasMany
+    {
+        return $this->hasMany(related: Room::class);
     }
 }
