@@ -12,7 +12,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('beds', function (Blueprint $table) {
+        Schema::create('beds', function (Blueprint $table): void {
             $table->id();
             $table->foreignIdFor(Room::class)->constrained();
             $table->foreignIdFor(BedType::class)->constrained();

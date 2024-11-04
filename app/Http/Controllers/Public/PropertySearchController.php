@@ -16,14 +16,17 @@ final class PropertySearchController extends Controller
      * */
     public function __invoke(SearchRequest $request)
     {
-        return Property::with('city', 'apartments.apartment_type')
+        return Property::with([
+            'city', 'apartments.apartment_type',
+            'apartments.rooms.beds.bed_type'
+        ])
             // Search city
             ->when($request->city, function ($query) use ($request): void {
                 $query->where('city_id', $request->city);
             })
             // Search country
             ->when($request->country, function ($query) use ($request): void {
-                $query->whereHas('city', fn ($q) => $q->where('country_id', $request->country));
+                $query->whereHas('city', fn($q) => $q->where('country_id', $request->country));
             })
             //TODO: Properties within 10 km
             ->when($request->geoobject, function ($query) use ($request): void {
@@ -31,10 +34,10 @@ final class PropertySearchController extends Controller
                 if ($geoobject) {
                     $condition = '(
                         6371 * acos(
-                            cos(radians('.$geoobject->lat.'))
+                            cos(radians(' . $geoobject->lat . '))
                             * cos(radians(`lat`))
-                            * cos(radians(`long`) - radians('.$geoobject->long.'))
-                            + sin(radians('.$geoobject->lat.')) * sin(radians(`lat`))
+                            * cos(radians(`long`) - radians(' . $geoobject->long . '))
+                            + sin(radians(' . $geoobject->lat . ')) * sin(radians(`lat`))
                         ) < 10
                     )';
                     $query->whereRaw($condition);

@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
             CitySeeder::class,
             GeoobjectSeeder::class,
             PermissionSeeder::class,
+            ApartmentSeeder::class,
+            PropertySeeder::class
         ]);
     }
 }
