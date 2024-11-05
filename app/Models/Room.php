@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
+ * 
+ *
  * @property int $id
  * @property int $apartment_id
  * @property int|null $room_type_id
@@ -18,7 +20,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Bed> $beds
  * @property-read int|null $beds_count
  * @property-read \App\Models\RoomType|null $room_type
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Room newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Room newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Room query()
@@ -28,7 +29,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Room whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Room whereRoomTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Room whereUpdatedAt($value)
- *
+ * @method static \Database\Factories\RoomFactory factory($count = null, $state = [])
  * @mixin \Eloquent
  */
 class Room extends Model

@@ -8,15 +8,17 @@ use App\Observers\PropertyObserver;
 use Database\Factories\PropertyFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
+ * 
+ *
  * @property int $id
  * @property int $owner_id
  * @property string $name
@@ -29,7 +31,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property Carbon|null $updated_at
  * @property-read City $city
  * @property-read User $owner
- *
  * @method static Builder|Property newModelQuery()
  * @method static Builder|Property newQuery()
  * @method static Builder|Property query()
@@ -44,10 +45,9 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @method static Builder|Property whereOwnerId($value)
  * @method static Builder|Property whereUpdatedAt($value)
  * @method static PropertyFactory factory($count = null, $state = [])
- *
  * @property-read Collection<int, Apartment> $apartments
  * @property-read int|null $apartments_count
- *
+ * @property-read mixed $address
  * @mixin Eloquent
  */
 class Property extends Model
@@ -67,9 +67,9 @@ class Property extends Model
     public function address(): Attribute
     {
         return new Attribute(
-            get: fn() => $this->address_street
-                . ', ' . $this->address_postcode
-                . ', ' . $this->city->name
+            get: fn (): string => $this->address_street
+                .', '.$this->address_postcode
+                .', '.$this->city->name
         );
     }
 

@@ -27,7 +27,7 @@ final class PropertySearchController extends Controller
             })
             // Search country
             ->when($request->country, function ($query) use ($request): void {
-                $query->whereHas('city', fn($q) => $q->where('country_id', $request->country));
+                $query->whereHas('city', fn ($q) => $q->where('country_id', $request->country));
             })
             //TODO: Properties within 10 km
             ->when($request->geoobject, function ($query) use ($request): void {
@@ -35,10 +35,10 @@ final class PropertySearchController extends Controller
                 if ($geoobject) {
                     $condition = '(
                         6371 * acos(
-                            cos(radians(' . $geoobject->lat . '))
+                            cos(radians('.$geoobject->lat.'))
                             * cos(radians(`lat`))
-                            * cos(radians(`long`) - radians(' . $geoobject->long . '))
-                            + sin(radians(' . $geoobject->lat . ')) * sin(radians(`lat`))
+                            * cos(radians(`long`) - radians('.$geoobject->long.'))
+                            + sin(radians('.$geoobject->lat.')) * sin(radians(`lat`))
                         ) < 10
                     )';
                     $query->whereRaw($condition);
@@ -46,7 +46,7 @@ final class PropertySearchController extends Controller
                 //TODO: Apartment Filter children & adults
             })->when($request->adults && $request->children, callback: function ($query) use ($request): void {
                 $query->withWhereHas(relation: 'apartments', callback: function ($query) use ($request): void {
-                    $query->where(  'capacity_adults', '>=', $request->adults)
+                    $query->where('capacity_adults', '>=', $request->adults)
                         ->where('capacity_children', '>=', $request->children)
                         ->orderBy('capacity_adults')
                         ->orderBy('capacity_children')

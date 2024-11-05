@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
+ * 
+ *
  * @property int $id
  * @property int $user_id
  * @property string|null $invoice_address
@@ -16,7 +18,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read UserProfile $user
- *
  * @method static \Illuminate\Database\Eloquent\Builder|UserProfile newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserProfile newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserProfile query()
@@ -28,7 +29,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|UserProfile whereInvoicePostcode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserProfile whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserProfile whereUserId($value)
- *
  * @mixin \Eloquent
  */
 class UserProfile extends Model

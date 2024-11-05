@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Hash;
 final class SessionController extends Controller
 {
     /**
+     * Login
+     *
      * @return JsonResponse
      */
     public function store(LoginRequest $request)
@@ -35,6 +37,8 @@ final class SessionController extends Controller
     }
 
     /**
+     * Destroy
+     *
      * @return JsonResponse
      */
     public function destroy(Request $request)

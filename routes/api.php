@@ -41,6 +41,11 @@ Route::middleware('guest')->group(function () {
     Route::get('search',
         \App\Http\Controllers\Public\PropertySearchController::class)
         ->name('property.search');
+
+    // Show Properties
+    Route::get('properties/{property}',
+        \App\Http\Controllers\Public\PropertyController::class)
+        ->name('property.show');
 });
 
 // Logout
