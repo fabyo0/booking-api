@@ -4,8 +4,6 @@ namespace Tests;
 
 use Database\Seeders\CitySeeder;
 use Database\Seeders\CountrySeeder;
-use Database\Seeders\FacilityCategorySeeder;
-use Database\Seeders\FacilitySeeder;
 use Database\Seeders\GeoobjectSeeder;
 use Database\Seeders\PermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;

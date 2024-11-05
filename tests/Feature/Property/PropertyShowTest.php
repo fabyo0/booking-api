@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Tests\Feature;
+namespace Tests\Feature\Property;
 
 use App\Models\Apartment;
 use App\Models\City;
@@ -21,7 +22,7 @@ final class PropertyShowTest extends TestCase
 
         $property = Property::factory()->create([
             'owner_id' => $owner->id,
-            'city_id' => $cityId
+            'city_id' => $cityId,
         ]);
 
         $largeApartment = Apartment::factory()->create([
@@ -44,29 +45,27 @@ final class PropertyShowTest extends TestCase
         ]);
 
         $facilityCategory = FacilityCategory::create([
-            'name' => 'Some category'
+            'name' => 'Some category',
         ]);
         $facility = Facility::create([
             'category_id' => $facilityCategory->id,
-            'name' => 'Some facility'
+            'name' => 'Some facility',
         ]);
 
-
-        $response = $this->getJson('/api/v1/properties/' . $property->id);
+        $response = $this->getJson('/api/v1/properties/'.$property->id);
         $response->assertStatus(Response::HTTP_OK)
             ->assertJsonCount(3, 'apartments')
             ->assertJsonPath('name', $property->name);
 
-
-        $response = $this->getJson('/api/v1/properties/' . $property->id . '?adults=2&children=1')
+        $response = $this->getJson('/api/v1/properties/'.$property->id.'?adults=2&children=1')
             ->assertStatus(200)
             ->assertJsonCount(2, 'apartments')
             ->assertJsonPath('name', $property->name)
 //           ->assertJsonPath('apartments.0.facilities.0.name', $facility->name)
             ->assertJsonCount(0, 'apartments.1.facilities');
 
-        $response = $this->getJson('/api/v1/search?city=' . $cityId . '&adults=2&children=1')
+        $response = $this->getJson('/api/v1/search?city='.$cityId.'&adults=2&children=1')
             ->assertStatus(200)
-            ->assertJsonPath('0.apartments.0.facilities', NULL);
+            ->assertJsonPath('0.apartments.0.facilities', null);
     }
 }

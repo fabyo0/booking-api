@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature;
+namespace Tests\Feature\Property;
 
 use App\Models\Apartment;
 use App\Models\Bed;

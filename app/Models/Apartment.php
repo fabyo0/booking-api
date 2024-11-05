@@ -64,6 +64,11 @@ class Apartment extends Model
         'bathrooms',
     ];
 
+    protected $appends = [
+        'beds_list',
+        'facility_categories',
+    ];
+
     public function property(): BelongsTo
     {
         return $this->belongsTo(related: Property::class, foreignKey: 'property_id');
@@ -83,6 +88,13 @@ class Apartment extends Model
     {
         return $this->hasManyThrough(related: Bed::class, through: Room::class);
     }
+
+    /*  public function getFacilityCategoriesAttribute()
+      {
+          return $this->facilities
+              ->groupBy('category.name')
+              ->mapWithKeys(fn($items, $key) => [$key => $items->pluck('name')]);
+      }*/
 
     public function bedsList(): Attribute
     {
@@ -108,5 +120,10 @@ class Apartment extends Model
     public function facilities(): BelongsToMany
     {
         return $this->belongsToMany(related: Facility::class, table: 'apartment_facility');
+    }
+
+    public function assignFacilities(array $facilityIds): array
+    {
+        return $this->facilities()->sync($facilityIds, false);
     }
 }

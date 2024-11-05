@@ -46,6 +46,11 @@ Route::middleware('guest')->group(function () {
     Route::get('properties/{property}',
         \App\Http\Controllers\Public\PropertyController::class)
         ->name('property.show');
+
+    // Show Apartment
+    Route::get('/apartments/{apartment}',
+        \App\Http\Controllers\Public\ApartmentController::class)
+        ->name('apartment.show');
 });
 
 // Logout
