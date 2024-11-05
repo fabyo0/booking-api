@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * 
- *
  * @property int $id
  * @property int|null $city_id
  * @property string $name
@@ -16,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\City|null $city
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Geoobject newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Geoobject newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Geoobject query()
@@ -26,6 +25,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Geoobject whereLong($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Geoobject whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Geoobject whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Geoobject extends Model

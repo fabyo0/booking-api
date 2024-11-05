@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class BedFactory extends Factory
 {
-
     protected $model = Bed::class;
 
     /**
@@ -25,7 +24,7 @@ class BedFactory extends Factory
         return [
             'room_id' => Room::factory(),
             'bed_type_id' => BedType::factory(),
-            'name' => $this->faker->sentence(3)
+            'name' => $this->faker->sentence(3),
         ];
     }
 }

@@ -6,11 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * 
- *
  * @property int $id
  * @property int $apartment_id
  * @property int|null $room_type_id
@@ -21,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Bed> $beds
  * @property-read int|null $beds_count
  * @property-read \App\Models\RoomType|null $room_type
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Room newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Room newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Room query()
@@ -30,6 +28,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Room whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Room whereRoomTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Room whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Room extends Model

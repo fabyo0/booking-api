@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Property\SearchRequest;
+use App\Http\Resources\PropertySearchResource;
 use App\Models\Geoobject;
 use App\Models\Property;
 
@@ -16,9 +17,9 @@ final class PropertySearchController extends Controller
      * */
     public function __invoke(SearchRequest $request)
     {
-        return Property::with([
+        $properties = Property::with([
             'city', 'apartments.apartment_type',
-            'apartments.rooms.beds.bed_type'
+            'apartments.rooms.beds.bed_type',
         ])
             // Search city
             ->when($request->city, function ($query) use ($request): void {
@@ -45,9 +46,14 @@ final class PropertySearchController extends Controller
                 //TODO: Apartment Filter children & adults
             })->when($request->adults && $request->children, callback: function ($query) use ($request): void {
                 $query->withWhereHas(relation: 'apartments', callback: function ($query) use ($request): void {
-                    $query->where('capacity_adults', '>=', $request->adults)
-                        ->where('capacity_children', '>=', $request->children);
+                    $query->where(  'capacity_adults', '>=', $request->adults)
+                        ->where('capacity_children', '>=', $request->children)
+                        ->orderBy('capacity_adults')
+                        ->orderBy('capacity_children')
+                        ->take(1);
                 });
             })->get();
+
+        return PropertySearchResource::collection($properties);
     }
 }

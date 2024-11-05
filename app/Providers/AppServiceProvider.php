@@ -6,6 +6,7 @@ use Dedoc\Scramble\Scramble;
 use Dedoc\Scramble\Support\Generator\OpenApi;
 use Dedoc\Scramble\Support\Generator\SecurityScheme;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,7 +24,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Model::shouldBeStrict();
+        // Without json wrapping
+        JsonResource::withoutWrapping();
+
+//        Model::shouldBeStrict();
 
         Scramble::extendOpenApi(function (OpenApi $openApi): void {
             $openApi->secure(

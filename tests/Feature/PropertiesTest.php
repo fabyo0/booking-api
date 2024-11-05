@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Enums\RoleEnum;
 use App\Models\Apartment;
+use App\Models\Bed;
+use App\Models\BedType;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Geoobject;
 use App\Models\Property;
+use App\Models\Room;
+use App\Models\RoomType;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpFoundation\Response;
@@ -157,5 +160,112 @@ final class PropertiesTest extends TestCase
             ->assertJsonCount(1)
             ->assertJsonCount(1, '0.apartments')
             ->assertJsonPath('0.apartments.0.name', $largeApartment->name);
+    }
+
+    public function test_property_search_beds_list_all_cases()
+    {
+        $owner = User::factory()->owner()->create();
+
+        $cityId = City::value('id');
+        $roomTypes = RoomType::all();
+        $bedTypes = BedType::all();
+
+        $property = Property::factory()->create([
+            'owner_id' => $owner->id,
+            'city_id' => $cityId,
+        ]);
+
+        $apartment = Apartment::factory()->create([
+            'name' => 'Small apartment',
+            'property_id' => $property->id,
+            'capacity_adults' => 1,
+            'capacity_children' => 0,
+        ]);
+
+        //TODO: Check that bed list if empty if not beds
+        $response = $this->getJson(route('property.search') . '?city=' . $cityId)
+            ->assertStatus(200)
+            ->assertJsonCount(1)
+            ->assertJsonCount(1, '0.apartments')
+            ->assertJsonPath('0.apartments.0.beds_list', '');
+
+        //TODO: Create 1 room with bed
+        $room = Room::create([
+            'apartment_id' => $apartment->id,
+            'room_type_id' => $roomTypes[0]->id,
+            'name' => 'Bedroom',
+        ]);
+
+        Bed::create([
+            'room_id' => $room->id,
+            'bed_type_id' => $bedTypes[0]->id,
+            'name' => 'Example Bed'
+        ]);
+
+        $response = $this->getJson(route('property.search') . '?city=' . $cityId)
+            ->assertStatus(200)
+            ->assertJsonPath('0.apartments.0.beds_list', '1 ' . $bedTypes[0]->name);
+
+        //TODO: Add another bed to the same room
+        $secondRoom = Bed::create([
+            'room_id' => $room->id,
+            'bed_type_id' => $bedTypes[0]->id,
+            'name' => 'Example Bed'
+        ]);
+
+        $response = $this->getJson(route('property.search') . '?city=' . $cityId)
+            ->assertStatus(200)
+            ->assertJsonPath('0.apartments.0.beds_list', '2 ' . str($bedTypes[0]->name)->plural());
+
+        // Add one bad second room no beds
+        $secondRoom = Room::create([
+            'apartment_id' => $apartment->id,
+            'room_type_id' => $roomTypes[0]->id,
+            'name' => 'Living room',
+        ]);
+
+        $response = $this->getJson(route('property.search') . '?city=' . $cityId)
+            ->assertStatus(200)
+            ->assertJsonPath('0.apartments.0.beds_list', '2 ' . str($bedTypes[0]->name)->plural());
+    }
+
+    public function test_property_search_returns_one_best_apartment_per_property()
+    {
+        $owner = User::factory()->owner()->create();
+
+        $cityId = City::value('id');
+        $roomTypes = RoomType::all();
+        $bedTypes = BedType::all();
+
+        $property = Property::factory()->create([
+            'owner_id' => $owner->id,
+            'city_id' => $cityId,
+        ]);
+
+        $largeApartment = Apartment::factory()->create([
+            'name' => 'Large apartment',
+            'property_id' => $property->id,
+            'capacity_adults' => 3,
+            'capacity_children' => 2,
+        ]);
+
+        $midSizeApartment = Apartment::factory()->create([
+            'name' => 'Mid size apartment',
+            'property_id' => $property->id,
+            'capacity_adults' => 2,
+            'capacity_children' => 1,
+        ]);
+
+        $smallSizeApartment = Apartment::factory()->create([
+            'name' => 'Mid size apartment',
+            'property_id' => $property->id,
+            'capacity_adults' => 1,
+            'capacity_children' => 0,
+        ]);
+
+        $response = $this->getJson(route('property.search') . '?city=' . $cityId . '&adults=2&children=1');
+        $response->assertStatus(200)
+            ->assertJsonCount(1, '0.apartments')
+            ->assertJsonPath('0.apartments.0.name', $midSizeApartment->name);
     }
 }

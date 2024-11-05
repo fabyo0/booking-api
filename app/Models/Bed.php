@@ -5,12 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
 
 /**
- * 
- *
  * @property int $id
  * @property int $room_id
  * @property int $bed_type_id
@@ -19,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\BedType $bed_type
  * @property-read \App\Models\Room $room
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Bed newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Bed newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Bed query()
@@ -28,6 +25,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Bed whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Bed whereRoomId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Bed whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Bed extends Model
@@ -37,7 +35,7 @@ class Bed extends Model
     protected $fillable = [
         'room_id',
         'bed_type_id',
-        'name'
+        'name',
     ];
 
     public function room(): BelongsTo
@@ -47,6 +45,6 @@ class Bed extends Model
 
     public function bed_type(): BelongsTo
     {
-        return $this->belongsTo(related: BedType::class,foreignKey: 'bed_type_id');
+        return $this->belongsTo(related: BedType::class, foreignKey: 'bed_type_id');
     }
 }

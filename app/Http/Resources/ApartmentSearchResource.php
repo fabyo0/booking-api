@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
@@ -18,7 +20,7 @@ class ApartmentSearchResource extends JsonResource
             'name' => $this->name,
             'type' => $this->apartment_type?->name,
             'size' => $this->size,
-            'beds_list' => '',
+            'beds_list' => $this->beds_list,
             'bathrooms' => $this->bathrooms,
         ];
     }
