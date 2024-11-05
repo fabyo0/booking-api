@@ -19,7 +19,7 @@ final class BookingsTest extends TestCase
      */
     public function test_booking_user_has_access_to_booking_feature()
     {
-        $user = User::factory()->create()->assignRole(RoleEnum::USER->label());
+        $user = User::factory()->user()->create();
 
         $this->actingAs($user)
             ->getJson(route('booking.index'))
@@ -31,8 +31,7 @@ final class BookingsTest extends TestCase
      */
     public function test_booking_user_does_not_have_access_to_booking_feature()
     {
-        $user = User::factory()->create();
-        $user->assignRole(roles: RoleEnum::OWNER->label());
+        $user = User::factory()->owner()->create();
 
         $this->actingAs($user)
             ->getJson(route('booking.index'))

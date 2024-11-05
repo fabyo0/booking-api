@@ -74,12 +74,10 @@ final class AuthTest extends TestCase
      */
     public function test_should_return_token_with_valid_credentials()
     {
-        $user = User::factory()->create([
+        $user = User::factory()->owner()->create([
             'email' => 'test@example.com',
             'password' => Hash::make('password123'),
         ]);
-
-        $user->assignRole(roles: Role::OWNER->value);
 
         // Acting login
         $response = $this->postJson(route('auth.login'), [
@@ -94,12 +92,10 @@ final class AuthTest extends TestCase
      */
     public function test_should_return_error_with_invalid_credentials()
     {
-        $user = User::factory()->create([
+        $user = User::factory()->user()->create([
             'email' => 'test@example.com',
             'password' => Hash::make('password123'),
         ]);
-
-        $user->assignRole(Role::USER->value);
 
         // Acting login
         $response = $this->postJson(route('auth.login'), [
