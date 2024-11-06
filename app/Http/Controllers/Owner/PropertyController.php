@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Owner;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Property\StorePropertyRequest;
+use App\Http\Resources\PropertySearchResource;
 use App\Models\Property;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;

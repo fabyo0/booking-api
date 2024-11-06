@@ -47,6 +47,7 @@
         "stan": "./vendor/bin/phpstan analyse --memory-limit=2G",
         "pint" : "./vendor/bin/pint",
         "rector" : "rector",
+        "covorage" : "vendor/bin/phpunit --coverage-html=build/coverage",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"

@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
@@ -48,6 +49,8 @@ use Illuminate\Support\Carbon;
  * @property-read Collection<int, Apartment> $apartments
  * @property-read int|null $apartments_count
  * @property-read mixed $address
+ * @property-read Collection<int, \App\Models\Facility> $facilities
+ * @property-read int|null $facilities_count
  * @mixin Eloquent
  */
 class Property extends Model
@@ -67,9 +70,9 @@ class Property extends Model
     public function address(): Attribute
     {
         return new Attribute(
-            get: fn (): string => $this->address_street
-                .', '.$this->address_postcode
-                .', '.$this->city->name
+            get: fn(): string => $this->address_street
+                . ', ' . $this->address_postcode
+                . ', ' . $this->city->name
         );
     }
 
@@ -86,6 +89,11 @@ class Property extends Model
     public function apartments(): HasMany
     {
         return $this->hasMany(related: Apartment::class);
+    }
+
+    public function facilities(): BelongsToMany
+    {
+        return $this->belongsToMany(related: Facility::class, table: 'facility_property');
     }
 
     public static function booted(): void

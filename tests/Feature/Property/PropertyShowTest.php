@@ -52,12 +52,12 @@ final class PropertyShowTest extends TestCase
             'name' => 'Some facility',
         ]);
 
-        $response = $this->getJson('/api/v1/properties/'.$property->id);
+        $response = $this->getJson(route('property.show',$property->id));
         $response->assertStatus(Response::HTTP_OK)
             ->assertJsonCount(3, 'apartments')
             ->assertJsonPath('name', $property->name);
 
-        $response = $this->getJson('/api/v1/properties/'.$property->id.'?adults=2&children=1')
+        $response = $this->getJson(route('property.show',$property->id).'?adults=2&children=1')
             ->assertStatus(200)
             ->assertJsonCount(2, 'apartments')
             ->assertJsonPath('name', $property->name)
@@ -67,5 +67,6 @@ final class PropertyShowTest extends TestCase
         $response = $this->getJson('/api/v1/search?city='.$cityId.'&adults=2&children=1')
             ->assertStatus(200)
             ->assertJsonPath('0.apartments.0.facilities', null);
+
     }
 }

@@ -26,6 +26,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Facility whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Facility whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Facility whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Property> $properties
+ * @property-read int|null $properties_count
  * @mixin \Eloquent
  */
 class Facility extends Model
@@ -45,5 +47,10 @@ class Facility extends Model
     public function apartments(): BelongsToMany
     {
         return $this->belongsToMany(related: Apartment::class);
+    }
+
+    public function properties(): BelongsToMany
+    {
+        return $this->belongsToMany(related: Property::class, table: 'facility_property');
     }
 }

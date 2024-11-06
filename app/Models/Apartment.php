@@ -89,13 +89,6 @@ class Apartment extends Model
         return $this->hasManyThrough(related: Bed::class, through: Room::class);
     }
 
-    /*  public function getFacilityCategoriesAttribute()
-      {
-          return $this->facilities
-              ->groupBy('category.name')
-              ->mapWithKeys(fn($items, $key) => [$key => $items->pluck('name')]);
-      }*/
-
     public function bedsList(): Attribute
     {
         $allBeds = $this->beds;
