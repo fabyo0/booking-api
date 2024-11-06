@@ -65,7 +65,7 @@ final class ApartmentShowTest extends TestCase
             $firstFacility->id, $secondFacility->id, $thirdFacility->id,
         ]);
 
-        $response = $this->getJson(route('apartment.show',$apartment->id));
+        $response = $this->getJson(route('apartment.show', $apartment->id));
         $response->assertStatus(Response::HTTP_OK)
             ->assertJsonPath('name', $apartment->name)
             ->assertJsonCount(2, 'facility_categories');

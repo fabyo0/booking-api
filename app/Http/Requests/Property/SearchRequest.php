@@ -27,7 +27,7 @@ class SearchRequest extends FormRequest
             'geoobject' => ['nullable', 'string'],
             'adults' => ['nullable'],
             'children' => ['nullable', 'int'],
-            'facilities' => 'nullable'
+            'facilities' => 'nullable',
         ];
     }
 }

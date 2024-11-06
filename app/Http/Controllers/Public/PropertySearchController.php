@@ -53,45 +53,46 @@ final class PropertySearchController extends Controller
                         ->where('capacity_children', '>=', $request->children)
                         ->orderBy('capacity_adults')
                         ->orderBy('capacity_children')
+                        //TODO: eloquent-eager-limit
                         ->take(1);
                 })
 
-            //TODO: Filter By Facilities
-            ->when($request->facilities,function (Builder $query) use ($request){
-                $query->whereHas('facilities',callback: function (Builder $query) use($request){
-                    $query->whereIn('facilities.id',$request->facilities);
-                });
-            });
+                    //TODO: Filter By Facilities
+                    ->when($request->facilities, function (Builder $query) use ($request) {
+                        $query->whereHas('facilities', callback: function (Builder $query) use ($request) {
+                            $query->whereIn('facilities.id', $request->facilities);
+                        });
+                    });
             })->get();
 
         //TODO : Filtering collection without any extra query
         //TODO: properties collection into a single dimension
         $allFacilities = $properties->pluck('facilities')->flatten();
         $facilities = $allFacilities->unique('name')
-            ->mapWithKeys(function ($facility) use ($allFacilities){
-               /*
-                * return array
-                * facilities.name => properties.facilities.name
-                * */
+            ->mapWithKeys(function ($facility) use ($allFacilities) {
+                /*
+                 * return array
+                 * facilities.name => properties.facilities.name
+                 * */
                 return [
-                    $facility->name => $allFacilities->where('name',$facility->name)->count()
+                    $facility->name => $allFacilities->where('name', $facility->name)->count(),
                 ];
             })
             ->sortDesc();
 
         //TODO: Alternative extra query
-       /* $facilities = Facility::query()
-            ->withCount(['properties' => function ($property) use ($properties) {
-                $property->whereIn('id', $properties->pluck('id'));
-            }])
-            ->get()
-            ->where('properties_count', '>', 0)
-            ->sortByDesc('properties_count')
-            ->pluck('properties_count', 'name');
-       */
+        /* $facilities = Facility::query()
+             ->withCount(['properties' => function ($property) use ($properties) {
+                 $property->whereIn('id', $properties->pluck('id'));
+             }])
+             ->get()
+             ->where('properties_count', '>', 0)
+             ->sortByDesc('properties_count')
+             ->pluck('properties_count', 'name');
+        */
         return [
             'properties' => PropertySearchResource::collection($properties),
-            'facilities' => $facilities
+            'facilities' => $facilities,
         ];
     }
 }

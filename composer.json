@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.8",
         "opcodesio/log-viewer": "^3.11",
         "spatie/laravel-permission": "^6.9",
+        "staudenmeir/eloquent-eager-limit": "^1.0",
         "toin0u/geocoder-laravel": "^4.6"
     },
     "require-dev": {

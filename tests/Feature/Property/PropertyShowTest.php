@@ -52,12 +52,12 @@ final class PropertyShowTest extends TestCase
             'name' => 'Some facility',
         ]);
 
-        $response = $this->getJson(route('property.show',$property->id));
+        $response = $this->getJson(route('property.show', $property->id));
         $response->assertStatus(Response::HTTP_OK)
             ->assertJsonCount(3, 'apartments')
             ->assertJsonPath('name', $property->name);
 
-        $response = $this->getJson(route('property.show',$property->id).'?adults=2&children=1')
+        $response = $this->getJson(route('property.show', $property->id).'?adults=2&children=1')
             ->assertStatus(200)
             ->assertJsonCount(2, 'apartments')
             ->assertJsonPath('name', $property->name)

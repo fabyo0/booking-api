@@ -26,7 +26,7 @@ abstract class TestCase extends BaseTestCase
             GeoobjectSeeder::class,
             PermissionSeeder::class,
             FacilityCategorySeeder::class,
-            FacilitySeeder::class
+            FacilitySeeder::class,
         ]);
     }
 }

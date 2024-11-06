@@ -16,10 +16,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 
 /**
- * 
- *
  * @property int $id
  * @property int $owner_id
  * @property string $name
@@ -32,6 +31,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property-read City $city
  * @property-read User $owner
+ *
  * @method static Builder|Property newModelQuery()
  * @method static Builder|Property newQuery()
  * @method static Builder|Property query()
@@ -46,16 +46,19 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Property whereOwnerId($value)
  * @method static Builder|Property whereUpdatedAt($value)
  * @method static PropertyFactory factory($count = null, $state = [])
+ *
  * @property-read Collection<int, Apartment> $apartments
  * @property-read int|null $apartments_count
  * @property-read mixed $address
  * @property-read Collection<int, \App\Models\Facility> $facilities
  * @property-read int|null $facilities_count
+ *
  * @mixin Eloquent
  */
 class Property extends Model
 {
     use HasFactory;
+    use HasEagerLimit;
 
     protected $fillable = [
         'owner_id',
@@ -70,9 +73,9 @@ class Property extends Model
     public function address(): Attribute
     {
         return new Attribute(
-            get: fn(): string => $this->address_street
-                . ', ' . $this->address_postcode
-                . ', ' . $this->city->name
+            get: fn (): string => $this->address_street
+                .', '.$this->address_postcode
+                .', '.$this->city->name
         );
     }
 

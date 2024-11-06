@@ -11,14 +11,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 
 /**
- * 
- *
  * @method static \Database\Factories\ApartmentFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment query()
+ *
  * @property int $id
  * @property int|null $apartment_type_id
  * @property int $property_id
@@ -31,6 +31,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property int $bathrooms
  * @property-read \App\Models\ApartmentType|null $apartment_type
  * @property-read \App\Models\Property $property
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereApartmentTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereBathrooms($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereCapacityAdults($value)
@@ -41,6 +42,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment wherePropertyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereSize($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereUpdatedAt($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Room> $rooms
  * @property-read int|null $rooms_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Bed> $beds
@@ -48,11 +50,13 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property-read mixed $beds_list
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Facility> $facilities
  * @property-read int|null $facilities_count
+ *
  * @mixin \Eloquent
  */
 class Apartment extends Model
 {
     use HasFactory;
+    use HasEagerLimit;
 
     protected $fillable = [
         'property_id',
