@@ -22,6 +22,8 @@ final class PropertySearchController extends Controller
         $properties = Property::with([
             'city', 'apartments.apartment_type',
             'apartments.rooms.beds.bed_type',
+            'facilities',
+            'media' => fn($query) => $query->orderBy('position'),
         ])
             // Search city
             ->when($request->city, function ($query) use ($request): void {
