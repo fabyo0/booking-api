@@ -15,21 +15,23 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
     //Owner
-    Route::group(['prefix' => 'owner'],function (){
+    Route::group(['prefix' => 'owner'], function () {
         // Property
         Route::get('/properties',
             [\App\Http\Controllers\Owner\PropertyController::class, 'index'])
             ->name('property.index');
-
         Route::post('/properties',
             [\App\Http\Controllers\Owner\PropertyController::class, 'store'])->name('property.store');
-
+        // Photo Store
         Route::post('/{property}/photos',
             [\App\Http\Controllers\Owner\PropertyPhotoController::class, 'store'])->name('property-photo');
+        // Photo reorder position
+        Route::post('{property}/photos/{photo}/reorder/{newPosition}',
+            [\App\Http\Controllers\Owner\PropertyPhotoController::class, 'reorder'])->name('photos.reorder');
     });
 
     // User
-    Route::group(['prefix' => 'user'],function (){
+    Route::group(['prefix' => 'user'], function () {
         Route::get('bookings',
             [\App\Http\Controllers\User\BookingController::class, 'index'])->name('booking.index');
     });

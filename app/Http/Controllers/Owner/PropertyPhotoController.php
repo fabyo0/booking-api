@@ -10,6 +10,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use function Sodium\increment;
 
 final class PropertyPhotoController extends Controller
 {
@@ -28,9 +30,55 @@ final class PropertyPhotoController extends Controller
 
         $photo = $property->addMediaFromRequest('photo')->toMediaCollection('photos');
 
+        // Media position increment
+        $position = Media::query()
+                ->where('model_type', 'App\Models\Property')
+                ->where('model_id', $property->id)
+                ->max('position') + 1;
+
+        $photo->position = $position;
+        $photo->save();
+
         return [
             'filename' => $photo->getUrl(),
-            'thumbnail' => $photo->getUrl('thumbnail')
+            'thumbnail' => $photo->getUrl('thumbnail'),
+            'position' => $photo->position
+        ];
+    }
+
+    /**
+     * Photo Reorder
+     * @param Property $property
+     * @param Media $photo
+     * @param int $newPosition
+     * @return int[]
+     * @ignoreParam property
+     * @ignoreParam photo
+     */
+    public function reorder(Property $property, Media $photo, int $newPosition)
+    {
+        $this->authorize('reorder', [$property, $photo]);
+
+        // Check property
+        $query = Media::query()
+            ->where('model_id', $photo->model_id)
+            ->where('model_type', 'App\Models\Property');
+
+        //Increment position
+        if ($newPosition < $photo->position) {
+            $query->whereBetween('position', [$newPosition, $photo->position - 1])
+                ->increment('position');
+        } // Decrement position
+        else {
+            $query->whereBetween('position', [$photo->position + 1, $newPosition])
+                ->decrement('position');
+        }
+        $photo->position = $newPosition;
+        $photo->save();
+
+        return [
+            'photo' => $photo,
+            'newPosition' => $newPosition
         ];
     }
 }

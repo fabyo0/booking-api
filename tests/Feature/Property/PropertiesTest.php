@@ -348,4 +348,36 @@ final class PropertiesTest extends TestCase
                 'thumbnail' => config('app.url') . '/storage/1/conversions/photo-thumbnail.jpg',
             ]);
     }
+
+    public function test_property_owner_can_reorder_photos_in_property()
+    {
+        Storage::fake();
+
+        $owner = User::factory()->owner()->create();
+
+        $cityId = City::value('id');
+        $property = Property::factory()->create([
+            'owner_id' => $owner->id,
+            'city_id' => $cityId,
+        ]);
+
+        $photoOne = $this->actingAs($owner)->postJson(route('property-photo', $property->id), [
+            'photo' => UploadedFile::fake()->image('photo1.png')
+        ]);
+
+        $photoTwo = $this->actingAs($owner)->postJson(route('property-photo', $property->id), [
+            'photo' => UploadedFile::fake()->image('photo2.png')
+        ]);
+
+        $newPosition = $photoOne->json('position') + 1;
+
+        $response = $this->actingAs($owner)->postJson('/api/v1/owner/' . $property->id . '/photos/1/reorder/' . $newPosition);
+
+        $response->assertStatus(Response::HTTP_OK)
+            ->assertJsonFragment(['newPosition' => $newPosition]);
+
+        // Check Database
+        $this->assertDatabaseHas('media', ['file_name' => 'photo1.png', 'position' => $photoTwo->json('position')]);
+        $this->assertDatabaseHas('media', ['file_name' => 'photo2.png', 'position' => $photoOne->json('position')]);
+    }
 }

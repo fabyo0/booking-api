@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
+ * 
+ *
  * @property int $id
  * @property int $country_id
  * @property string $name
@@ -19,7 +21,6 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Country $country
- *
  * @method static Builder|City newModelQuery()
  * @method static Builder|City newQuery()
  * @method static Builder|City query()
@@ -30,7 +31,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder|City whereLong($value)
  * @method static Builder|City whereName($value)
  * @method static Builder|City whereUpdatedAt($value)
- *
  * @mixin \Eloquent
  */
 class City extends Model

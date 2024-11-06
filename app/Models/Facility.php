@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
+ * 
+ *
  * @property int $id
  * @property int|null $category_id
  * @property string $name
@@ -16,7 +18,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Apartment> $apartments
  * @property-read int|null $apartments_count
  * @property-read \App\Models\FacilityCategory|null $category
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Facility newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Facility newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Facility query()
@@ -25,10 +26,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Facility whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Facility whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Facility whereUpdatedAt($value)
- *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Property> $properties
  * @property-read int|null $properties_count
- *
  * @mixin \Eloquent
  */
 class Facility extends Model

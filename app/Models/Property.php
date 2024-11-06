@@ -21,8 +21,9 @@ use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-
 /**
+ *
+ *
  * @property int $id
  * @property int $owner_id
  * @property string $name
@@ -35,7 +36,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon|null $updated_at
  * @property-read City $city
  * @property-read User $owner
- *
  * @method static Builder|Property newModelQuery()
  * @method static Builder|Property newQuery()
  * @method static Builder|Property query()
@@ -50,13 +50,13 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Property whereOwnerId($value)
  * @method static Builder|Property whereUpdatedAt($value)
  * @method static PropertyFactory factory($count = null, $state = [])
- *
  * @property-read Collection<int, Apartment> $apartments
  * @property-read int|null $apartments_count
  * @property-read mixed $address
  * @property-read Collection<int, \App\Models\Facility> $facilities
  * @property-read int|null $facilities_count
- *
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, Media> $media
+ * @property-read int|null $media_count
  * @mixin Eloquent
  */
 class Property extends Model implements HasMedia
