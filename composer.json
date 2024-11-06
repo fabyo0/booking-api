@@ -16,6 +16,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "opcodesio/log-viewer": "^3.11",
+        "spatie/laravel-medialibrary": "^11.9",
         "spatie/laravel-permission": "^6.9",
         "staudenmeir/eloquent-eager-limit": "^1.0",
         "toin0u/geocoder-laravel": "^4.6"

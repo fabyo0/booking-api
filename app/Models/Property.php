@@ -16,7 +16,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
 
 /**
  * @property int $id
@@ -55,10 +59,11 @@ use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
  *
  * @mixin Eloquent
  */
-class Property extends Model
+class Property extends Model implements HasMedia
 {
     use HasFactory;
     use HasEagerLimit;
+    use InteractsWithMedia;
 
     protected $fillable = [
         'owner_id',
@@ -73,9 +78,9 @@ class Property extends Model
     public function address(): Attribute
     {
         return new Attribute(
-            get: fn (): string => $this->address_street
-                .', '.$this->address_postcode
-                .', '.$this->city->name
+            get: fn(): string => $this->address_street
+                . ', ' . $this->address_postcode
+                . ', ' . $this->city->name
         );
     }
 
@@ -97,6 +102,13 @@ class Property extends Model
     public function facilities(): BelongsToMany
     {
         return $this->belongsToMany(related: Facility::class, table: 'facility_property');
+    }
+
+    //Thumbnail Image
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumbnail')
+            ->width(800);
     }
 
     public static function booted(): void

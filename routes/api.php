@@ -14,17 +14,25 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->group(function () {
-    // Property
-    Route::get('owner/properties',
-        [\App\Http\Controllers\Owner\PropertyController::class, 'index'])
-        ->name('property.index');
+    //Owner
+    Route::group(['prefix' => 'owner'],function (){
+        // Property
+        Route::get('/properties',
+            [\App\Http\Controllers\Owner\PropertyController::class, 'index'])
+            ->name('property.index');
 
-    Route::post('owner/properties',
-        [\App\Http\Controllers\Owner\PropertyController::class, 'store'])->name('property.store');
+        Route::post('/properties',
+            [\App\Http\Controllers\Owner\PropertyController::class, 'store'])->name('property.store');
 
-    // Bookings
-    Route::get('user/bookings',
-        [\App\Http\Controllers\User\BookingController::class, 'index'])->name('booking.index');
+        Route::post('/{property}/photos',
+            [\App\Http\Controllers\Owner\PropertyPhotoController::class, 'store'])->name('property-photo');
+    });
+
+    // User
+    Route::group(['prefix' => 'user'],function (){
+        Route::get('bookings',
+            [\App\Http\Controllers\User\BookingController::class, 'index'])->name('booking.index');
+    });
 });
 
 Route::middleware('guest')->group(function () {
