@@ -25,13 +25,24 @@ final class PropertySearchController extends Controller
             'facilities',
             'media' => fn($query) => $query->orderBy('position'),
             'apartments.prices' => function ($query) use ($request) {
-            //TODO: start_date & end_date null ise yarından itibaren iki gün için rezervasyon yapabilir
+                //TODO: start_date & end_date null ise yarından itibaren iki gün için rezervasyon yapabilir
                 $query->validForRange([
                     $request->start_date ?? now()->addDay()->toDateString(),
                     $request->end_date ?? now()->addDays(2)->toDateString(),
                 ]);
             }
         ])
+            // Price Filter price_from/price_to
+            ->when($request->input('price_from'), callback: function ($query) use ($request) {
+                $query->whereHas('apartments.prices', callback: function ($query) use ($request) {
+                    $query->where('price', '>=', $request->input('price_from'));
+                });
+            })
+            ->when($request->input('price_to'), callback: function ($query) use ($request) {
+                $query->whereHas('apartments.prices', callback: function ($query) use ($request) {
+                    $query->where('price', '<=', $request->input('price_to'));
+                });
+            })
             // Search city
             ->when($request->city, function ($query) use ($request): void {
                 $query->where('city_id', $request->city);
