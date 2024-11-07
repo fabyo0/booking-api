@@ -28,6 +28,8 @@ class SearchRequest extends FormRequest
             'adults' => ['nullable'],
             'children' => ['nullable', 'int'],
             'facilities' => 'nullable',
+            'start_date' => ['date','nullable'],
+            'end_date' => ['date','nullable'],
         ];
     }
 }

@@ -24,6 +24,13 @@ final class PropertySearchController extends Controller
             'apartments.rooms.beds.bed_type',
             'facilities',
             'media' => fn($query) => $query->orderBy('position'),
+            'apartments.prices' => function ($query) use ($request) {
+            //TODO: start_date & end_date null ise yarından itibaren iki gün için rezervasyon yapabilir
+                $query->validForRange([
+                    $request->start_date ?? now()->addDay()->toDateString(),
+                    $request->end_date ?? now()->addDays(2)->toDateString(),
+                ]);
+            }
         ])
             // Search city
             ->when($request->city, function ($query) use ($request): void {

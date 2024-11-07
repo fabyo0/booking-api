@@ -22,7 +22,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property int $owner_id
@@ -74,6 +74,8 @@ class Property extends Model implements HasMedia
         'lat',
         'long',
     ];
+
+    protected $appends = ['address'];
 
     public function address(): Attribute
     {
