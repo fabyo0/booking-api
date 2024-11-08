@@ -32,6 +32,8 @@ final class PropertySearchController extends Controller
                 ]);
             },
         ])
+            ->withAvg('bookings', 'rating')
+
             //TODO: Price Filter price_from/price_to
             ->when($request->input('price_from'), callback: function (Builder $query) use ($request): void {
                 $query->whereHas(relation: 'apartments.prices', callback: function (Builder $query) use ($request): void {
@@ -83,7 +85,9 @@ final class PropertySearchController extends Controller
                             $query->whereIn('facilities.id', $request->facilities);
                         });
                     });
-            })->get();
+            })
+            ->orderBy('bookings_avg_rating', 'desc')
+            ->get();
 
         //TODO : Filtering collection without any extra query
         //TODO: properties collection into a single dimension

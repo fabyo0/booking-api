@@ -48,6 +48,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Booking whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Booking whereUserId($value)
  *
+ * @property int|null $rating
+ * @property string|null $review_comment
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Booking whereRating($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Booking whereReviewComment($value)
+ *
  * @mixin \Eloquent
  */
 class Booking extends Model
@@ -64,7 +70,7 @@ class Booking extends Model
         'guests_adults',
         'guests_children',
         'total_price',
-        "rating",
+        'rating',
         'review_comment',
     ];
 

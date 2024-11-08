@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Carbon;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -57,6 +58,8 @@ use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
  * @property-read int|null $facilities_count
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, Media> $media
  * @property-read int|null $media_count
+ * @property-read Collection<int, \App\Models\Booking> $bookings
+ * @property-read int|null $bookings_count
  *
  * @mixin Eloquent
  */
@@ -112,6 +115,11 @@ class Property extends Model implements HasMedia
     {
         $this->addMediaConversion('thumbnail')
             ->width(800);
+    }
+
+    public function bookings(): HasManyThrough
+    {
+        return $this->hasManyThrough(related: Booking::class, through: Apartment::class);
     }
 
     public static function booted(): void

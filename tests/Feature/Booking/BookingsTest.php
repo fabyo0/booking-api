@@ -121,7 +121,7 @@ final class BookingsTest extends TestCase
             ->assertJsonCount(1)
             ->assertJsonFragment(['guests_adults' => 1]);
 
-        $response = $this->actingAs($user1)->getJson('/api/v1/user/bookings/' . $booking2->id)
+        $response = $this->actingAs($user1)->getJson('/api/v1/user/bookings/'.$booking2->id)
             ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
@@ -178,18 +178,18 @@ final class BookingsTest extends TestCase
 
         // Invalid data rating
         $response = $this->actingAs($user1)->putJson(route('bookings.update', $booking->id), data: [
-            'rating' => 11
+            'rating' => 11,
         ])->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 
         // Invalid data rating - sort comments
         $response = $this->actingAs($user1)->putJson(route('bookings.update', $booking->id), data: [
             'rating' => 5,
-            'review_comment' => 'sort comment'
+            'review_comment' => 'sort comment',
         ])->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 
         $correctData = [
             'rating' => 10,
-            'review_comment' => 'Comment with a good length to be accepted.'
+            'review_comment' => 'Comment with a good length to be accepted.',
         ];
 
         $response = $this->actingAs($user1)->putJson(route('bookings.update', $booking->id), data: $correctData)

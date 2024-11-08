@@ -45,7 +45,7 @@ final class BookingController extends Controller
     /**
      * Booking Show
      */
-    public function show(Booking $booking): \App\Http\Resources\BookingResource
+    public function show(Booking $booking): BookingResource
     {
         $this->authorize('bookings-manage');
 
@@ -56,11 +56,8 @@ final class BookingController extends Controller
 
     /**
      * Booking Update
-     * @param UpdateBookingRequest $request
-     * @param Booking $booking
-     * @return BookingResource
      */
-    public function update(UpdateBookingRequest $request, Booking $booking)
+    public function update(UpdateBookingRequest $request, Booking $booking): \App\Http\Resources\BookingResource
     {
         abort_if($booking->user_id != auth()->id(), Response::HTTP_FORBIDDEN);
 
