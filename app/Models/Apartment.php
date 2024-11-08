@@ -15,12 +15,11 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 
 /**
- *
- *
  * @method static \Database\Factories\ApartmentFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment query()
+ *
  * @property int $id
  * @property int|null $apartment_type_id
  * @property int $property_id
@@ -33,6 +32,7 @@ use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
  * @property int $bathrooms
  * @property-read \App\Models\ApartmentType|null $apartment_type
  * @property-read \App\Models\Property $property
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereApartmentTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereBathrooms($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereCapacityAdults($value)
@@ -43,6 +43,7 @@ use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment wherePropertyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereSize($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereUpdatedAt($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Room> $rooms
  * @property-read int|null $rooms_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Bed> $beds
@@ -52,12 +53,17 @@ use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
  * @property-read int|null $facilities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ApartmentPrice> $prices
  * @property-read int|null $prices_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Booking> $booking
+ * @property-read int|null $booking_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Booking> $bookings
+ * @property-read int|null $bookings_count
+ *
  * @mixin \Eloquent
  */
 class Apartment extends Model
 {
-    use HasFactory;
     use HasEagerLimit;
+    use HasFactory;
 
     protected $fillable = [
         'property_id',
@@ -100,18 +106,18 @@ class Apartment extends Model
         $bedsByType = $allBeds->groupBy('bed_type.name');
         $bedsList = '';
         if ($bedsByType->count() == 1) {
-            $bedsList = $allBeds->count() . ' ' . str($bedsByType->keys()[0])->plural($allBeds->count());
+            $bedsList = $allBeds->count().' '.str($bedsByType->keys()[0])->plural($allBeds->count());
         } elseif ($bedsByType->count() > 1) {
-            $bedsList = $allBeds->count() . ' ' . str('bed')->plural($allBeds->count());
+            $bedsList = $allBeds->count().' '.str('bed')->plural($allBeds->count());
             $bedsListArray = [];
             foreach ($bedsByType as $bedType => $beds) {
-                $bedsListArray[] = $beds->count() . ' ' . str($bedType)->plural($beds->count());
+                $bedsListArray[] = $beds->count().' '.str($bedType)->plural($beds->count());
             }
-            $bedsList .= ' (' . implode(', ', $bedsListArray) . ')';
+            $bedsList .= ' ('.implode(', ', $bedsListArray).')';
         }
 
         return new Attribute(
-            get: fn(): string => $bedsList
+            get: fn (): string => $bedsList
         );
     }
 
@@ -130,68 +136,71 @@ class Apartment extends Model
         return $this->facilities()->sync($facilityIds, false);
     }
 
-
-    public function calculatePriceForDates($startDate, $endDate)
+    public function calculatePriceForDates($startDate, $endDate): int|float
     {
-        if (!$startDate instanceof Carbon) {
+        if (! $startDate instanceof Carbon) {
             $startDate = Carbon::parse($startDate)->startOfDay();
         }
 
-        if (!$endDate instanceof Carbon) {
+        if (! $endDate instanceof Carbon) {
             $endDate = Carbon::parse($endDate)->endOfDay();
         }
 
         $cost = 0;
         //TODO:// Başlangıç tarihi bitiş tarihine eşit ya da küçük olduğu sürece cost artırır
         while ($startDate->lte($endDate)) {
-            $cost += $this->prices->where(function (ApartmentPrice $price) use ($startDate) {
+            $cost += $this->prices->where(fn(ApartmentPrice $price): bool =>
                 //TODO: end_date büyük olduğu sürece
-                return $price->start_date->lte($startDate) && $price->end_date->gte($startDate);
-            })->value('price');
+                $price->start_date->lte($startDate) && $price->end_date->gte($startDate))->value('price');
 
             $startDate->addDay();
         }
+
         return $cost;
     }
 
-/*    public function calculatePriceForDates($startDate, $endDate)
-    {
-        // Parse carbon
-        $startDate = $this->parseToCarbon($startDate)->startOfDay();
-        $endDate = $this->parseToCarbon($endDate)->endOfDay();
+    /*    public function calculatePriceForDates($startDate, $endDate)
+        {
+            // Parse carbon
+            $startDate = $this->parseToCarbon($startDate)->startOfDay();
+            $endDate = $this->parseToCarbon($endDate)->endOfDay();
 
-        $cost = 0;
-        $currentDate = $startDate->copy(); // copy original data
+            $cost = 0;
+            $currentDate = $startDate->copy(); // copy original data
 
-        // Date filtering
-        $applicablePrices = $this->prices->filter(function (ApartmentPrice $price) use ($startDate, $endDate) {
-            // check date price
-            return $price->end_date->gte($startDate) && $price->start_date->lte($endDate);
-        });
-
-        // daily price calculate
-        while ($currentDate->lte($endDate)) {
-            // target date with price
-            $priceForDay = $applicablePrices->first(function (ApartmentPrice $price) use ($currentDate) {
-                return $price->start_date->lte($currentDate) && $price->end_date->gte($currentDate);
+            // Date filtering
+            $applicablePrices = $this->prices->filter(function (ApartmentPrice $price) use ($startDate, $endDate) {
+                // check date price
+                return $price->end_date->gte($startDate) && $price->start_date->lte($endDate);
             });
 
-            // price is exits, increment price
-            if ($priceForDay) {
-                $cost += $priceForDay->price;
+            // daily price calculate
+            while ($currentDate->lte($endDate)) {
+                // target date with price
+                $priceForDay = $applicablePrices->first(function (ApartmentPrice $price) use ($currentDate) {
+                    return $price->start_date->lte($currentDate) && $price->end_date->gte($currentDate);
+                });
+
+                // price is exits, increment price
+                if ($priceForDay) {
+                    $cost += $priceForDay->price;
+                }
+
+                // Add day
+                $currentDate->addDay();
             }
 
-            // Add day
-            $currentDate->addDay();
+            return $cost;
         }
 
-        return $cost;
-    }
+        // parse date
+        protected function parseToCarbon($date)
+        {
+            return $date instanceof Carbon ? $date : Carbon::parse($date);
+        }*/
 
-    // parse date
-    protected function parseToCarbon($date)
+    public function bookings(): HasMany
     {
-        return $date instanceof Carbon ? $date : Carbon::parse($date);
-    }*/
-
+        return $this->hasMany(related: Booking::class);
+    }
 }

@@ -17,29 +17,29 @@ final class PropertySearchController extends Controller
     /**
      *Property Search
      * */
-    public function __invoke(SearchRequest $request)
+    public function __invoke(SearchRequest $request): array
     {
         $properties = Property::with([
             'city', 'apartments.apartment_type',
             'apartments.rooms.beds.bed_type',
             'facilities',
-            'media' => fn($query) => $query->orderBy('position'),
-            'apartments.prices' => function ($query) use ($request) {
+            'media' => fn ($query) => $query->orderBy('position'),
+            'apartments.prices' => function ($query) use ($request): void {
                 //TODO: start_date & end_date null ise yarından itibaren iki gün için rezervasyon yapabilir
                 $query->validForRange([
                     $request->start_date ?? now()->addDay()->toDateString(),
                     $request->end_date ?? now()->addDays(2)->toDateString(),
                 ]);
-            }
+            },
         ])
-            // Price Filter price_from/price_to
-            ->when($request->input('price_from'), callback: function ($query) use ($request) {
-                $query->whereHas('apartments.prices', callback: function ($query) use ($request) {
+            //TODO: Price Filter price_from/price_to
+            ->when($request->input('price_from'), callback: function (Builder $query) use ($request): void {
+                $query->whereHas(relation: 'apartments.prices', callback: function (Builder $query) use ($request): void {
                     $query->where('price', '>=', $request->input('price_from'));
                 });
             })
-            ->when($request->input('price_to'), callback: function ($query) use ($request) {
-                $query->whereHas('apartments.prices', callback: function ($query) use ($request) {
+            ->when($request->input('price_to'), callback: function (Builder $query) use ($request): void {
+                $query->whereHas(relation: 'apartments.prices', callback: function (Builder $query) use ($request): void {
                     $query->where('price', '<=', $request->input('price_to'));
                 });
             })
@@ -49,7 +49,7 @@ final class PropertySearchController extends Controller
             })
             // Search country
             ->when($request->country, function ($query) use ($request): void {
-                $query->whereHas('city', fn($q) => $q->where('country_id', $request->country));
+                $query->whereHas('city', fn ($q) => $q->where('country_id', $request->country));
             })
             //TODO: Properties within 10 km
             ->when($request->geoobject, function ($query) use ($request): void {
@@ -57,10 +57,10 @@ final class PropertySearchController extends Controller
                 if ($geoobject) {
                     $condition = '(
                         6371 * acos(
-                            cos(radians(' . $geoobject->lat . '))
+                            cos(radians('.$geoobject->lat.'))
                             * cos(radians(`lat`))
-                            * cos(radians(`long`) - radians(' . $geoobject->long . '))
-                            + sin(radians(' . $geoobject->lat . ')) * sin(radians(`lat`))
+                            * cos(radians(`long`) - radians('.$geoobject->long.'))
+                            + sin(radians('.$geoobject->lat.')) * sin(radians(`lat`))
                         ) < 10
                     )';
                     $query->whereRaw($condition);
@@ -73,13 +73,13 @@ final class PropertySearchController extends Controller
                         ->where('capacity_children', '>=', $request->children)
                         ->orderBy('capacity_adults')
                         ->orderBy('capacity_children')
-                        //TODO: eloquent-eager-limit
+                        //TODO: eloquent-eager-limitBuilder
                         ->take(1);
                 })
 
                     //TODO: Filter By Facilities
-                    ->when($request->facilities, function (Builder $query) use ($request) {
-                        $query->whereHas('facilities', callback: function (Builder $query) use ($request) {
+                    ->when($request->facilities, function (Builder $query) use ($request): void {
+                        $query->whereHas('facilities', callback: function (Builder $query) use ($request): void {
                             $query->whereIn('facilities.id', $request->facilities);
                         });
                     });
@@ -89,15 +89,14 @@ final class PropertySearchController extends Controller
         //TODO: properties collection into a single dimension
         $allFacilities = $properties->pluck('facilities')->flatten();
         $facilities = $allFacilities->unique('name')
-            ->mapWithKeys(function ($facility) use ($allFacilities) {
+            ->mapWithKeys(fn($facility) =>
                 /*
                  * return array
                  * facilities.name => properties.facilities.name
                  * */
-                return [
-                    $facility->name => $allFacilities->where('name', $facility->name)->count(),
-                ];
-            })
+                [
+                $facility->name => $allFacilities->where('name', $facility->name)->count(),
+            ])
             ->sortDesc();
 
         //TODO: Alternative extra query

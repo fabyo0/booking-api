@@ -32,8 +32,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // User
     Route::group(['prefix' => 'user'], function () {
-        Route::get('bookings',
-            [\App\Http\Controllers\User\BookingController::class, 'index'])->name('booking.index');
+        // Booking
+        Route::resource('bookings', \App\Http\Controllers\User\BookingController::class)
+            ->except(['edit', 'create']);
     });
 });
 

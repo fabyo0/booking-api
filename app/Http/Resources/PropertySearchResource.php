@@ -23,7 +23,7 @@ class PropertySearchResource extends JsonResource
             'lat' => $this->lat,
             'long' => $this->long,
             'apartments' => ApartmentSearchResource::collection($this->apartments),
-            'media' => $this->media->map(fn($media) => $media->getUrl('thumbnail')),
+            'media' => $this->media->map(fn ($media) => $media->getUrl('thumbnail')),
         ];
     }
 }

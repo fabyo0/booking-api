@@ -17,9 +17,6 @@ final class ApartmentPriceTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @return Apartment
-     */
     private function create_apartment(): Apartment
     {
         $owner = User::factory()->owner()->create();
@@ -44,7 +41,7 @@ final class ApartmentPriceTest extends TestCase
             'apartment_id' => $apartment->id,
             'start_date' => now()->toDateString(),
             'end_date' => now()->addDays(10)->toDateString(),
-            'price' => 100
+            'price' => 100,
         ]);
 
         $totalPrice = $apartment->calculatePriceForDates(
@@ -62,7 +59,7 @@ final class ApartmentPriceTest extends TestCase
             'apartment_id' => $apartment->id,
             'start_date' => now()->toDateString(),
             'end_date' => now()->addDays(10)->toDateString(),
-            'price' => 100
+            'price' => 100,
         ]);
 
         $totalPrice = $apartment->calculatePriceForDates(
@@ -81,14 +78,14 @@ final class ApartmentPriceTest extends TestCase
             'apartment_id' => $apartment->id,
             'start_date' => now()->toDateString(),
             'end_date' => now()->addDays(2)->toDateString(),
-            'price' => 100
+            'price' => 100,
         ]);
 
         ApartmentPrice::create([
             'apartment_id' => $apartment->id,
             'start_date' => now()->addDays(3)->toDateString(),
             'end_date' => now()->addDays(10)->toDateString(),
-            'price' => 90
+            'price' => 90,
         ]);
 
         $totalPrice = $apartment->calculatePriceForDates(
@@ -139,27 +136,27 @@ final class ApartmentPriceTest extends TestCase
         ]);
 
         // No price range
-        $response = $this->getJson(route('property.search') . '?city=' . $cityId . '&adults=2&children=1');
+        $response = $this->getJson(route('property.search').'?city='.$cityId.'&adults=2&children=1');
         $response->assertStatus(Response::HTTP_OK);
 
         // Min price one return
-        $response = $this->getJson(route('property.search') . '?city=' . $cityId . '&adults=2&children=1&price_from=100');
+        $response = $this->getJson(route('property.search').'?city='.$cityId.'&adults=2&children=1&price_from=100');
         $response->assertStatus(Response::HTTP_OK)
-            ->assertJsonCount(1,'properties');
+            ->assertJsonCount(1, 'properties');
 
         // Max price set one return
-        $response = $this->getJson(route('property.search') . '?city=' . $cityId . '&adults=2&children=1&price_to=100');
+        $response = $this->getJson(route('property.search').'?city='.$cityId.'&adults=2&children=1&price_to=100');
         $response->assertStatus(Response::HTTP_OK)
-            ->assertJsonCount(1,'properties');
+            ->assertJsonCount(1, 'properties');
 
         // Both min and max price set: 2 returned
-        $response = $this->getJson(route('property.search') . '?city=' . $cityId . '&adults=2&children=1&price_from=50&price_to=150');
+        $response = $this->getJson(route('property.search').'?city='.$cityId.'&adults=2&children=1&price_from=50&price_to=150');
         $response->assertStatus(Response::HTTP_OK)
-            ->assertJsonCount(2,'properties');
+            ->assertJsonCount(2, 'properties');
 
         // Both min and max price set narrow: 0 returned
-        $response = $this->getJson(route('property.search') . '?city=' . $cityId . '&adults=2&children=1&price_from=80&price_to=100');
+        $response = $this->getJson(route('property.search').'?city='.$cityId.'&adults=2&children=1&price_from=80&price_to=100');
         $response->assertStatus(Response::HTTP_OK)
-            ->assertJsonCount(0,'properties');
+            ->assertJsonCount(0, 'properties');
     }
 }

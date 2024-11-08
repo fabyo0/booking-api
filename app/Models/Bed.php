@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * 
- *
  * @property int $id
  * @property int $room_id
  * @property int $bed_type_id
@@ -17,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\BedType $bed_type
  * @property-read \App\Models\Room $room
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Bed newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Bed newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Bed query()
@@ -27,6 +26,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Bed whereRoomId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Bed whereUpdatedAt($value)
  * @method static \Database\Factories\BedFactory factory($count = null, $state = [])
+ *
  * @mixin \Eloquent
  */
 class Bed extends Model

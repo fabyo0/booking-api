@@ -16,14 +16,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 
 /**
- * 
- *
  * @property int $id
  * @property int $owner_id
  * @property string $name
@@ -36,6 +34,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon|null $updated_at
  * @property-read City $city
  * @property-read User $owner
+ *
  * @method static Builder|Property newModelQuery()
  * @method static Builder|Property newQuery()
  * @method static Builder|Property query()
@@ -50,6 +49,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Property whereOwnerId($value)
  * @method static Builder|Property whereUpdatedAt($value)
  * @method static PropertyFactory factory($count = null, $state = [])
+ *
  * @property-read Collection<int, Apartment> $apartments
  * @property-read int|null $apartments_count
  * @property-read mixed $address
@@ -57,12 +57,13 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read int|null $facilities_count
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, Media> $media
  * @property-read int|null $media_count
+ *
  * @mixin Eloquent
  */
 class Property extends Model implements HasMedia
 {
-    use HasFactory;
     use HasEagerLimit;
+    use HasFactory;
     use InteractsWithMedia;
 
     protected $fillable = [
@@ -80,9 +81,9 @@ class Property extends Model implements HasMedia
     public function address(): Attribute
     {
         return new Attribute(
-            get: fn(): string => $this->address_street
-                . ', ' . $this->address_postcode
-                . ', ' . $this->city->name
+            get: fn (): string => $this->address_street
+                .', '.$this->address_postcode
+                .', '.$this->city->name
         );
     }
 
@@ -107,7 +108,7 @@ class Property extends Model implements HasMedia
     }
 
     //Thumbnail Image
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('thumbnail')
             ->width(800);

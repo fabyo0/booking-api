@@ -6,24 +6,25 @@ namespace App\Http\Controllers\Owner;
 
 use App\Http\Controllers\Controller;
 use App\Models\Property;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
 use function Sodium\increment;
 
 final class PropertyPhotoController extends Controller
 {
     /**
      * Store Property Photo
+     *
      * @throws FileDoesNotExist
      * @throws FileIsTooBig
      */
-    public function store(Property $property, Request $request)
+    public function store(Property $property, Request $request): array
     {
         $request->validate([
-            'photo' => ['image', 'max:5000']
+            'photo' => ['image', 'max:5000'],
         ]);
 
         $this->authorize('create', $property);
@@ -32,9 +33,9 @@ final class PropertyPhotoController extends Controller
 
         // Media position increment
         $position = Media::query()
-                ->where('model_type', 'App\Models\Property')
-                ->where('model_id', $property->id)
-                ->max('position') + 1;
+            ->where('model_type', \App\Models\Property::class)
+            ->where('model_id', $property->id)
+            ->max('position') + 1;
 
         $photo->position = $position;
         $photo->save();
@@ -42,27 +43,26 @@ final class PropertyPhotoController extends Controller
         return [
             'filename' => $photo->getUrl(),
             'thumbnail' => $photo->getUrl('thumbnail'),
-            'position' => $photo->position
+            'position' => $photo->position,
         ];
     }
 
     /**
      * Photo Reorder
-     * @param Property $property
-     * @param Media $photo
-     * @param int $newPosition
+     *
      * @return int[]
+     *
      * @ignoreParam property
      * @ignoreParam photo
      */
-    public function reorder(Property $property, Media $photo, int $newPosition)
+    public function reorder(Property $property, Media $photo, int $newPosition): array
     {
         $this->authorize('reorder', [$property, $photo]);
 
         // Check property
         $query = Media::query()
             ->where('model_id', $photo->model_id)
-            ->where('model_type', 'App\Models\Property');
+            ->where('model_type', \App\Models\Property::class);
 
         //Increment position
         if ($newPosition < $photo->position) {
@@ -78,7 +78,7 @@ final class PropertyPhotoController extends Controller
 
         return [
             'photo' => $photo,
-            'newPosition' => $newPosition
+            'newPosition' => $newPosition,
         ];
     }
 }

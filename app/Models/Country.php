@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
- * 
- *
  * @property int $id
  * @property string $name
  * @property string|null $lat
@@ -17,6 +15,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read City|null $city
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Country newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Country newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Country query()
@@ -26,7 +25,9 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Country whereLong($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Country whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Country whereUpdatedAt($value)
+ *
  * @property-read int|null $city_count
+ *
  * @mixin \Eloquent
  */
 class Country extends Model
