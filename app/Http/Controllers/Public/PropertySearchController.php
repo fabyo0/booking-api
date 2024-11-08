@@ -19,11 +19,11 @@ final class PropertySearchController extends Controller
      * */
     public function __invoke(SearchRequest $request): array
     {
-        $properties = Property::with([
+        $propertyQuery = Property::with([
             'city', 'apartments.apartment_type',
             'apartments.rooms.beds.bed_type',
             'facilities',
-            'media' => fn ($query) => $query->orderBy('position'),
+            'media' => fn($query) => $query->orderBy('position'),
             'apartments.prices' => function ($query) use ($request): void {
                 //TODO: start_date & end_date null ise yarından itibaren iki gün için rezervasyon yapabilir
                 $query->validForRange([
@@ -33,7 +33,6 @@ final class PropertySearchController extends Controller
             },
         ])
             ->withAvg('bookings', 'rating')
-
             //TODO: Price Filter price_from/price_to
             ->when($request->input('price_from'), callback: function (Builder $query) use ($request): void {
                 $query->whereHas(relation: 'apartments.prices', callback: function (Builder $query) use ($request): void {
@@ -51,7 +50,7 @@ final class PropertySearchController extends Controller
             })
             // Search country
             ->when($request->country, function ($query) use ($request): void {
-                $query->whereHas('city', fn ($q) => $q->where('country_id', $request->country));
+                $query->whereHas('city', fn($q) => $q->where('country_id', $request->country));
             })
             //TODO: Properties within 10 km
             ->when($request->geoobject, function ($query) use ($request): void {
@@ -59,10 +58,10 @@ final class PropertySearchController extends Controller
                 if ($geoobject) {
                     $condition = '(
                         6371 * acos(
-                            cos(radians('.$geoobject->lat.'))
+                            cos(radians(' . $geoobject->lat . '))
                             * cos(radians(`lat`))
-                            * cos(radians(`long`) - radians('.$geoobject->long.'))
-                            + sin(radians('.$geoobject->lat.')) * sin(radians(`lat`))
+                            * cos(radians(`long`) - radians(' . $geoobject->long . '))
+                            + sin(radians(' . $geoobject->lat . ')) * sin(radians(`lat`))
                         ) < 10
                     )';
                     $query->whereRaw($condition);
@@ -86,35 +85,41 @@ final class PropertySearchController extends Controller
                         });
                     });
             })
-            ->orderBy('bookings_avg_rating', 'desc')
-            ->get();
+            ->orderBy('bookings_avg_rating', 'desc');
+
+        // Append all the current request's
+        $properties = $propertyQuery->paginate(10)->withQueryString();
 
         //TODO : Filtering collection without any extra query
         //TODO: properties collection into a single dimension
-        $allFacilities = $properties->pluck('facilities')->flatten();
-        $facilities = $allFacilities->unique('name')
-            ->mapWithKeys(fn ($facility) =>
-                /*
-                 * return array
-                 * facilities.name => properties.facilities.name
-                 * */
-                [
-                    $facility->name => $allFacilities->where('name', $facility->name)->count(),
-                ])
-            ->sortDesc();
+
+//        $allFacilities = $properties->pluck('facilities')->flatten();
+//        $facilities = $allFacilities->unique('name')
+//            ->mapWithKeys(fn ($facility) =>
+//                /*
+//                 * return array
+//                 * facilities.name => properties.facilities.name
+//                 * */
+//                [
+//                    $facility->name => $allFacilities->where('name', $facility->name)->count(),
+//                ])
+//            ->sortDesc();
 
         //TODO: Alternative extra query
-        /* $facilities = Facility::query()
-             ->withCount(['properties' => function ($property) use ($properties) {
-                 $property->whereIn('id', $properties->pluck('id'));
-             }])
-             ->get()
-             ->where('properties_count', '>', 0)
-             ->sortByDesc('properties_count')
-             ->pluck('properties_count', 'name');
-        */
+        $facilities = Facility::query()
+            ->withCount(['properties' => function ($property) use ($properties) {
+                $property->whereIn('id', $properties->pluck('id'));
+            }])
+            ->get()
+            ->where('properties_count', '>', 0)
+            ->sortByDesc('properties_count')
+            ->pluck('properties_count', 'name');
+
         return [
-            'properties' => PropertySearchResource::collection($properties),
+            'properties' => PropertySearchResource::collection($properties)
+            ->response()
+             //Force pagination data
+            ->getData(true),
             'facilities' => $facilities,
         ];
     }
