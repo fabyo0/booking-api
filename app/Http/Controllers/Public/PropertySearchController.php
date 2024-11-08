@@ -89,14 +89,14 @@ final class PropertySearchController extends Controller
         //TODO: properties collection into a single dimension
         $allFacilities = $properties->pluck('facilities')->flatten();
         $facilities = $allFacilities->unique('name')
-            ->mapWithKeys(fn($facility) =>
+            ->mapWithKeys(fn ($facility) =>
                 /*
                  * return array
                  * facilities.name => properties.facilities.name
                  * */
                 [
-                $facility->name => $allFacilities->where('name', $facility->name)->count(),
-            ])
+                    $facility->name => $allFacilities->where('name', $facility->name)->count(),
+                ])
             ->sortDesc();
 
         //TODO: Alternative extra query

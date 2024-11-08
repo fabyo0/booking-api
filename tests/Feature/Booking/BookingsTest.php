@@ -86,7 +86,6 @@ final class BookingsTest extends TestCase
             ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
-
     public function test_user_can_get_ony_their_bookings()
     {
         $user1 = User::factory()->user()->create();
@@ -152,9 +151,48 @@ final class BookingsTest extends TestCase
             ->assertJsonCount(1)
             ->assertJsonFragment(['cancelled_at' => now()->toDateString()]);
 
-
         /*$response = $this->actingAs($user1)->getJson(route('bookings.show', $booking->id))
             ->assertStatus(200)
             ->assertJsonFragment(['cancelled_at' => now()->toDateString()]);*/
+    }
+
+    public function test_user_can_post_rating_for_their_booking()
+    {
+        $user1 = User::factory()->user()->create();
+        $user2 = User::factory()->user()->create();
+
+        $apartment = $this->createApartment();
+
+        $booking = Booking::factory()->create([
+            'apartment_id' => $apartment->id,
+            'user_id' => $user1->id,
+            'start_date' => now()->addDay(),
+            'end_date' => now()->addDays(2),
+            'guests_adults' => 1,
+            'guests_children' => 0,
+        ]);
+
+        // Empty Data
+        $response = $this->actingAs($user2)->putJson(route('bookings.update', $booking->id), data: [])
+            ->assertStatus(Response::HTTP_FORBIDDEN);
+
+        // Invalid data rating
+        $response = $this->actingAs($user1)->putJson(route('bookings.update', $booking->id), data: [
+            'rating' => 11
+        ])->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+
+        // Invalid data rating - sort comments
+        $response = $this->actingAs($user1)->putJson(route('bookings.update', $booking->id), data: [
+            'rating' => 5,
+            'review_comment' => 'sort comment'
+        ])->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+
+        $correctData = [
+            'rating' => 10,
+            'review_comment' => 'Comment with a good length to be accepted.'
+        ];
+
+        $response = $this->actingAs($user1)->putJson(route('bookings.update', $booking->id), data: $correctData)
+            ->assertStatus(Response::HTTP_OK);
     }
 }

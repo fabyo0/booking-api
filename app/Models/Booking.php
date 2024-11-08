@@ -64,6 +64,8 @@ class Booking extends Model
         'guests_adults',
         'guests_children',
         'total_price',
+        "rating",
+        'review_comment',
     ];
 
     protected $casts = [

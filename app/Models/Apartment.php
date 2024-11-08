@@ -149,7 +149,7 @@ class Apartment extends Model
         $cost = 0;
         //TODO:// Başlangıç tarihi bitiş tarihine eşit ya da küçük olduğu sürece cost artırır
         while ($startDate->lte($endDate)) {
-            $cost += $this->prices->where(fn(ApartmentPrice $price): bool =>
+            $cost += $this->prices->where(fn (ApartmentPrice $price): bool =>
                 //TODO: end_date büyük olduğu sürece
                 $price->start_date->lte($startDate) && $price->end_date->gte($startDate))->value('price');
 
