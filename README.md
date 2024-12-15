@@ -31,7 +31,7 @@ Follow the steps below to install and set up the project locally:
 
 1. **Clone the Repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/fabyo0/booking-api.git
    cd booking-api
    ```
 
