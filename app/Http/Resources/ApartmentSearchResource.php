@@ -5,11 +5,22 @@ declare(strict_types=1);
 namespace App\Http\Resources;
 
 use App\Models\Apartment;
+use App\Models\ApartmentType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * @method Apartment calculatePriceForDates(mixed $start_date, mixed $end_date)
+ *
+ * @property int $id
+ * @property string $name
+ * @property string|null $location
+ * @property int $price
+ * @property int $size
+ * @property int $bathrooms
+ * @property mixed $beds_list
+ * @property array $features
+ * @property ApartmentType|null $apartment_type
  */
 class ApartmentSearchResource extends JsonResource
 {

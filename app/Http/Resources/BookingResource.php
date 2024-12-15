@@ -2,9 +2,26 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Apartment;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @property int $id
+ * @property int $booking_id
+ * @property int $guests_adults
+ * @property int $guests_children
+ * @property int $total_price
+ * @property int $rating
+ * @property string $review_comment
+ * @property User $user
+ * @property Apartment $apartment_name
+ * @property ?Carbon $start_date
+ * @property ?Carbon $end_date
+ * @property ?Carbon $deleted_at
+ */
 class BookingResource extends JsonResource
 {
     /**

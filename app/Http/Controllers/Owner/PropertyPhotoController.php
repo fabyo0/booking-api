@@ -11,8 +11,6 @@ use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-use function Sodium\increment;
-
 final class PropertyPhotoController extends Controller
 {
     /**

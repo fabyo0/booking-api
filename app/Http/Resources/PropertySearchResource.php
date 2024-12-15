@@ -4,9 +4,26 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Models\Booking;
+use App\Models\Property;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Collection;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $address
+ * @property string $description
+ * @property float $lat
+ * @property float $long
+ * @property string|null $location
+ * @property Property|null $property_type
+ * @property Collection|Media[] $media
+ * @property ApartmentSearchResource $apartments
+ * @property Booking $bookings_avg_rating
+ */
 class PropertySearchResource extends JsonResource
 {
     /**

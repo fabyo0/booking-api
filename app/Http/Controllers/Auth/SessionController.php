@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 final class SessionController extends Controller
@@ -41,10 +40,10 @@ final class SessionController extends Controller
      *
      * @return JsonResponse
      */
-    public function destroy(Request $request)
+    public function destroy()
     {
         // Revoke the current user
-        $request->user()->currentAccessToken()->delete();
+        auth()->user()->tokens()->delete();
 
         return response()->json([
             'message' => 'You have been successfully logged out.',

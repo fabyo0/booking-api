@@ -2,16 +2,22 @@
 
 namespace App\Http\Resources;
 
+use App\Models\ApartmentType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Transform the resource into an array.
+ *
+ * @property string $name
+ * @property int $size
+ * @property int $beds_list
+ * @property int $bathroom
+ * @property array $facility_categories
+ * @property ApartmentType|null $apartment_type
+ */
 class ApartmentDetailsResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
         return [

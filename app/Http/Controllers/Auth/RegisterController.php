@@ -26,7 +26,7 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Password::defaults()],
             //TODO: Available role
-            'role_id' => ['required', Rule::in(RoleEnum::USER->value, RoleEnum::OWNER->value)],
+            'role_id' => ['required', Rule::in([RoleEnum::USER->value, RoleEnum::OWNER->value])],
         ]);
 
         $user = User::create([
