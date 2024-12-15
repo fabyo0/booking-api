@@ -147,10 +147,8 @@ class Apartment extends Model
         }
 
         $cost = 0;
-        //TODO:// Başlangıç tarihi bitiş tarihine eşit ya da küçük olduğu sürece cost artırır
         while ($startDate->lte($endDate)) {
             $cost += $this->prices->where(fn (ApartmentPrice $price): bool =>
-                //TODO: end_date büyük olduğu sürece
                 $price->start_date->lte($startDate) && $price->end_date->gte($startDate))->value('price');
 
             $startDate->addDay();
@@ -158,46 +156,6 @@ class Apartment extends Model
 
         return $cost;
     }
-
-    /*    public function calculatePriceForDates($startDate, $endDate)
-        {
-            // Parse carbon
-            $startDate = $this->parseToCarbon($startDate)->startOfDay();
-            $endDate = $this->parseToCarbon($endDate)->endOfDay();
-
-            $cost = 0;
-            $currentDate = $startDate->copy(); // copy original data
-
-            // Date filtering
-            $applicablePrices = $this->prices->filter(function (ApartmentPrice $price) use ($startDate, $endDate) {
-                // check date price
-                return $price->end_date->gte($startDate) && $price->start_date->lte($endDate);
-            });
-
-            // daily price calculate
-            while ($currentDate->lte($endDate)) {
-                // target date with price
-                $priceForDay = $applicablePrices->first(function (ApartmentPrice $price) use ($currentDate) {
-                    return $price->start_date->lte($currentDate) && $price->end_date->gte($currentDate);
-                });
-
-                // price is exits, increment price
-                if ($priceForDay) {
-                    $cost += $priceForDay->price;
-                }
-
-                // Add day
-                $currentDate->addDay();
-            }
-
-            return $cost;
-        }
-
-        // parse date
-        protected function parseToCarbon($date)
-        {
-            return $date instanceof Carbon ? $date : Carbon::parse($date);
-        }*/
 
     public function bookings(): HasMany
     {

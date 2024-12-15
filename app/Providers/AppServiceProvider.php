@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
         // Without json wrapping
         JsonResource::withoutWrapping();
 
-        //        Model::shouldBeStrict();
+        // Model::shouldBeStrict();
 
         Scramble::extendOpenApi(function (OpenApi $openApi): void {
             $openApi->secure(

@@ -16,17 +16,17 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
     use RefreshDatabase;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->seed([
-            CountrySeeder::class,
-            CitySeeder::class,
-            GeoobjectSeeder::class,
-            PermissionSeeder::class,
-            FacilityCategorySeeder::class,
-            FacilitySeeder::class,
-        ]);
+         $this->seed([
+             CountrySeeder::class,
+             CitySeeder::class,
+             GeoobjectSeeder::class,
+             PermissionSeeder::class,
+             FacilityCategorySeeder::class,
+             FacilitySeeder::class,
+         ]);
     }
 }

@@ -10,6 +10,9 @@ use App\Models\Apartment;
 
 final class ApartmentController extends Controller
 {
+    /**
+     * Show Apartment
+     */
     public function __invoke(Apartment $apartment): ApartmentDetailsResource
     {
         $apartment->load('facilities');

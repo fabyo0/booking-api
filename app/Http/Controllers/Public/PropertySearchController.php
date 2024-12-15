@@ -16,6 +16,8 @@ final class PropertySearchController extends Controller
 {
     /**
      *Property Search
+     *
+     * @response AnonymousResourceCollection<LengthAwarePaginator<PlaceResource>>
      * */
     public function __invoke(SearchRequest $request): array
     {
@@ -23,7 +25,7 @@ final class PropertySearchController extends Controller
             'city', 'apartments.apartment_type',
             'apartments.rooms.beds.bed_type',
             'facilities',
-            'media' => fn($query) => $query->orderBy('position'),
+            'media' => fn ($query) => $query->orderBy('position'),
             'apartments.prices' => function ($query) use ($request): void {
                 //TODO: start_date & end_date null ise yarından itibaren iki gün için rezervasyon yapabilir
                 $query->validForRange([
@@ -44,13 +46,14 @@ final class PropertySearchController extends Controller
                     $query->where('price', '<=', $request->input('price_to'));
                 });
             })
+
             // Search city
             ->when($request->city, function ($query) use ($request): void {
                 $query->where('city_id', $request->city);
             })
             // Search country
             ->when($request->country, function ($query) use ($request): void {
-                $query->whereHas('city', fn($q) => $q->where('country_id', $request->country));
+                $query->whereHas('city', fn ($q) => $q->where('country_id', $request->country));
             })
             //TODO: Properties within 10 km
             ->when($request->geoobject, function ($query) use ($request): void {
@@ -58,10 +61,10 @@ final class PropertySearchController extends Controller
                 if ($geoobject) {
                     $condition = '(
                         6371 * acos(
-                            cos(radians(' . $geoobject->lat . '))
+                            cos(radians('.$geoobject->lat.'))
                             * cos(radians(`lat`))
-                            * cos(radians(`long`) - radians(' . $geoobject->long . '))
-                            + sin(radians(' . $geoobject->lat . ')) * sin(radians(`lat`))
+                            * cos(radians(`long`) - radians('.$geoobject->long.'))
+                            + sin(radians('.$geoobject->lat.')) * sin(radians(`lat`))
                         ) < 10
                     )';
                     $query->whereRaw($condition);
@@ -93,17 +96,17 @@ final class PropertySearchController extends Controller
         //TODO : Filtering collection without any extra query
         //TODO: properties collection into a single dimension
 
-//        $allFacilities = $properties->pluck('facilities')->flatten();
-//        $facilities = $allFacilities->unique('name')
-//            ->mapWithKeys(fn ($facility) =>
-//                /*
-//                 * return array
-//                 * facilities.name => properties.facilities.name
-//                 * */
-//                [
-//                    $facility->name => $allFacilities->where('name', $facility->name)->count(),
-//                ])
-//            ->sortDesc();
+        //        $allFacilities = $properties->pluck('facilities')->flatten();
+        //        $facilities = $allFacilities->unique('name')
+        //            ->mapWithKeys(fn ($facility) =>
+        //                /*
+        //                 * return array
+        //                 * facilities.name => properties.facilities.name
+        //                 * */
+        //                [
+        //                    $facility->name => $allFacilities->where('name', $facility->name)->count(),
+        //                ])
+        //            ->sortDesc();
 
         //TODO: Alternative extra query
         $facilities = Facility::query()
@@ -117,9 +120,9 @@ final class PropertySearchController extends Controller
 
         return [
             'properties' => PropertySearchResource::collection($properties)
-            ->response()
+                ->response()
              //Force pagination data
-            ->getData(true),
+                ->getData(true),
             'facilities' => $facilities,
         ];
     }
