@@ -11,7 +11,6 @@ use App\Models\Booking;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Facility;
-use App\Models\Geoobject;
 use App\Models\Property;
 use App\Models\Room;
 use App\Models\RoomType;
@@ -52,7 +51,7 @@ final class PropertiesTest extends TestCase
         $propertyInCity = Property::factory()->create(['owner_id' => $owner->id, 'city_id' => $cities[0]]);
         $propertyInAnotherCity = Property::factory()->create(['owner_id' => $owner->id, 'city_id' => $cities[1]]);
 
-        $response = $this->getJson(route('property.search') . '?city=' . $cities[0]);
+        $response = $this->getJson(route('property.search').'?city='.$cities[0]);
 
         $response->assertStatus(200)
             ->assertJsonCount(1, 'properties.data')
@@ -75,7 +74,7 @@ final class PropertiesTest extends TestCase
             'city_id' => $countries[1]->city()->value('id'),
         ]);
 
-        $response = $this->getJson(route('property.search') . '?country=' . $countries[0]->id);
+        $response = $this->getJson(route('property.search').'?country='.$countries[0]->id);
 
         $this->assertContains(
             $propertyInCity->id,
@@ -83,10 +82,9 @@ final class PropertiesTest extends TestCase
         );
     }
 
-
     public function test_property_search_by_geoobject_returns_correct_results()
     {
-        $testCity = City::create(['name' => 'TestCity','country_id' => 1]);
+        $testCity = City::create(['name' => 'TestCity', 'country_id' => 1]);
         $property1 = Property::factory()->create(['city_id' => $testCity->id, 'name' => 'Property 1']);
         $property2 = Property::factory()->create(['city_id' => $testCity->id, 'name' => 'Property 2']);
 
@@ -138,7 +136,7 @@ final class PropertiesTest extends TestCase
             'capacity_children' => 2,
         ]);
 
-        $response = $this->getJson(route('property.search') . '?city=' . $cityId . '&adults=2&children=1');
+        $response = $this->getJson(route('property.search').'?city='.$cityId.'&adults=2&children=1');
 
         $response->assertStatus(Response::HTTP_OK);
 
@@ -170,7 +168,7 @@ final class PropertiesTest extends TestCase
             'capacity_children' => 3,
         ]);
 
-        $response = $this->getJson(route('property.search') . '?city=' . $cityId . '&adults=2&children=1');
+        $response = $this->getJson(route('property.search').'?city='.$cityId.'&adults=2&children=1');
 
         $response->assertStatus(Response::HTTP_OK);
 
@@ -202,7 +200,7 @@ final class PropertiesTest extends TestCase
         ]);
 
         //TODO: Check that bed list if empty if not beds
-        $response = $this->getJson(route('property.search') . '?city=' . $cityId);
+        $response = $this->getJson(route('property.search').'?city='.$cityId);
         $response->assertStatus(200);
 
         $this->assertContains(
@@ -223,11 +221,11 @@ final class PropertiesTest extends TestCase
             'name' => 'Example Bed',
         ]);
 
-        $response = $this->getJson(route('property.search') . '?city=' . $cityId);
+        $response = $this->getJson(route('property.search').'?city='.$cityId);
         $response->assertStatus(200);
 
         $this->assertContains(
-            '1 ' . $bedTypes[0]->name,
+            '1 '.$bedTypes[0]->name,
             array_column($response->json('properties.data.0.apartments'), 'beds_list')
         );
 
@@ -238,15 +236,13 @@ final class PropertiesTest extends TestCase
             'name' => 'Example Bed',
         ]);
 
-
-        $response = $this->getJson(route('property.search') . '?city=' . $cityId);
+        $response = $this->getJson(route('property.search').'?city='.$cityId);
         $response->assertStatus(200);
 
         $this->assertContains(
-            '2 ' . str($bedTypes[0]->name)->plural(),
+            '2 '.str($bedTypes[0]->name)->plural(),
             array_column($response->json('properties.data.0.apartments'), 'beds_list')
         );
-
 
         // Add one bad second room no beds
         $secondRoom = Room::create([
@@ -255,15 +251,14 @@ final class PropertiesTest extends TestCase
             'name' => 'Living room',
         ]);
 
-        $response = $this->getJson(route('property.search') . '?city=' . $cityId);
+        $response = $this->getJson(route('property.search').'?city='.$cityId);
         $response->assertStatus(200);
 
         $this->assertContains(
-            '2 ' . str($bedTypes[0]->name)->plural(),
+            '2 '.str($bedTypes[0]->name)->plural(),
             array_column($response->json('properties.data.0.apartments'), 'beds_list')
         );
     }
-
 
     public function test_property_search_filter_by_facilities()
     {
@@ -294,13 +289,13 @@ final class PropertiesTest extends TestCase
             'capacity_children' => 1,
         ]);
 
-        $response = $this->getJson(route('property.search') . '?city=' . $cityId . '&adults=2&children=1');
+        $response = $this->getJson(route('property.search').'?city='.$cityId.'&adults=2&children=1');
         $response->assertStatus(Response::HTTP_OK);
 
         $facility = Facility::create(['name' => 'First facility']);
 
         $property->facilities()->attach($facility->id);
-        $response = $this->getJson(route('property.search') . '?city=' . $cityId . '&adults=2&children=1&facilities[]=' . $facility->id);
+        $response = $this->getJson(route('property.search').'?city='.$cityId.'&adults=2&children=1&facilities[]='.$facility->id);
         $response->assertStatus(Response::HTTP_OK);
 
         $propertiesData = $response->json('properties.data');
@@ -308,7 +303,7 @@ final class PropertiesTest extends TestCase
         $this->assertEquals($property->id, $propertiesData[0]['id']);
 
         $property2->facilities()->attach($facility->id);
-        $response = $this->getJson(route('property.search') . '?city=' . $cityId . '&adults=2&children=1&facilities[]=' . $facility->id);
+        $response = $this->getJson(route('property.search').'?city='.$cityId.'&adults=2&children=1&facilities[]='.$facility->id);
         $response->assertStatus(Response::HTTP_OK);
 
         $propertiesData = $response->json('properties.data');
@@ -336,8 +331,8 @@ final class PropertiesTest extends TestCase
 
         $response->assertStatus(200)
             ->assertJsonFragment([
-                'filename' => config('app.url') . '/storage/1/photo.png',
-                'thumbnail' => config('app.url') . '/storage/1/conversions/photo-thumbnail.jpg',
+                'filename' => config('app.url').'/storage/1/photo.png',
+                'thumbnail' => config('app.url').'/storage/1/conversions/photo-thumbnail.jpg',
             ]);
     }
 
@@ -363,7 +358,7 @@ final class PropertiesTest extends TestCase
 
         $newPosition = $photoOne->json('position') + 1;
 
-        $response = $this->actingAs($owner)->postJson('/api/v1/owner/' . $property->id . '/photos/1/reorder/' . $newPosition);
+        $response = $this->actingAs($owner)->postJson('/api/v1/owner/'.$property->id.'/photos/1/reorder/'.$newPosition);
 
         $response->assertStatus(Response::HTTP_OK)
             ->assertJsonFragment(['newPosition' => $newPosition]);
@@ -432,7 +427,7 @@ final class PropertiesTest extends TestCase
             'rating' => 7,
         ]);
 
-        $response = $this->getJson(route('property.search') . '?city=' . '&adults=2&children=1');
+        $response = $this->getJson(route('property.search').'?city='.'&adults=2&children=1');
         $response->assertStatus(200);
         $response->assertJsonCount(2, 'properties.data');
         $this->assertEquals(8, $response->json('properties.data')[0]['avg_rating']);

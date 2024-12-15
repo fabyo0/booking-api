@@ -20,13 +20,13 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-         $this->seed([
-             CountrySeeder::class,
-             CitySeeder::class,
-             GeoobjectSeeder::class,
-             PermissionSeeder::class,
-             FacilityCategorySeeder::class,
-             FacilitySeeder::class,
-         ]);
+        $this->seed([
+            CountrySeeder::class,
+            CitySeeder::class,
+            GeoobjectSeeder::class,
+            PermissionSeeder::class,
+            FacilityCategorySeeder::class,
+            FacilitySeeder::class,
+        ]);
     }
 }

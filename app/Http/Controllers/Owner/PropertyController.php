@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Owner;
 
+use App\Enums\PermissionEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Property\StorePropertyRequest;
 use App\Models\Property;
@@ -20,7 +21,7 @@ class PropertyController extends Controller
      */
     public function index()
     {
-        Gate::authorize('properties-manage');
+        Gate::authorize(PermissionEnum::PROPERTIES_MANAGE->value);
 
         return response()->json([
             'success' => true,
@@ -34,7 +35,7 @@ class PropertyController extends Controller
      */
     public function store(StorePropertyRequest $request)
     {
-        Gate::authorize('properties-manage');
+        Gate::authorize(PermissionEnum::PROPERTIES_MANAGE->value);
 
         return Property::create($request->validated());
     }

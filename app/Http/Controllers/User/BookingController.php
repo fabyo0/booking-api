@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\User;
 
+use App\Enums\PermissionEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Booking\StoreBookingRequest;
 use App\Http\Requests\Booking\UpdateBookingRequest;
@@ -47,7 +48,7 @@ final class BookingController extends Controller
      */
     public function show(Booking $booking): BookingResource
     {
-        $this->authorize('bookings-manage');
+        $this->authorize(PermissionEnum::BOOKINGS_MANAGE->value);
 
         abort_if($booking->user_id != auth()->id(), Response::HTTP_FORBIDDEN);
 
@@ -71,7 +72,7 @@ final class BookingController extends Controller
      */
     public function destroy(Booking $booking)
     {
-        $this->authorize('bookings-manage');
+        $this->authorize(PermissionEnum::BOOKINGS_MANAGE->value);
 
         abort_if($booking->user_id != auth()->id(), Response::HTTP_FORBIDDEN);
 

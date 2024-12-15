@@ -6,10 +6,9 @@ namespace App\Enums;
 
 enum PermissionEnum: string
 {
-    case VIEW_APARTMENT = 'view apartment';
-    case EDIT_APARTMENT = 'edit apartment';
-    case CREATE_APARTMENT = 'create apartment';
-    case DELETE_APARTMENT = 'delete apartment';
+   case PROPERTIES_MANAGE = 'properties-manage';
+   case BOOKINGS_MANAGE = 'bookings-manage';
+   case MANAGE_USERS = 'manage-users';
 
     public function label(): string
     {

@@ -131,16 +131,16 @@ final class ApartmentPriceTest extends TestCase
         ]);
 
         // No price range
-        $response = $this->getJson(route('property.search') . '?city=' . $cityId . '&adults=2&children=1');
+        $response = $this->getJson(route('property.search').'?city='.$cityId.'&adults=2&children=1');
         $response->assertStatus(Response::HTTP_OK);
 
         // Min price one return
-        $response = $this->getJson(route('property.search') . '?city=' . $cityId . '&adults=2&children=1&price_from=100');
+        $response = $this->getJson(route('property.search').'?city='.$cityId.'&adults=2&children=1&price_from=100');
         $response->assertStatus(Response::HTTP_OK)
             ->assertJsonCount(3, 'properties');
 
         // Max price set one return
-        $response = $this->getJson(route('property.search') . '?city=' . $cityId . '&adults=2&children=1&price_to=100');
+        $response = $this->getJson(route('property.search').'?city='.$cityId.'&adults=2&children=1&price_to=100');
         $response->assertStatus(Response::HTTP_OK)
             ->assertJsonCount(3, 'properties');
     }

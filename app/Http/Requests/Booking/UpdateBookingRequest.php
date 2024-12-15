@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Booking;
 
+use App\Enums\PermissionEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -12,7 +13,7 @@ class UpdateBookingRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('bookings-manage');
+        return Gate::allows(PermissionEnum::BOOKINGS_MANAGE->value);
     }
 
     /**

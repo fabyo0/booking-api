@@ -148,8 +148,7 @@ class Apartment extends Model
 
         $cost = 0;
         while ($startDate->lte($endDate)) {
-            $cost += $this->prices->where(fn (ApartmentPrice $price): bool =>
-                $price->start_date->lte($startDate) && $price->end_date->gte($startDate))->value('price');
+            $cost += $this->prices->where(fn (ApartmentPrice $price): bool => $price->start_date->lte($startDate) && $price->end_date->gte($startDate))->value('price');
 
             $startDate->addDay();
         }
