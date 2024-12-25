@@ -110,7 +110,7 @@ final class PropertySearchController extends Controller
 
         //TODO: Alternative extra query
         $facilities = Facility::query()
-            ->withCount(['properties' => function ($property) use ($properties) {
+            ->withCount(['properties' => function ($property) use ($properties): void {
                 $property->whereIn('id', $properties->pluck('id'));
             }])
             ->get()

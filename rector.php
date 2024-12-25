@@ -23,5 +23,4 @@ return RectorConfig::configure()
         privatization: true,
         earlyReturn: true,
         strictBooleans: true,
-    )
-    ->withPhpSets();
+    );
