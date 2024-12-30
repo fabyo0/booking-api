@@ -9,8 +9,6 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CitiesRelationManager extends RelationManager
 {
@@ -25,15 +23,15 @@ class CitiesRelationManager extends RelationManager
                     ->columnSpanFull()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('lat')
-                    ->rules([new LatitudeRule()])
+                    ->rules([new LatitudeRule])
                     ->numeric()
                     ->inputMode('decimal')
                     ->required(),
                 Forms\Components\TextInput::make('long')
-                    ->rules([new LongitudeRule()])
+                    ->rules([new LongitudeRule])
                     ->numeric()
                     ->inputMode('decimal')
-                    ->required()
+                    ->required(),
             ]);
     }
 

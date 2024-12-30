@@ -2,9 +2,8 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CountryResource\Pages;
-use App\Filament\Resources\CountryResource\RelationManagers;
-use App\Models\Country;
+use App\Filament\Resources\GeographicalObjectResource\Pages;
+use App\Models\Geoobject;
 use App\Rules\LatitudeRule;
 use App\Rules\LongitudeRule;
 use Filament\Forms;
@@ -13,11 +12,11 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class CountryResource extends Resource
+class GeographicalObjectResource extends Resource
 {
-    protected static ?string $model = Country::class;
+    protected static ?string $model = Geoobject::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-flag';
+    protected static ?string $navigationIcon = 'heroicon-o-globe-asia-australia';
 
     protected static ?string $navigationGroup = 'Geography';
 
@@ -29,15 +28,17 @@ class CountryResource extends Resource
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('lat')
-                    ->rules([new LatitudeRule])
-                    ->numeric()
-                    ->inputMode('decimal')
-                    ->required(),
+                    ->required()
+                    ->rules([new LatitudeRule]),
                 Forms\Components\TextInput::make('long')
-                    ->rules([new LongitudeRule])
-                    ->numeric()
-                    ->inputMode('decimal')
-                    ->required(),
+                    ->required()
+                    ->rules([new LongitudeRule]),
+                Forms\Components\Select::make('city_id')
+                    ->relationship('city', 'name')
+                    ->preload()
+                    ->required()
+                    ->searchable()
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -46,8 +47,11 @@ class CountryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('lat'),
-                Tables\Columns\TextColumn::make('long'),
+                Tables\Columns\TextColumn::make('lat')
+                    ->badge(),
+                Tables\Columns\TextColumn::make('long')
+                    ->badge(),
+                Tables\Columns\TextColumn::make('city.name'),
             ])
             ->filters([
                 //
@@ -66,16 +70,16 @@ class CountryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\CitiesRelationManager::class,
+            //
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCountries::route('/'),
-            'create' => Pages\CreateCountry::route('/create'),
-            'edit' => Pages\EditCountry::route('/{record}/edit'),
+            'index' => Pages\ListGeographicalObjects::route('/'),
+            'create' => Pages\CreateGeographicalObject::route('/create'),
+            'edit' => Pages\EditGeographicalObject::route('/{record}/edit'),
         ];
     }
 }
