@@ -77,7 +77,6 @@ class Apartment extends Model
 
     protected $appends = [
         'beds_list',
-        'facility_categories',
     ];
 
     public function property(): BelongsTo

@@ -52,7 +52,6 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-            ->spa()
             ->plugins([
                 FilamentShieldPlugin::make(),
             ])
