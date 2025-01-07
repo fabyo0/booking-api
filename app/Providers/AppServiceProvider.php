@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use Dedoc\Scramble\Scramble;
@@ -8,8 +10,9 @@ use Dedoc\Scramble\Support\Generator\SecurityScheme;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\Rules\Password;
 
-class AppServiceProvider extends ServiceProvider
+final class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
@@ -24,11 +27,39 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Without json wrapping
+        $this->configureJsonResources();
+        $this->configureModels();
+        $this->configurePasswordValidation();
+        $this->configureApiDocumentation();
+    }
+
+    private function configurePasswordValidation(): void
+    {
+        Password::defaults(function () {
+            return $this->app->isProduction()
+                ? Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised()
+                : Password::min(6);
+        });
+    }
+
+    private function configureModels(): void
+    {
+        Model::shouldBeStrict(!$this->app->isProduction());
+        Model::preventLazyLoading(!$this->app->isProduction());
+        Model::unguard();
+    }
+
+    private function configureJsonResources(): void
+    {
         JsonResource::withoutWrapping();
+    }
 
-        // Model::shouldBeStrict();
-
+    private function configureApiDocumentation(): void
+    {
         Scramble::extendOpenApi(function (OpenApi $openApi): void {
             $openApi->secure(
                 SecurityScheme::http('bearer'),
