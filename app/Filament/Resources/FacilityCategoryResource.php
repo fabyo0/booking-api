@@ -10,8 +10,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class FacilityCategoryResource extends Resource
 {
@@ -21,12 +19,11 @@ class FacilityCategoryResource extends Resource
 
     protected static ?string $navigationGroup = 'Facilities';
 
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('name'),
             ]);
     }
 
@@ -34,7 +31,7 @@ class FacilityCategoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('name'),
             ])
             ->filters([
                 //
@@ -53,7 +50,7 @@ class FacilityCategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\FacilitiesRelationManager::class
+            RelationManagers\FacilitiesRelationManager::class,
         ];
     }
 

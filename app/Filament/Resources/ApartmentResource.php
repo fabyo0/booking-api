@@ -10,13 +10,13 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ApartmentResource extends Resource
 {
     protected static ?string $model = Apartment::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-home-modern';
+
     protected static ?string $navigationGroup = 'Apartments';
 
     public static function form(Form $form): Form
@@ -57,9 +57,8 @@ class ApartmentResource extends Resource
                 Tables\Columns\TextColumn::make('size'),
                 Tables\Columns\TextColumn::make('bookings_avg_rating')
                     ->label('Rating')
-                    ->placeholder(0)
                     ->avg('bookings', 'rating')
-                    ->formatStateUsing(fn (?string $state): ?string => number_format($state, 2)),
+                    ->formatStateUsing(fn(string $state): string => number_format((float)$state, 2))
             ])
             ->filters([
                 //
@@ -78,7 +77,7 @@ class ApartmentResource extends Resource
     public static function getRelations(): array
     {
         return [
-//            RelationManagers\PropertyRelationManager::class,
+            //            RelationManagers\PropertyRelationManager::class,
             RelationManagers\RoomsRelationManager::class,
         ];
     }

@@ -10,8 +10,6 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PropertyRelationManager extends RelationManager
 {
@@ -34,10 +32,10 @@ class PropertyRelationManager extends RelationManager
                     ->searchable(),
                 Forms\Components\TextInput::make('lat')
                     ->required()
-                    ->rules([new LatitudeRule()]),
+                    ->rules([new LatitudeRule]),
                 Forms\Components\TextInput::make('long')
                     ->required()
-                    ->rules([new LongitudeRule()]),
+                    ->rules([new LongitudeRule]),
                 Forms\Components\Select::make('owner_id')
                     ->relationship('owner', 'name')
                     ->required()

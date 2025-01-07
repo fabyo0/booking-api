@@ -43,7 +43,7 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 LastSevenDaysStats::class,
-                TotalBookingsRevenue::class
+                TotalBookingsRevenue::class,
             ])
             ->middleware([
                 EncryptCookies::class,

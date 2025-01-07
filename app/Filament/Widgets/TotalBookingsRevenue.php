@@ -10,6 +10,7 @@ use Flowframe\Trend\TrendValue;
 class TotalBookingsRevenue extends ChartWidget
 {
     protected static ?string $heading = 'Total bookings revenue for the last 30 days';
+
     protected int|string|array $columnSpan = 'full';
 
     protected function getData(): array

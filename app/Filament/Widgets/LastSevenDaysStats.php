@@ -13,7 +13,7 @@ class LastSevenDaysStats extends BaseWidget
     {
         return [
             Stat::make('Last 7 days new properties', Property::where('created_at', '>', now()->subDays(7)->endOfDay())->count()),
-            Stat::make('Last 7 days new users', User::where('created_at', '>', now()->subDays(7)->endOfDay())->count())
+            Stat::make('Last 7 days new users', User::where('created_at', '>', now()->subDays(7)->endOfDay())->count()),
         ];
     }
 }
