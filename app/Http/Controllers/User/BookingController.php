@@ -22,7 +22,7 @@ final class BookingController extends Controller
      */
     public function index()
     {
-        $this->authorize('bookings-manage');
+        $this->authorize(PermissionEnum::BOOKINGS_MANAGE->value);
 
         $bookings = auth()->user()->bookings()
             ->with('apartment.property')
