@@ -11,7 +11,7 @@
         "filament/spatie-laravel-media-library-plugin": "^3.2",
         "flowframe/laravel-trend": "^0.3.0",
         "guzzlehttp/guzzle": "^7.2",
-        "laravel/framework": "^v10.48.29",
+        "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "opcodesio/log-viewer": "^3.11",
