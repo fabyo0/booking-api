@@ -29,7 +29,7 @@
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^7.0",
-        "phpunit/phpunit": "^10.1",
+        "pestphp/pest": "^2.36",
         "rector/rector": "^1.2",
         "spatie/laravel-ignition": "^2.0"
     },
@@ -46,6 +46,7 @@
         }
     },
     "scripts": {
+        "test" : "./vendor/bin/pest",
         "stan": "./vendor/bin/phpstan analyse --memory-limit=2G",
         "pint": "./vendor/bin/pint",
         "rector": "rector",

@@ -93,21 +93,6 @@ final class PropertySearchController extends Controller
         // Append all the current request's
         $properties = $propertyQuery->paginate(10)->withQueryString();
 
-        //TODO : Filtering collection without any extra query
-        //TODO: properties collection into a single dimension
-
-        //        $allFacilities = $properties->pluck('facilities')->flatten();
-        //        $facilities = $allFacilities->unique('name')
-        //            ->mapWithKeys(fn ($facility) =>
-        //                /*
-        //                 * return array
-        //                 * facilities.name => properties.facilities.name
-        //                 * */
-        //                [
-        //                    $facility->name => $allFacilities->where('name', $facility->name)->count(),
-        //                ])
-        //            ->sortDesc();
-
         //TODO: Alternative extra query
         $facilities = Facility::query()
             ->withCount(['properties' => function ($property) use ($properties): void {

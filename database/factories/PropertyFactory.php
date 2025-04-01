@@ -7,6 +7,7 @@ use App\Models\City;
 use App\Models\Property;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Http\UploadedFile;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Property>
@@ -31,5 +32,14 @@ class PropertyFactory extends Factory
             'lat' => fake()->latitude(),
             'long' => fake()->longitude(),
         ];
+    }
+
+    public function withImages($count = 2): PropertyFactory|Factory
+    {
+        return $this->afterCreating(function ($property) use ($count) {
+            for ($i = 0; $i < $count; $i++) {
+                $property->addMedia(UploadedFile::fake()->image(uniqid() . '.jpg'))->toMediaCollection('images');
+            }
+        });
     }
 }
