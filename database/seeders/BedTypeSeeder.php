@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use App\Models\BedType;
 use Illuminate\Database\Seeder;
 
-class BedTypeSeeder extends Seeder
+final class BedTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.

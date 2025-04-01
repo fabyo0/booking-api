@@ -24,7 +24,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property ApartmentSearchResource $apartments
  * @property Booking $bookings_avg_rating
  */
-class PropertySearchResource extends JsonResource
+final class PropertySearchResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -40,7 +40,7 @@ class PropertySearchResource extends JsonResource
             'lat' => $this->lat,
             'long' => $this->long,
             'apartments' => ApartmentSearchResource::collection($this->apartments),
-            'media' => $this->media->map(fn ($media) => $media->getUrl('thumbnail')),
+            'media' => $this->media->map(fn($media) => $media->getUrl('thumbnail')),
             'avg_rating' => $this->bookings_avg_rating,
         ];
     }

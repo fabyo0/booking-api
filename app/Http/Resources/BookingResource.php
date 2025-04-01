@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
 use App\Models\Apartment;
@@ -22,7 +24,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property ?Carbon $end_date
  * @property ?Carbon $deleted_at
  */
-class BookingResource extends JsonResource
+final class BookingResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

@@ -25,7 +25,7 @@ final class PropertySearchController extends Controller
             'city', 'apartments.apartment_type',
             'apartments.rooms.beds.bed_type',
             'facilities',
-            'media' => fn ($query) => $query->orderBy('position'),
+            'media' => fn($query) => $query->orderBy('position'),
             'apartments.prices' => function ($query) use ($request): void {
                 //TODO: start_date & end_date null ise yarından itibaren iki gün için rezervasyon yapabilir
                 $query->validForRange([
@@ -53,24 +53,26 @@ final class PropertySearchController extends Controller
             })
             // Search country
             ->when($request->country, function ($query) use ($request): void {
-                $query->whereHas('city', fn ($q) => $q->where('country_id', $request->country));
+                $query->whereHas('city', fn($q) => $q->where('country_id', $request->country));
             })
             //TODO: Properties within 10 km
-            ->when($request->geoobject, function ($query) use ($request): void {
-                $geoobject = Geoobject::find($request->geoobject);
-                if ($geoobject) {
-                    $condition = '(
+            ->when(
+                $request->geoobject,
+                function ($query) use ($request): void {
+                    $geoobject = Geoobject::find($request->geoobject);
+                    if ($geoobject) {
+                        $condition = '(
                         6371 * acos(
-                            cos(radians('.$geoobject->lat.'))
+                            cos(radians(' . $geoobject->lat . '))
                             * cos(radians(`lat`))
-                            * cos(radians(`long`) - radians('.$geoobject->long.'))
-                            + sin(radians('.$geoobject->lat.')) * sin(radians(`lat`))
+                            * cos(radians(`long`) - radians(' . $geoobject->long . '))
+                            + sin(radians(' . $geoobject->lat . ')) * sin(radians(`lat`))
                         ) < 10
                     )';
-                    $query->whereRaw($condition);
-                }
-                //TODO: Apartment Filter children & adults
-            }
+                        $query->whereRaw($condition);
+                    }
+                    //TODO: Apartment Filter children & adults
+                },
             )->when($request->adults && $request->children, callback: function ($query) use ($request): void {
                 $query->withWhereHas(relation: 'apartments', callback: function ($query) use ($request): void {
                     $query->where('capacity_adults', '>=', $request->adults)

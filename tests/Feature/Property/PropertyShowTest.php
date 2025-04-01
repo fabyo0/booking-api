@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 uses(RefreshDatabase::class);
 
-test('property show loads property correctly', function () {
+test('property show loads property correctly', function (): void {
     $owner = User::factory()->owner()->create();
     $cityId = City::value('id');
 
@@ -51,4 +51,3 @@ test('property show loads property correctly', function () {
         ->assertStatus(Response::HTTP_OK)
         ->assertJsonPath('0.apartments.0.facilities', null);
 });
-

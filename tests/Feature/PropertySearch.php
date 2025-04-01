@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Apartment;
 use App\Models\Bed;
 use App\Models\BedType;
@@ -17,19 +19,19 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(RefreshDatabase::class);
 
 
-test('property search by city contains correct result', function () {
+test('property search by city contains correct result', function (): void {
     /** @phpstan-ignore variable.undefined */
     $owner = createOwner();
     $cities = City::take(2)->pluck('id');
 
     $propertyInCity = Property::factory()->create([
         'owner_id' => $owner->id,
-        'city_id' => $cities[0]
+        'city_id' => $cities[0],
     ]);
 
     Property::factory()->create([
         'owner_id' => $owner->id,
-        'city_id' => $cities[1]
+        'city_id' => $cities[1],
     ]);
 
     /** @phpstan-ignore variable.undefined */
@@ -39,16 +41,16 @@ test('property search by city contains correct result', function () {
 });
 
 
-test('property search by country returns correct results', function () {
+test('property search by country returns correct results', function (): void {
     $owner = createOwner();
     $countries = Country::with('city')->take(2)->get();
     $propertyInCountry = Property::factory()->create([
         'owner_id' => $owner->id,
-        'city_id' => $countries[0]->city()->value('id')
+        'city_id' => $countries[0]->city()->value('id'),
     ]);
     Property::factory()->create([
         'owner_id' => $owner->id,
-        'city_id' => $countries[1]->city()->value('id')
+        'city_id' => $countries[1]->city()->value('id'),
     ]);
 
     /** @phpstan-ignore variable.undefined */
@@ -57,7 +59,7 @@ test('property search by country returns correct results', function () {
         ->assertSee(['id' => $propertyInCountry->id]);
 });
 
-test('property search by geoobject returns correct results', function () {
+test('property search by geoobject returns correct results', function (): void {
     $owner = createOwner();
     $cityId = City::value('id');
     $geoobject = Geoobject::first();
@@ -81,7 +83,7 @@ test('property search by geoobject returns correct results', function () {
         ->assertSee(['id' => $propertyNear->id]);
 });
 
-test('property search by capacity returns correct results', function () {
+test('property search by capacity returns correct results', function (): void {
     $owner = createOwner();
     $cityId = City::value('id');
     $propertyWithSmallApartment = Property::factory()->create([
@@ -109,7 +111,7 @@ test('property search by capacity returns correct results', function () {
         ->assertSee(['id' => $propertyWithLargeApartment->id]);
 });
 
-test('property search by capacity returns only suitable apartments', function () {
+test('property search by capacity returns only suitable apartments', function (): void {
     $owner = createOwner();
     $cityId = City::value('id');
     $property = Property::factory()->create([
@@ -135,7 +137,7 @@ test('property search by capacity returns only suitable apartments', function ()
         ->assertJsonPath('properties.data.0.apartments.0.name', $largeApartment->name);
 });
 
-test('property search beds list all cases', function () {
+test('property search beds list all cases', function (): void {
     $owner = User::factory()->owner()->create();
     $cityId = City::value('id');
     $roomTypes = RoomType::all();
@@ -154,7 +156,7 @@ test('property search beds list all cases', function () {
     ]);
 
     // Case 1: No beds - should return empty string
-    $response = $this->getJson(route('property.search').'?city='.$cityId);
+    $response = $this->getJson(route('property.search') . '?city=' . $cityId);
     $response->assertStatus(200);
 
     $bedsList = array_column($response->json('properties.data.0.apartments'), 'beds_list');
@@ -173,7 +175,7 @@ test('property search beds list all cases', function () {
         'name' => 'Example Bed',
     ]);
 
-    $response = $this->getJson(route('property.search').'?city='.$cityId);
+    $response = $this->getJson(route('property.search') . '?city=' . $cityId);
     $response->assertStatus(200);
 
     $bedsList = array_column($response->json('properties.data.0.apartments'), 'beds_list');
@@ -181,7 +183,7 @@ test('property search beds list all cases', function () {
     $this->assertContains(
         $expectedSingleBed,
         $bedsList,
-        "Single bed case failed. Expected '{$expectedSingleBed}' in: " . implode(', ', $bedsList)
+        "Single bed case failed. Expected '{$expectedSingleBed}' in: " . implode(', ', $bedsList),
     );
 
     // Case 3: Two beds of the same type
@@ -191,7 +193,7 @@ test('property search beds list all cases', function () {
         'name' => 'Second Example Bed',
     ]);
 
-    $response = $this->getJson(route('property.search').'?city='.$cityId);
+    $response = $this->getJson(route('property.search') . '?city=' . $cityId);
     $response->assertStatus(200);
 
     $bedsList = array_column($response->json('properties.data.0.apartments'), 'beds_list');
@@ -199,7 +201,7 @@ test('property search beds list all cases', function () {
     $this->assertContains(
         $expectedTwoBeds,
         $bedsList,
-        "Two beds case failed. Expected '{$expectedTwoBeds}' in: " . implode(', ', $bedsList)
+        "Two beds case failed. Expected '{$expectedTwoBeds}' in: " . implode(', ', $bedsList),
     );
 
     // Case 4: Adding empty room shouldn't change beds count
@@ -209,19 +211,19 @@ test('property search beds list all cases', function () {
         'name' => 'Living room',
     ]);
 
-    $response = $this->getJson(route('property.search').'?city='.$cityId);
+    $response = $this->getJson(route('property.search') . '?city=' . $cityId);
     $response->assertStatus(200);
 
     $bedsList = array_column($response->json('properties.data.0.apartments'), 'beds_list');
     $this->assertContains(
         $expectedTwoBeds,
         $bedsList,
-        "Empty room case failed. Expected '{$expectedTwoBeds}' in: " . implode(', ', $bedsList)
+        "Empty room case failed. Expected '{$expectedTwoBeds}' in: " . implode(', ', $bedsList),
     );
 });
 
 
-test('property search returns one best apartment per property', function () {
+test('property search returns one best apartment per property', function (): void {
     $owner = createOwner();
     $cityId = City::value('id');
     $property = Property::factory()->create([
@@ -275,7 +277,7 @@ test('property search returns one best apartment per property', function () {
         ->assertJsonPath('properties.data.0.apartments.0.name', $midSizeApartment->name);
 });
 
-test('property search filters by facilities', function () {
+test('property search filters by facilities', function (): void {
     $owner = createOwner();
     $cityId = City::value('id');
     $property = Property::factory()->create([
@@ -323,7 +325,7 @@ test('property search filters by facilities', function () {
         ->assertJsonCount(2, 'properties.data');
 });
 
-test('property search filters by price', function () {
+test('property search filters by price', function (): void {
     $owner = createOwner();
     $cityId = City::value('id');
     $property = Property::factory()->create([
@@ -383,7 +385,7 @@ test('property search filters by price', function () {
         ->assertJsonCount(0, 'properties.data');
 });
 
-test('properties show correct rating and ordered by it', function () {
+test('properties show correct rating and ordered by it', function (): void {
     $owner = createOwner();
     $cityId = City::value('id');
     $property = Property::factory()->create([
@@ -417,7 +419,7 @@ test('properties show correct rating and ordered by it', function () {
         'guests_children' => 0,
     ]);
     $this->actingAs($user1)->putJson('/api/user/bookings/' . $booking1->id, [
-        'rating' => 7
+        'rating' => 7,
     ]);
     $booking2 = Booking::create([
         'apartment_id' => $apartment2->id,
@@ -428,7 +430,7 @@ test('properties show correct rating and ordered by it', function () {
         'guests_children' => 0,
     ]);
     $this->actingAs($user1)->putJson('/api/user/bookings/' . $booking2->id, [
-        'rating' => 9
+        'rating' => 9,
     ]);
     $booking3 = Booking::create([
         'apartment_id' => $apartment2->id,
@@ -437,10 +439,10 @@ test('properties show correct rating and ordered by it', function () {
         'end_date' => now()->addDays(2),
         'guests_adults' => 1,
         'guests_children' => 0,
-        'rating' => 7
+        'rating' => 7,
     ]);
     $this->actingAs($user2)->putJson('/api/user/bookings/' . $booking3->id, [
-        'rating' => 7
+        'rating' => 7,
     ]);
 
     $response = $this->getJson('/api/search?city=' . $cityId . '&adults=2&children=1')
@@ -450,7 +452,7 @@ test('properties show correct rating and ordered by it', function () {
     expect($response->json('properties.data')[1]['avg_rating'])->toEqual(7);
 });
 
-test('search shows only apartments available for dates', function () {
+test('search shows only apartments available for dates', function (): void {
     $owner = createOwner();
     $cityId = City::value('id');
     $property = Property::factory()->create([

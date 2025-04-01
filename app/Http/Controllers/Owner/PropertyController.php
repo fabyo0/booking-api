@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 
-class PropertyController extends Controller
+final class PropertyController extends Controller
 {
     /**
      * Property Index

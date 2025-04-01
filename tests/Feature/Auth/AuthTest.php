@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Auth;
 
+use App\Enums\RoleEnum as Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
-use App\Enums\RoleEnum as Role;
-
 
 uses(RefreshDatabase::class);
 
-test('registration fails with admin role', closure: function () {
+test('registration fails with admin role', closure: function (): void {
     $userData = [
         'name' => 'Valid Name',
         'email' => 'john@example.com',
@@ -26,34 +25,34 @@ test('registration fails with admin role', closure: function () {
         ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 });
 
-test('registration succeeds with owner role', function () {
+test('registration succeeds with owner role', function (): void {
     /** @phpstan-ignore variable.undefined */
     $this->postJson(route('auth.register'), [
         'name' => 'Valid name',
         'email' => 'valid@email.com',
         'password' => 'ValidPassword',
         'password_confirmation' => 'ValidPassword',
-        'role_id' => Role::OWNER
+        'role_id' => Role::OWNER,
     ])->assertStatus(200)->assertJsonStructure([
         'access_token',
     ]);
 
 });
 
-test('registration succeeds with user role', function () {
+test('registration succeeds with user role', function (): void {
     /** @phpstan-ignore variable.undefined */
     $this->postJson(route('auth.register'), [
         'name' => 'Valid name',
         'email' => 'valid@email.com',
         'password' => 'ValidPassword',
         'password_confirmation' => 'ValidPassword',
-        'role_id' => Role::USER
+        'role_id' => Role::USER,
     ])->assertStatus(200)->assertJsonStructure([
         'access_token',
     ]);
 });
 
-it('should return token with valid credentials', function () {
+it('should return token with valid credentials', function (): void {
     User::factory()->owner()->create([
         'email' => 'test@example.com',
         'password' => Hash::make('password123'),
@@ -65,7 +64,7 @@ it('should return token with valid credentials', function () {
     ])->assertJsonStructure(['access_token']);
 });
 
-it('return error with invalid credentials', function () {
+it('return error with invalid credentials', function (): void {
     User::factory()->user()->create([
         'email' => 'test@example.com',
         'password' => Hash::make('password123'),

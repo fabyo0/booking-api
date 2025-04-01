@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Dedoc\Scramble\Http\Middleware\RestrictedDocsAccess;
 
 return [
@@ -29,7 +31,7 @@ return [
         /*
          * Description rendered on the home page of the API documentation (`/docs/api`).
          */
-        'description' => file_get_contents(__DIR__.'/../README.md'),
+        'description' => file_get_contents(__DIR__ . '/../README.md'),
     ],
 
     /*

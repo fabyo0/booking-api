@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $long
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\City|null $city
+ * @property-read City|null $city
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Geoobject newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Geoobject newQuery()
@@ -28,7 +30,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @mixin \Eloquent
  */
-class Geoobject extends Model
+final class Geoobject extends Model
 {
     protected $fillable = [
         'city_id',

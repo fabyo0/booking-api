@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\ApartmentResource\RelationManagers;
 
 use Filament\Forms;
@@ -8,7 +10,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class RoomsRelationManager extends RelationManager
+final class RoomsRelationManager extends RelationManager
 {
     protected static string $relationship = 'rooms';
 
@@ -36,7 +38,7 @@ class RoomsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('room_type.name'),
             ])
             ->filters([
-                //
+
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
 use App\Models\ApartmentType;
@@ -16,7 +18,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property array $facility_categories
  * @property ApartmentType|null $apartment_type
  */
-class ApartmentDetailsResource extends JsonResource
+final class ApartmentDetailsResource extends JsonResource
 {
     public function toArray(Request $request): array
     {

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\BookingResource\Pages;
 
 use App\Filament\Resources\BookingResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditBooking extends EditRecord
+final class EditBooking extends EditRecord
 {
     protected static string $resource = BookingResource::class;
 

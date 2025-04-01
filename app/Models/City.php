@@ -33,7 +33,7 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Eloquent
  */
-class City extends Model
+final class City extends Model
 {
     use HasFactory;
 

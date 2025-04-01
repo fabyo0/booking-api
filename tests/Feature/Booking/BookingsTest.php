@@ -1,16 +1,14 @@
 <?php
 
-use App\Models\Apartment;
+declare(strict_types=1);
+
 use App\Models\Booking;
-use App\Models\City;
-use App\Models\Property;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Symfony\Component\HttpFoundation\Response;
 
 uses(RefreshDatabase::class);
 
-it('allows booking user to access booking feature', function () {
+it('allows booking user to access booking feature', function (): void {
     $user = User::factory()->user()->create();
     /** @phpstan-ignore variable.undefined */
     $this->actingAs($user)
@@ -18,7 +16,7 @@ it('allows booking user to access booking feature', function () {
         ->assertOk();
 });
 
-it('prevents owner from accessing booking feature', function () {
+it('prevents owner from accessing booking feature', function (): void {
     $user = User::factory()->owner()->create();
     /** @phpstan-ignore variable.undefined */
     $this->actingAs($user)
@@ -26,7 +24,7 @@ it('prevents owner from accessing booking feature', function () {
         ->assertForbidden();
 });
 
-it('allows user to book apartment but prevents double booking', function () {
+it('allows user to book apartment but prevents double booking', function (): void {
     $user = User::factory()->user()->create();
     /** @phpstan-ignore variable.undefined */
     $apartment = createApartment();
@@ -63,7 +61,7 @@ it('allows user to book apartment but prevents double booking', function () {
         ->assertUnprocessable();
 });
 
-it('shows only user their own bookings', function () {
+it('shows only user their own bookings', function (): void {
     $user1 = User::factory()->user()->create();
     $user2 = User::factory()->user()->create();
     /** @phpstan-ignore variable.undefined */
@@ -110,7 +108,7 @@ it('shows only user their own bookings', function () {
         ->assertForbidden();
 });
 
-it('allows user to cancel their booking and still view it', function () {
+it('allows user to cancel their booking and still view it', function (): void {
     $user1 = User::factory()->user()->create();
     $user2 = User::factory()->user()->create();
 
@@ -146,7 +144,7 @@ it('allows user to cancel their booking and still view it', function () {
         ->assertJsonFragment(['cancelled_at' => now()->toDateString()]);
 });
 
-it('allows user to post rating for their booking', function () {
+it('allows user to post rating for their booking', function (): void {
     $user1 = User::factory()->user()->create();
     $user2 = User::factory()->user()->create();
 

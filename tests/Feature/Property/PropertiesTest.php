@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\City;
 use App\Models\Property;
 use App\Models\User;
@@ -10,8 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 uses(RefreshDatabase::class);
 
-test('property owner has access to properties feature', function () {
-    $owner = \App\Models\User::factory()->owner()->create();
+test('property owner has access to properties feature', function (): void {
+    $owner = User::factory()->owner()->create();
 
     /** @phpstan-ignore variable.undefined */
     $this->actingAs($owner)
@@ -19,17 +21,17 @@ test('property owner has access to properties feature', function () {
         ->assertStatus(Response::HTTP_OK);
 });
 
-test('user does not have access to properties feature', function () {
-    $user = \App\Models\User::factory()->user()->create();
+test('user does not have access to properties feature', function (): void {
+    $user = User::factory()->user()->create();
 
     /** @phpstan-ignore variable.undefined */
     $this->actingAs($user)->getJson(route('property.index'))
         ->assertStatus(Response::HTTP_FORBIDDEN);
 });
 
-test('property owner can add property', function () {
+test('property owner can add property', function (): void {
 
-    $owner = \App\Models\User::factory()->owner()->create();
+    $owner = User::factory()->owner()->create();
 
     /** @phpstan-ignore variable.undefined */
     $this->actingAs($owner)->postJson(route('property.store'), [
@@ -42,7 +44,7 @@ test('property owner can add property', function () {
         ->assertJsonFragment(['name' => 'My property']);
 });
 
-test('property owner can add photo to property', function () {
+test('property owner can add photo to property', function (): void {
     Storage::fake();
 
     $owner = User::factory()->owner()->create();
@@ -77,7 +79,7 @@ test('property owner can add photo to property', function () {
     $this->assertDatabaseHas('media', ['file_name' => 'photo2.png', 'position' => $photoOne->json('position')]);
 });
 
-test('property owner can reorder photos in property', function () {
+test('property owner can reorder photos in property', function (): void {
     Storage::fake();
 
     $owner = User::factory()->owner()->create();

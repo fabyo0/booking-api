@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\GeographicalObjectResource\Pages;
@@ -12,7 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class GeographicalObjectResource extends Resource
+final class GeographicalObjectResource extends Resource
 {
     protected static ?string $model = Geoobject::class;
 
@@ -29,10 +31,10 @@ class GeographicalObjectResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('lat')
                     ->required()
-                    ->rules([new LatitudeRule]),
+                    ->rules([new LatitudeRule()]),
                 Forms\Components\TextInput::make('long')
                     ->required()
-                    ->rules([new LongitudeRule]),
+                    ->rules([new LongitudeRule()]),
                 Forms\Components\Select::make('city_id')
                     ->relationship('city', 'name')
                     ->preload()
@@ -54,7 +56,7 @@ class GeographicalObjectResource extends Resource
                 Tables\Columns\TextColumn::make('city.name'),
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -70,7 +72,7 @@ class GeographicalObjectResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+
         ];
     }
 

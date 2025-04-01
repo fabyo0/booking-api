@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\BedType;
@@ -8,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\BedType>
  */
-class BedTypeFactory extends Factory
+final class BedTypeFactory extends Factory
 {
     protected $model = BedType::class;
 

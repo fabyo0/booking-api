@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
-class UserFactory extends Factory
+final class UserFactory extends Factory
 {
     /**
      * The current password being used by the factory.
@@ -43,14 +43,14 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes): array => [
+        return $this->state(fn(array $attributes): array => [
             'email_verified_at' => null,
         ]);
     }
 
     public function admin()
     {
-        return $this->state(fn (array $attributes): array => [])
+        return $this->state(fn(array $attributes): array => [])
             ->afterCreating(function (User $user): void {
                 $user->assignRole(RoleEnum::ADMINISTRATOR->label());
             });
@@ -58,7 +58,7 @@ class UserFactory extends Factory
 
     public function owner()
     {
-        return $this->state(fn (array $attributes): array => [])
+        return $this->state(fn(array $attributes): array => [])
             ->afterCreating(function (User $user): void {
                 $user->assignRole(RoleEnum::OWNER->label());
             });
@@ -66,7 +66,7 @@ class UserFactory extends Factory
 
     public function user()
     {
-        return $this->state(fn (array $attributes): array => [])
+        return $this->state(fn(array $attributes): array => [])
             ->afterCreating(function (User $user): void {
                 $user->assignRole(RoleEnum::USER->label());
             });

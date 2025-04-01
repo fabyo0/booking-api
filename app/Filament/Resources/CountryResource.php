@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CountryResource\Pages;
@@ -13,7 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class CountryResource extends Resource
+final class CountryResource extends Resource
 {
     protected static ?string $model = Country::class;
 
@@ -29,12 +31,12 @@ class CountryResource extends Resource
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('lat')
-                    ->rules([new LatitudeRule])
+                    ->rules([new LatitudeRule()])
                     ->numeric()
                     ->inputMode('decimal')
                     ->required(),
                 Forms\Components\TextInput::make('long')
-                    ->rules([new LongitudeRule])
+                    ->rules([new LongitudeRule()])
                     ->numeric()
                     ->inputMode('decimal')
                     ->required(),
@@ -50,7 +52,7 @@ class CountryResource extends Resource
                 Tables\Columns\TextColumn::make('long'),
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Observers;
 
 use App\Models\Booking;
 
-class BookingObserver
+final class BookingObserver
 {
     /**
      * Handle the Booking "creating" event.
@@ -13,7 +15,7 @@ class BookingObserver
     {
         $booking->total_price = $booking->apartment->calculatePriceForDates(
             startDate: $booking->start_date,
-            endDate: $booking->end_date
+            endDate: $booking->end_date,
         );
     }
 }

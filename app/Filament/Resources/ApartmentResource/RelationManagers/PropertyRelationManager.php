@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\ApartmentResource\RelationManagers;
 
 use App\Rules\LatitudeRule;
@@ -11,7 +13,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class PropertyRelationManager extends RelationManager
+final class PropertyRelationManager extends RelationManager
 {
     protected static string $relationship = 'property';
 
@@ -32,10 +34,10 @@ class PropertyRelationManager extends RelationManager
                     ->searchable(),
                 Forms\Components\TextInput::make('lat')
                     ->required()
-                    ->rules([new LatitudeRule]),
+                    ->rules([new LatitudeRule()]),
                 Forms\Components\TextInput::make('long')
                     ->required()
-                    ->rules([new LongitudeRule]),
+                    ->rules([new LongitudeRule()]),
                 Forms\Components\Select::make('owner_id')
                     ->relationship('owner', 'name')
                     ->required()
@@ -61,7 +63,7 @@ class PropertyRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('city.name'),
             ])
             ->filters([
-                //
+
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),

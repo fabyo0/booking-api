@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -8,7 +10,7 @@ trait ValidForRange
 {
     public function scopeValidForRange($query, array $range = [])
     {
-        return $query->where(fn (Builder $query) => $query
+        return $query->where(fn(Builder $query) => $query
             //first column first item array
             ->where('start_date', '>=', reset($range))
             // end column end item array

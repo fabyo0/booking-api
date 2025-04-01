@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Rules;
 
 use App\Models\Apartment;
@@ -8,20 +10,20 @@ use Closure;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class ApartmentAvailableRule implements DataAwareRule, ValidationRule
+final class ApartmentAvailableRule implements DataAwareRule, ValidationRule
 {
-    protected array $data = [];
+    private array $data = [];
 
     /**
      * Run the validation rule.
      *
-     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     * @param  Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         // value => apartment.id
         $apartment = Apartment::find($value);
-        if (! $apartment) {
+        if ( ! $apartment) {
             $fail('Sorry, this apartment is not found');
         }
 

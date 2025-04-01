@@ -14,8 +14,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
- * @property-read \App\Models\Apartment|null $apartment
- * @property-read \App\Models\User|null $user
+ * @property-read Apartment|null $apartment
+ * @property-read User|null $user
  *
  * @method static \Database\Factories\BookingFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Booking newModelQuery()
@@ -59,7 +59,7 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Eloquent
  */
-class Booking extends Model
+final class Booking extends Model
 {
     use HasFactory;
     use SoftDeletes;
@@ -84,10 +84,17 @@ class Booking extends Model
 
     protected $appends = ['apartment_name'];
 
+    public static function booted(): void
+    {
+        parent::booted();
+
+        self::observe(BookingObserver::class);
+    }
+
     public function apartmentName(): Attribute
     {
         return new Attribute(
-            get: fn (): string => $this->apartment->property->name.': '.$this->apartment->name
+            get: fn(): string => $this->apartment->property->name . ': ' . $this->apartment->name,
         );
     }
 
@@ -99,12 +106,5 @@ class Booking extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(related: User::class, foreignKey: 'user_id');
-    }
-
-    public static function booted(): void
-    {
-        parent::booted();
-
-        self::observe(BookingObserver::class);
     }
 }

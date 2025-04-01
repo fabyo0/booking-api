@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Geocoder\Provider\Chain\Chain;
 use Geocoder\Provider\GeoPlugin\GeoPlugin;
 use Geocoder\Provider\GoogleMaps\GoogleMaps;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'shield_resource' => [
         'should_register_navigation' => true,
@@ -16,7 +18,7 @@ return [
     'tenant_model' => null,
 
     'auth_provider_model' => [
-        'fqcn' => 'App\\Models\\User',
+        'fqcn' => App\Models\User::class,
     ],
 
     'super_admin' => [

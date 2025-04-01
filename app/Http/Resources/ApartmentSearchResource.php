@@ -22,7 +22,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property array $features
  * @property ApartmentType|null $apartment_type
  */
-class ApartmentSearchResource extends JsonResource
+final class ApartmentSearchResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

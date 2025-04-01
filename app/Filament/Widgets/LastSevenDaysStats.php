@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Widgets;
 
 use App\Models\Property;
@@ -7,7 +9,7 @@ use App\Models\User;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
-class LastSevenDaysStats extends BaseWidget
+final class LastSevenDaysStats extends BaseWidget
 {
     protected function getStats(): array
     {

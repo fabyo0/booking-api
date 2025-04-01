@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ApartmentResource\Pages;
@@ -11,7 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class ApartmentResource extends Resource
+final class ApartmentResource extends Resource
 {
     protected static ?string $model = Apartment::class;
 
@@ -58,10 +60,10 @@ class ApartmentResource extends Resource
                 Tables\Columns\TextColumn::make('bookings_avg_rating')
                     ->label('Rating')
                     ->avg('bookings', 'rating')
-                    ->formatStateUsing(fn(string $state): string => number_format((float)$state, 2))
+                    ->formatStateUsing(fn(string $state): string => number_format((float) $state, 2)),
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

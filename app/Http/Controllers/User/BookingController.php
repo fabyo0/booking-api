@@ -50,7 +50,7 @@ final class BookingController extends Controller
     {
         $this->authorize(PermissionEnum::BOOKINGS_MANAGE->value);
 
-        abort_if($booking->user_id != auth()->id(), Response::HTTP_FORBIDDEN);
+        abort_if($booking->user_id !== auth()->id(), Response::HTTP_FORBIDDEN);
 
         return new BookingResource($booking);
     }
@@ -58,9 +58,9 @@ final class BookingController extends Controller
     /**
      * Booking Update
      */
-    public function update(UpdateBookingRequest $request, Booking $booking): \App\Http\Resources\BookingResource
+    public function update(UpdateBookingRequest $request, Booking $booking): BookingResource
     {
-        abort_if($booking->user_id != auth()->id(), Response::HTTP_FORBIDDEN);
+        abort_if($booking->user_id !== auth()->id(), Response::HTTP_FORBIDDEN);
 
         $booking->update($request->validated());
 
@@ -74,7 +74,7 @@ final class BookingController extends Controller
     {
         $this->authorize(PermissionEnum::BOOKINGS_MANAGE->value);
 
-        abort_if($booking->user_id != auth()->id(), Response::HTTP_FORBIDDEN);
+        abort_if($booking->user_id !== auth()->id(), Response::HTTP_FORBIDDEN);
 
         $booking->delete();
 

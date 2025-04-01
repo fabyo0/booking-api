@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,9 +15,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Apartment> $apartments
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Apartment> $apartments
  * @property-read int|null $apartments_count
- * @property-read \App\Models\FacilityCategory|null $category
+ * @property-read FacilityCategory|null $category
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Facility newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Facility newQuery()
@@ -26,12 +28,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Facility whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Facility whereUpdatedAt($value)
  *
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Property> $properties
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Property> $properties
  * @property-read int|null $properties_count
  *
  * @mixin \Eloquent
  */
-class Facility extends Model
+final class Facility extends Model
 {
     use HasFactory;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Facility> $facilities
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Facility> $facilities
  * @property-read int|null $facilities_count
  *
  * @method static \Illuminate\Database\Eloquent\Builder|FacilityCategory newModelQuery()
@@ -24,7 +26,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @mixin \Eloquent
  */
-class FacilityCategory extends Model
+final class FacilityCategory extends Model
 {
     use HasFactory;
 

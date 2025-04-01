@@ -31,7 +31,7 @@ final class PropertyPhotoController extends Controller
 
         // Media position increment
         $position = Media::query()
-            ->where('model_type', \App\Models\Property::class)
+            ->where('model_type', Property::class)
             ->where('model_id', $property->id)
             ->max('position') + 1;
 
@@ -60,7 +60,7 @@ final class PropertyPhotoController extends Controller
         // Check property
         $query = Media::query()
             ->where('model_id', $photo->model_id)
-            ->where('model_type', \App\Models\Property::class);
+            ->where('model_type', Property::class);
 
         //Increment position
         if ($newPosition < $photo->position) {

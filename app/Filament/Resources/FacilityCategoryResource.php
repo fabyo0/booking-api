@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\FacilityCategoryResource\Pages;
@@ -11,7 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class FacilityCategoryResource extends Resource
+final class FacilityCategoryResource extends Resource
 {
     protected static ?string $model = FacilityCategory::class;
 
@@ -34,7 +36,7 @@ class FacilityCategoryResource extends Resource
                 Tables\Columns\TextColumn::make('name'),
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

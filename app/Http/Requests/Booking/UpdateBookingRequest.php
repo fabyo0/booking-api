@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Booking;
 
 use App\Enums\PermissionEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
-class UpdateBookingRequest extends FormRequest
+final class UpdateBookingRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

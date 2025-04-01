@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ApartmentTypeResource\Pages;
@@ -10,7 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class ApartmentTypeResource extends Resource
+final class ApartmentTypeResource extends Resource
 {
     protected static ?string $model = ApartmentType::class;
 
@@ -34,7 +36,7 @@ class ApartmentTypeResource extends Resource
                 Tables\Columns\TextColumn::make('name'),
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -50,7 +52,7 @@ class ApartmentTypeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+
         ];
     }
 

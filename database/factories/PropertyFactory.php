@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Enums\RoleEnum;
@@ -12,7 +14,7 @@ use Illuminate\Http\UploadedFile;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Property>
  */
-class PropertyFactory extends Factory
+final class PropertyFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -36,7 +38,7 @@ class PropertyFactory extends Factory
 
     public function withImages($count = 2): PropertyFactory|Factory
     {
-        return $this->afterCreating(function ($property) use ($count) {
+        return $this->afterCreating(function ($property) use ($count): void {
             for ($i = 0; $i < $count; $i++) {
                 $property->addMedia(UploadedFile::fake()->image(uniqid() . '.jpg'))->toMediaCollection('images');
             }

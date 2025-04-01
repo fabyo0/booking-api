@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Booking;
 
 use App\Rules\ApartmentAvailableRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
-class StoreBookingRequest extends FormRequest
+final class StoreBookingRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +26,7 @@ class StoreBookingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'apartment_id' => ['required', 'exists:apartments,id', new ApartmentAvailableRule],
+            'apartment_id' => ['required', 'exists:apartments,id', new ApartmentAvailableRule()],
             'start_date' => ['required', 'date'],
             'end_date' => ['required', 'date'],
             'guests_adults' => ['integer'],

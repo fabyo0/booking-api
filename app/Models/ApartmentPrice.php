@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Apartment $apartment
+ * @property-read Apartment $apartment
  *
  * @method static \Illuminate\Database\Eloquent\Builder|ApartmentPrice newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ApartmentPrice newQuery()
@@ -34,7 +34,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @mixin \Eloquent
  */
-class ApartmentPrice extends Model
+final class ApartmentPrice extends Model
 {
     use HasFactory;
     use ValidForRange;

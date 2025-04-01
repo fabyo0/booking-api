@@ -30,8 +30,8 @@ use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int|null $size
  * @property int $bathrooms
- * @property-read \App\Models\ApartmentType|null $apartment_type
- * @property-read \App\Models\Property $property
+ * @property-read ApartmentType|null $apartment_type
+ * @property-read Property $property
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereApartmentTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereBathrooms($value)
@@ -44,23 +44,23 @@ use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereSize($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Apartment whereUpdatedAt($value)
  *
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Room> $rooms
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Room> $rooms
  * @property-read int|null $rooms_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Bed> $beds
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Bed> $beds
  * @property-read int|null $beds_count
  * @property-read mixed $beds_list
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Facility> $facilities
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Facility> $facilities
  * @property-read int|null $facilities_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ApartmentPrice> $prices
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, ApartmentPrice> $prices
  * @property-read int|null $prices_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Booking> $booking
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Booking> $booking
  * @property-read int|null $booking_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Booking> $bookings
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Booking> $bookings
  * @property-read int|null $bookings_count
  *
  * @mixin \Eloquent
  */
-class Apartment extends Model
+final class Apartment extends Model
 {
     use HasEagerLimit;
     use HasFactory;
@@ -104,19 +104,19 @@ class Apartment extends Model
         $allBeds = $this->beds;
         $bedsByType = $allBeds->groupBy('bed_type.name');
         $bedsList = '';
-        if ($bedsByType->count() == 1) {
-            $bedsList = $allBeds->count().' '.str($bedsByType->keys()[0])->plural($allBeds->count());
+        if (1 === $bedsByType->count()) {
+            $bedsList = $allBeds->count() . ' ' . str($bedsByType->keys()[0])->plural($allBeds->count());
         } elseif ($bedsByType->count() > 1) {
-            $bedsList = $allBeds->count().' '.str('bed')->plural($allBeds->count());
+            $bedsList = $allBeds->count() . ' ' . str('bed')->plural($allBeds->count());
             $bedsListArray = [];
             foreach ($bedsByType as $bedType => $beds) {
-                $bedsListArray[] = $beds->count().' '.str($bedType)->plural($beds->count());
+                $bedsListArray[] = $beds->count() . ' ' . str($bedType)->plural($beds->count());
             }
-            $bedsList .= ' ('.implode(', ', $bedsListArray).')';
+            $bedsList .= ' (' . implode(', ', $bedsListArray) . ')';
         }
 
         return new Attribute(
-            get: fn (): string => $bedsList
+            get: fn(): string => $bedsList,
         );
     }
 
@@ -137,17 +137,17 @@ class Apartment extends Model
 
     public function calculatePriceForDates($startDate, $endDate): int|float
     {
-        if (! $startDate instanceof Carbon) {
+        if ( ! $startDate instanceof Carbon) {
             $startDate = Carbon::parse($startDate)->startOfDay();
         }
 
-        if (! $endDate instanceof Carbon) {
+        if ( ! $endDate instanceof Carbon) {
             $endDate = Carbon::parse($endDate)->endOfDay();
         }
 
         $cost = 0;
         while ($startDate->lte($endDate)) {
-            $cost += $this->prices->where(fn (ApartmentPrice $price): bool => $price->start_date->lte($startDate) && $price->end_date->gte($startDate))->value('price');
+            $cost += $this->prices->where(fn(ApartmentPrice $price): bool => $price->start_date->lte($startDate) && $price->end_date->gte($startDate))->value('price');
 
             $startDate->addDay();
         }

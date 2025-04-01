@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use App\Models\Geoobject;
 use Illuminate\Database\Seeder;
 
-class GeoobjectSeeder extends Seeder
+final class GeoobjectSeeder extends Seeder
 {
     /**
      * Run the database seeds.

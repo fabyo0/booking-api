@@ -1,15 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Apartment;
 use App\Models\City;
 use App\Models\Property;
 use App\Models\User;
-use Database\Seeders\CitySeeder;
-use Database\Seeders\CountrySeeder;
-use Database\Seeders\FacilityCategorySeeder;
-use Database\Seeders\FacilitySeeder;
-use Database\Seeders\GeoobjectSeeder;
-use Database\Seeders\PermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

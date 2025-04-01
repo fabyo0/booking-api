@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,8 +15,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\BedType $bed_type
- * @property-read \App\Models\Room $room
+ * @property-read BedType $bed_type
+ * @property-read Room $room
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Bed newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Bed newQuery()
@@ -29,7 +31,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @mixin \Eloquent
  */
-class Bed extends Model
+final class Bed extends Model
 {
     use HasFactory;
 

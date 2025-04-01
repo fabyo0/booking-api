@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BedTypeResource\Pages;
@@ -10,7 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class BedTypeResource extends Resource
+final class BedTypeResource extends Resource
 {
     protected static ?string $model = BedType::class;
 
@@ -34,7 +36,7 @@ class BedTypeResource extends Resource
                 Tables\Columns\TextColumn::make('name'),
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -50,7 +52,7 @@ class BedTypeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+
         ];
     }
 

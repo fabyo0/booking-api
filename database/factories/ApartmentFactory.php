@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\Apartment;
@@ -10,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Apartment>
  */
-class ApartmentFactory extends Factory
+final class ApartmentFactory extends Factory
 {
     public $model = Apartment::class;
 

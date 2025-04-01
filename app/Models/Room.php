@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,10 +16,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Apartment $apartment
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Bed> $beds
+ * @property-read Apartment $apartment
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Bed> $beds
  * @property-read int|null $beds_count
- * @property-read \App\Models\RoomType|null $room_type
+ * @property-read RoomType|null $room_type
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Room newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Room newQuery()
@@ -32,7 +34,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @mixin \Eloquent
  */
-class Room extends Model
+final class Room extends Model
 {
     use HasFactory;
 

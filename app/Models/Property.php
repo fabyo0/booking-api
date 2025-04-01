@@ -54,16 +54,16 @@ use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
  * @property-read Collection<int, Apartment> $apartments
  * @property-read int|null $apartments_count
  * @property-read mixed $address
- * @property-read Collection<int, \App\Models\Facility> $facilities
+ * @property-read Collection<int, Facility> $facilities
  * @property-read int|null $facilities_count
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, Media> $media
  * @property-read int|null $media_count
- * @property-read Collection<int, \App\Models\Booking> $bookings
+ * @property-read Collection<int, Booking> $bookings
  * @property-read int|null $bookings_count
  *
  * @mixin Eloquent
  */
-class Property extends Model implements HasMedia
+final class Property extends Model implements HasMedia
 {
     use HasEagerLimit;
     use HasFactory;
@@ -81,12 +81,19 @@ class Property extends Model implements HasMedia
 
     protected $appends = ['address'];
 
+    public static function booted(): void
+    {
+        parent::booted();
+
+        self::observe(PropertyObserver::class);
+    }
+
     public function address(): Attribute
     {
         return new Attribute(
-            get: fn (): string => $this->address_street
-                .', '.$this->address_postcode
-                .', '.$this->city->name
+            get: fn(): string => $this->address_street
+                . ', ' . $this->address_postcode
+                . ', ' . $this->city->name,
         );
     }
 
@@ -120,12 +127,5 @@ class Property extends Model implements HasMedia
     public function bookings(): HasManyThrough
     {
         return $this->hasManyThrough(related: Booking::class, through: Apartment::class);
-    }
-
-    public static function booted(): void
-    {
-        parent::booted();
-
-        self::observe(PropertyObserver::class);
     }
 }

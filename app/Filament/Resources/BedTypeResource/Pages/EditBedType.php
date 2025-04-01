@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\BedTypeResource\Pages;
 
 use App\Filament\Resources\BedTypeResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditBedType extends EditRecord
+final class EditBedType extends EditRecord
 {
     protected static string $resource = BedTypeResource::class;
 

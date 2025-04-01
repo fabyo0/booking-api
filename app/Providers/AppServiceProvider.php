@@ -17,10 +17,7 @@ final class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    public function register(): void
-    {
-        //
-    }
+    public function register(): void {}
 
     /**
      * Bootstrap any application services.
@@ -35,15 +32,13 @@ final class AppServiceProvider extends ServiceProvider
 
     private function configurePasswordValidation(): void
     {
-        Password::defaults(function () {
-            return $this->app->isProduction()
-                ? Password::min(8)
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised()
-                : Password::min(6);
-        });
+        Password::defaults(fn() => $this->app->isProduction()
+            ? Password::min(8)
+                ->mixedCase()
+                ->numbers()
+                ->symbols()
+                ->uncompromised()
+            : Password::min(6));
     }
 
     private function configureModels(): void

@@ -14,7 +14,7 @@ dataset('apartmentData', [
     ['Small apartment', 2, 1],
 ]);
 
-test('apartment show loads apartment with facilities', function () {
+test('apartment show loads apartment with facilities', function (): void {
     $owner = User::factory()->owner()->create();
     $cityId = City::value('id');
     $property = Property::factory()->create([
@@ -29,35 +29,35 @@ test('apartment show loads apartment with facilities', function () {
     ]);
 
     $firstCategory = FacilityCategory::create([
-        'name' => 'First category'
+        'name' => 'First category',
     ]);
     $secondCategory = FacilityCategory::create([
-        'name' => 'Second category'
+        'name' => 'Second category',
     ]);
     $firstFacility = Facility::create([
         'category_id' => $firstCategory->id,
-        'name' => 'First facility'
+        'name' => 'First facility',
     ]);
     $secondFacility = Facility::create([
         'category_id' => $firstCategory->id,
-        'name' => 'Second facility'
+        'name' => 'Second facility',
     ]);
     $thirdFacility = Facility::create([
         'category_id' => $secondCategory->id,
-        'name' => 'Third facility'
+        'name' => 'Third facility',
     ]);
     $apartment->facilities()->attach([
-        $firstFacility->id, $secondFacility->id, $thirdFacility->id
+        $firstFacility->id, $secondFacility->id, $thirdFacility->id,
     ]);
 
     $expectedFacilityArray = [
         $firstCategory->name => [
             $firstFacility->name,
-            $secondFacility->name
+            $secondFacility->name,
         ],
         $secondCategory->name => [
-            $thirdFacility->name
-        ]
+            $thirdFacility->name,
+        ],
     ];
 
     $this->getJson(route('apartment.show', $apartment->id))

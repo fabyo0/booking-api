@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BookingResource\Pages;
@@ -10,7 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class BookingResource extends Resource
+final class BookingResource extends Resource
 {
     protected static ?string $model = Booking::class;
 
@@ -62,7 +64,7 @@ class BookingResource extends Resource
                     ->money(),
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -80,7 +82,7 @@ class BookingResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+
         ];
     }
 

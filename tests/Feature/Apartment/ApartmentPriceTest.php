@@ -7,12 +7,12 @@ use App\Models\ApartmentPrice;
 use App\Models\City;
 use App\Models\Property;
 use App\Models\User;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Symfony\Component\HttpFoundation\Response;
 
 uses(RefreshDatabase::class);
 
-test('apartment calculates price for 1 day correctly', function () {
+test('apartment calculates price for 1 day correctly', function (): void {
     $apartment = createApartment();
     ApartmentPrice::create([
         'apartment_id' => $apartment->id,
@@ -28,7 +28,7 @@ test('apartment calculates price for 1 day correctly', function () {
         ->toBe(100);
 });
 
-test('apartment calculates price for 2 days correctly', function () {
+test('apartment calculates price for 2 days correctly', function (): void {
     $apartment = createApartment();
     ApartmentPrice::create([
         'apartment_id' => $apartment->id,
@@ -46,7 +46,7 @@ test('apartment calculates price for 2 days correctly', function () {
 });
 
 
-test('apartment calculates price for multiple ranges correctly', function () {
+test('apartment calculates price for multiple ranges correctly', function (): void {
     $apartment = createApartment();
 
     ApartmentPrice::create([
@@ -67,7 +67,7 @@ test('apartment calculates price for multiple ranges correctly', function () {
     expect($totalPrice)->toBe((3 * 100) + (2 * 90));
 });
 
-test('property search filters by price', function () {
+test('property search filters by price', function (): void {
     $owner = User::factory()->owner()->create();
     $cityId = City::value('id');
     $property = Property::factory()->create([

@@ -21,7 +21,7 @@ final class ApartmentController extends Controller
         $apartment->setAttribute(
             'facility_categories',
             $apartment->facilities->groupBy('category.name')
-                ->mapWithKeys(fn ($items, $key) => [$key => $items->pluck('name')])
+                ->mapWithKeys(fn($items, $key) => [$key => $items->pluck('name')]),
         );
 
         return new ApartmentDetailsResource($apartment);
