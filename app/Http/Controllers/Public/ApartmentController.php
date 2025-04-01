@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Public;
 
-use App\Http\Controllers\Controller;
 use App\Http\Resources\ApartmentDetailsResource;
 use App\Models\Apartment;
 
-final class ApartmentController extends Controller
+final class ApartmentController
 {
     /**
      * Show Apartment

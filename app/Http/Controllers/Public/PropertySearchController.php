@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Public;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Property\SearchRequest;
 use App\Http\Resources\PropertySearchResource;
 use App\Models\Facility;
@@ -12,7 +11,7 @@ use App\Models\Geoobject;
 use App\Models\Property;
 use Illuminate\Database\Eloquent\Builder;
 
-final class PropertySearchController extends Controller
+final class PropertySearchController
 {
     /**
      *Property Search

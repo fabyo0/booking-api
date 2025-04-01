@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Owner;
 
 use App\Enums\PermissionEnum;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Property\StorePropertyRequest;
 use App\Models\Property;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 
-final class PropertyController extends Controller
+final class PropertyController
 {
     /**
      * Property Index

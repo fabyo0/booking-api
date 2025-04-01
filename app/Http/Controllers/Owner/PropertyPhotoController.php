@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Owner;
 
-use App\Http\Controllers\Controller;
 use App\Models\Property;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-final class PropertyPhotoController extends Controller
+final class PropertyPhotoController
 {
     /**
      * Store Property Photo
@@ -25,7 +25,7 @@ final class PropertyPhotoController extends Controller
             'photo' => ['image', 'max:5000'],
         ]);
 
-        $this->authorize('create', $property);
+        Gate::authorize('create',$property);
 
         $photo = $property->addMediaFromRequest('photo')->toMediaCollection('photos');
 
@@ -55,7 +55,7 @@ final class PropertyPhotoController extends Controller
      */
     public function reorder(Property $property, Media $photo, int $newPosition): array
     {
-        $this->authorize('reorder', [$property, $photo]);
+        Gate::authorize('reorder', [$property, $photo]);
 
         // Check property
         $query = Media::query()

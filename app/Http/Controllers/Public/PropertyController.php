@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Public;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Property\ShowRequest;
 use App\Http\Resources\PropertySearchResource;
 use App\Models\Property;
 
-final class PropertyController extends Controller
+final class PropertyController
 {
     /**
      * Property Show

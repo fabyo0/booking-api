@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace App\Http\Controllers\User;
 
 use App\Enums\PermissionEnum;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Booking\StoreBookingRequest;
 use App\Http\Requests\Booking\UpdateBookingRequest;
 use App\Http\Resources\BookingResource;
 use App\Models\Booking;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
-final class BookingController extends Controller
+final class BookingController
 {
     /**
      * Booking Index
@@ -22,7 +22,7 @@ final class BookingController extends Controller
      */
     public function index()
     {
-        $this->authorize(PermissionEnum::BOOKINGS_MANAGE->value);
+        Gate::authorize(PermissionEnum::BOOKINGS_MANAGE->value);
 
         $bookings = auth()->user()->bookings()
             ->with('apartment.property')
@@ -48,7 +48,7 @@ final class BookingController extends Controller
      */
     public function show(Booking $booking): BookingResource
     {
-        $this->authorize(PermissionEnum::BOOKINGS_MANAGE->value);
+        Gate::authorize(PermissionEnum::BOOKINGS_MANAGE->value);
 
         abort_if($booking->user_id !== auth()->id(), Response::HTTP_FORBIDDEN);
 
@@ -72,7 +72,7 @@ final class BookingController extends Controller
      */
     public function destroy(Booking $booking)
     {
-        $this->authorize(PermissionEnum::BOOKINGS_MANAGE->value);
+        Gate::authorize(PermissionEnum::BOOKINGS_MANAGE->value);
 
         abort_if($booking->user_id !== auth()->id(), Response::HTTP_FORBIDDEN);
 
