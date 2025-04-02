@@ -56,8 +56,8 @@ final class AppServiceProvider extends ServiceProvider
                 if (str_contains($query->sql, 'select * from')) {
                     $backtrace = collect(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 10))
                         ->filter(fn($trace): bool => isset($trace['file']) &&
-                            ! str_contains((string) $trace['file'], '/vendor/') &&
-                            ! str_contains((string) $trace['file'], '/framework/'))
+                            ! str_contains($trace['file'], '/vendor/') &&
+                            ! str_contains($trace['file'], '/framework/'))
                         ->first();
 
                     $location = isset($backtrace)
