@@ -101,22 +101,30 @@ final class Apartment extends Model
 
     public function bedsList(): Attribute
     {
-        $allBeds = $this->beds;
-        $bedsByType = $allBeds->groupBy('bed_type.name');
-        $bedsList = '';
-        if (1 === $bedsByType->count()) {
-            $bedsList = $allBeds->count() . ' ' . str($bedsByType->keys()[0])->plural($allBeds->count());
-        } elseif ($bedsByType->count() > 1) {
-            $bedsList = $allBeds->count() . ' ' . str('bed')->plural($allBeds->count());
-            $bedsListArray = [];
-            foreach ($bedsByType as $bedType => $beds) {
-                $bedsListArray[] = $beds->count() . ' ' . str($bedType)->plural($beds->count());
-            }
-            $bedsList .= ' (' . implode(', ', $bedsListArray) . ')';
-        }
-
         return new Attribute(
-            get: fn(): string => $bedsList,
+            get: function (): string {
+
+                if ( ! $this->relationLoaded('beds')) {
+                    $this->load('beds.bed_type');
+                }
+
+                $allBeds = $this->beds()->get();
+                $bedsByType = $allBeds->groupBy('bed_type.name');
+                $bedsList = '';
+
+                if (1 === $bedsByType->count()) {
+                    $bedsList = $allBeds->count() . ' ' . str($bedsByType->keys()[0])->plural($allBeds->count());
+                } elseif ($bedsByType->count() > 1) {
+                    $bedsList = $allBeds->count() . ' ' . str('bed')->plural($allBeds->count());
+                    $bedsListArray = [];
+                    foreach ($bedsByType as $bedType => $beds) {
+                        $bedsListArray[] = $beds->count() . ' ' . str($bedType)->plural($beds->count());
+                    }
+                    $bedsList .= ' (' . implode(', ', $bedsListArray) . ')';
+                }
+
+                return $bedsList;
+            },
         );
     }
 

@@ -13,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Override;
 
 final class GeographicalObjectResource extends Resource
 {
@@ -22,6 +23,7 @@ final class GeographicalObjectResource extends Resource
 
     protected static ?string $navigationGroup = 'Geography';
 
+    #[Override]
     public static function form(Form $form): Form
     {
         return $form
@@ -44,6 +46,7 @@ final class GeographicalObjectResource extends Resource
             ]);
     }
 
+    #[Override]
     public static function table(Table $table): Table
     {
         return $table
@@ -69,6 +72,7 @@ final class GeographicalObjectResource extends Resource
             ]);
     }
 
+    #[Override]
     public static function getRelations(): array
     {
         return [
@@ -76,6 +80,7 @@ final class GeographicalObjectResource extends Resource
         ];
     }
 
+    #[Override]
     public static function getPages(): array
     {
         return [

@@ -11,6 +11,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Override;
 
 final class RoomTypeResource extends Resource
 {
@@ -20,6 +21,7 @@ final class RoomTypeResource extends Resource
 
     protected static ?string $navigationGroup = 'Facilities';
 
+    #[Override]
     public static function form(Form $form): Form
     {
         return $form
@@ -28,6 +30,7 @@ final class RoomTypeResource extends Resource
             ]);
     }
 
+    #[Override]
     public static function table(Table $table): Table
     {
         return $table
@@ -48,6 +51,7 @@ final class RoomTypeResource extends Resource
             ]);
     }
 
+    #[Override]
     public static function getRelations(): array
     {
         return [
@@ -55,6 +59,7 @@ final class RoomTypeResource extends Resource
         ];
     }
 
+    #[Override]
     public static function getPages(): array
     {
         return [

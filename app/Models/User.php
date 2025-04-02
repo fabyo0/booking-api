@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Override;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -108,6 +109,7 @@ final class User extends Authenticatable implements FilamentUser
         'password' => 'hashed',
     ];
 
+    #[Override]
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->hasRole(RoleEnum::ADMINISTRATOR->label());

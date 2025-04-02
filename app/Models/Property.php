@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Carbon;
+use Override;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -81,6 +82,7 @@ final class Property extends Model implements HasMedia
 
     protected $appends = ['address'];
 
+    #[Override]
     public static function booted(): void
     {
         parent::booted();
@@ -118,6 +120,7 @@ final class Property extends Model implements HasMedia
     }
 
     //Thumbnail Image
+    #[Override]
     public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('thumbnail')

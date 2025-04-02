@@ -6,6 +6,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
+use Override;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class Handler extends ExceptionHandler
@@ -24,6 +25,7 @@ final class Handler extends ExceptionHandler
     /**
      * Register the exception handling callbacks for the application.
      */
+    #[Override]
     public function register(): void
     {
         $this->renderable(function (NotFoundHttpException $e, Request $request) {

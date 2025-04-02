@@ -10,6 +10,7 @@ use App\Models\Property;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\UploadedFile;
+use Override;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Property>
@@ -23,6 +24,7 @@ final class PropertyFactory extends Factory
      */
     public $model = Property::class;
 
+    #[Override]
     public function definition(): array
     {
         return [

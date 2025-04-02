@@ -9,11 +9,13 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Override;
 
 final class FacilitiesRelationManager extends RelationManager
 {
     protected static string $relationship = 'facilities';
 
+    #[Override]
     public function form(Form $form): Form
     {
         return $form
@@ -24,6 +26,7 @@ final class FacilitiesRelationManager extends RelationManager
             ]);
     }
 
+    #[Override]
     public function table(Table $table): Table
     {
         return $table

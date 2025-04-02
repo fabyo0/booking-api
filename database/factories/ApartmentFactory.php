@@ -8,6 +8,7 @@ use App\Models\Apartment;
 use App\Models\ApartmentType;
 use App\Models\Property;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Apartment>
@@ -21,6 +22,7 @@ final class ApartmentFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

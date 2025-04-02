@@ -9,24 +9,25 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Override;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
 final class UserFactory extends Factory
 {
+    protected $model = User::class;
     /**
      * The current password being used by the factory.
      */
-    protected static ?string $password = null;
-
-    protected $model = User::class;
+    private static ?string $password = null;
 
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

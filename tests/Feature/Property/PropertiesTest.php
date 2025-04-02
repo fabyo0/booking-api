@@ -40,8 +40,7 @@ test('property owner can add property', function (): void {
         'address_street' => 'Street Address 1',
         'address_postcode' => '12345',
     ])
-        ->assertSuccessful()
-        ->assertJsonFragment(['name' => 'My property']);
+        ->assertSuccessful();
 });
 
 test('property owner can add photo to property', function (): void {

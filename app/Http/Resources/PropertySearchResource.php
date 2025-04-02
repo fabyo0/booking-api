@@ -9,6 +9,7 @@ use App\Models\Property;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
+use Override;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
@@ -31,6 +32,7 @@ final class PropertySearchResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function toArray(Request $request): array
     {
         return [
@@ -41,7 +43,7 @@ final class PropertySearchResource extends JsonResource
             'long' => $this->long,
             'apartments' => ApartmentSearchResource::collection($this->apartments),
             'media' => $this->media->map(fn($media) => $media->getUrl('thumbnail')),
-            'avg_rating' => $this->bookings_avg_rating,
+            'average_rating' => $this->when(null !== $this->bookings_avg_rating, fn() => $this->bookings_avg_rating, 0),
         ];
     }
 }

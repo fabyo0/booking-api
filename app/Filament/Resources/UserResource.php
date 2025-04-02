@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Validation\Rules\Password;
+use Override;
 
 final class UserResource extends Resource
 {
@@ -22,6 +23,7 @@ final class UserResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'users';
 
+    #[Override]
     public static function form(Form $form): Form
     {
         return $form
@@ -49,6 +51,7 @@ final class UserResource extends Resource
             ]);
     }
 
+    #[Override]
     public static function table(Table $table): Table
     {
         return $table
@@ -81,6 +84,7 @@ final class UserResource extends Resource
             ->defaultSort('created_at', 'ASC');
     }
 
+    #[Override]
     public static function getRelations(): array
     {
         return [
@@ -88,6 +92,7 @@ final class UserResource extends Resource
         ];
     }
 
+    #[Override]
     public static function getPages(): array
     {
         return [

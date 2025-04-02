@@ -4,7 +4,7 @@
     "description": "Booking Api",
     "license": "MIT",
     "require": {
-        "php": "^8.1",
+        "php": "^8.3",
         "bezhansalleh/filament-shield": "^3.3",
         "dedoc/scramble": "^0.8.6",
         "filament/filament": "^3.2",

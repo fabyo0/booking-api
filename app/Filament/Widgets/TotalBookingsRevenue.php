@@ -8,6 +8,7 @@ use App\Models\Booking;
 use Filament\Widgets\ChartWidget;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
+use Override;
 
 final class TotalBookingsRevenue extends ChartWidget
 {
@@ -15,6 +16,7 @@ final class TotalBookingsRevenue extends ChartWidget
 
     protected int|string|array $columnSpan = 'full';
 
+    #[Override]
     protected function getData(): array
     {
         $data = Trend::model(Booking::class)
@@ -37,6 +39,7 @@ final class TotalBookingsRevenue extends ChartWidget
 
     }
 
+    #[Override]
     protected function getType(): string
     {
         return 'line';

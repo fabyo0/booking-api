@@ -8,6 +8,7 @@ use App\Enums\RoleEnum;
 use App\Filament\Resources\UserResource;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Hash;
+use Override;
 
 final class CreateUser extends CreateRecord
 {
@@ -15,6 +16,7 @@ final class CreateUser extends CreateRecord
 
     protected ?string $subheading = 'This form will create an administrator user';
 
+    #[Override]
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['password'] = Hash::make($data['password']);

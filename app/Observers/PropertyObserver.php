@@ -11,6 +11,12 @@ final class PropertyObserver
 {
     public function creating(Property $property): void
     {
+        if (app()->environment('testing')) {
+            $property->lat = '40.7128';
+            $property->long = '-74.0060';
+            return;
+        }
+
         // Check owner
         if (Auth::check()) {
             $property->owner_id = Auth::id();

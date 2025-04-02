@@ -36,6 +36,9 @@ final class PropertyController
     {
         Gate::authorize(PermissionEnum::PROPERTIES_MANAGE->value);
 
-        return Property::create($request->validated());
+        return Property::create([
+            ...$request->validated(),
+            'owner_id' => auth()->id(),
+        ]);
     }
 }

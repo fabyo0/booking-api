@@ -8,6 +8,7 @@ use App\Models\Apartment;
 use App\Models\ApartmentType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Override;
 
 /**
  * @method Apartment calculatePriceForDates(mixed $start_date, mixed $end_date)
@@ -29,6 +30,7 @@ final class ApartmentSearchResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function toArray(Request $request): array
     {
         return [

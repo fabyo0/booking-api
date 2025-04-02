@@ -7,6 +7,7 @@ namespace App\Filament\Resources\ApartmentResource\Pages;
 use App\Filament\Resources\ApartmentResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Override;
 
 final class EditApartment extends EditRecord
 {
@@ -17,6 +18,7 @@ final class EditApartment extends EditRecord
         return true;
     }
 
+    #[Override]
     protected function getHeaderActions(): array
     {
         return [

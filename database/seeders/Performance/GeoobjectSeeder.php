@@ -6,10 +6,4 @@ namespace Database\Seeders\Performance;
 
 use Illuminate\Database\Seeder;
 
-final class GeoobjectSeeder extends Seeder
-{
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void {}
-}
+final class GeoobjectSeeder extends Seeder {}

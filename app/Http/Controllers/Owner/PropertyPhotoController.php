@@ -25,7 +25,7 @@ final class PropertyPhotoController
             'photo' => ['image', 'max:5000'],
         ]);
 
-        Gate::authorize('create',$property);
+        Gate::authorize('create', $property);
 
         $photo = $property->addMediaFromRequest('photo')->toMediaCollection('photos');
 

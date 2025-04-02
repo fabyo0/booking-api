@@ -8,6 +8,7 @@ use App\Models\Bed;
 use App\Models\BedType;
 use App\Models\Room;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Bed>
@@ -21,6 +22,7 @@ final class BedFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

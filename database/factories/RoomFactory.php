@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Models\Room;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Room>
@@ -19,6 +20,7 @@ final class RoomFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

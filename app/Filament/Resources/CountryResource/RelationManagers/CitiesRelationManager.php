@@ -11,11 +11,13 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Override;
 
 final class CitiesRelationManager extends RelationManager
 {
     protected static string $relationship = 'city';
 
+    #[Override]
     public function form(Form $form): Form
     {
         return $form
@@ -37,6 +39,7 @@ final class CitiesRelationManager extends RelationManager
             ]);
     }
 
+    #[Override]
     public function table(Table $table): Table
     {
         return $table

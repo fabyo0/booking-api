@@ -9,6 +9,7 @@ use App\Models\Booking;
 use Closure;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Override;
 
 final class ApartmentAvailableRule implements DataAwareRule, ValidationRule
 {
@@ -19,6 +20,7 @@ final class ApartmentAvailableRule implements DataAwareRule, ValidationRule
      *
      * @param  Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
+    #[Override]
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         // value => apartment.id
@@ -40,6 +42,7 @@ final class ApartmentAvailableRule implements DataAwareRule, ValidationRule
         }
     }
 
+    #[Override]
     public function setData(array $data): ApartmentAvailableRule|static
     {
         $this->data = $data;

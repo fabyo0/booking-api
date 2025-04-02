@@ -6,6 +6,7 @@ namespace App\Rules;
 
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Override;
 
 final class LatitudeRule implements ValidationRule
 {
@@ -14,6 +15,7 @@ final class LatitudeRule implements ValidationRule
      *
      * @param  Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
+    #[Override]
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $regex = '/^[-]?((([0-8]?\d)(\.(\d{1,8}))?)|(90(\.0+)?))$/';

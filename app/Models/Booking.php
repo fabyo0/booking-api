@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Override;
 
 /**
  * @property-read Apartment|null $apartment
@@ -84,6 +85,7 @@ final class Booking extends Model
 
     protected $appends = ['apartment_name'];
 
+    #[Override]
     public static function booted(): void
     {
         parent::booted();
