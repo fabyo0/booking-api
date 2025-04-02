@@ -15,7 +15,6 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "opcodesio/log-viewer": "^3.11",
-        "openspout/openspout": "^4.22.0",
         "spatie/laravel-medialibrary": "^11.9",
         "spatie/laravel-permission": "^6.9",
         "staudenmeir/eloquent-eager-limit": "^1.0",
@@ -24,7 +23,6 @@
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.1",
         "doctrine/dbal": "^3.9",
-        "driftingly/rector-laravel": "^1.2",
         "fakerphp/faker": "^1.9.1",
         "larastan/larastan": "^2.0",
         "laravel/pint": "^1.0",
