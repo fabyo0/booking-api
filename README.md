@@ -1,7 +1,9 @@
 # Booking API
 
-A Laravel-based booking API designed to manage and handle property bookings efficiently. Built with modern development practices and a clean architecture.
+[![Run tests](https://github.com/fabyo0/booking-api/actions/workflows/test-suite.yml/badge.svg)](https://github.com/fabyo0/booking-api/actions/workflows/test-suite.yml)&nbsp;&nbsp;&nbsp;
+[![Static Analysis](https://github.com/fabyo0/booking-api/actions/workflows/larastan-check.yml/badge.svg)](https://github.com/fabyo0/booking-api/actions/workflows/larastan-check.yml)
 
+A Laravel-based booking API designed to manage and handle property bookings efficiently. Built with modern development practices and a clean architecture.
 ---
 
 ## 🚀 Features
